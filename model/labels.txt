@@ -1,0 +1,8 @@
+0 Beardy
+1 Chameleon
+2 Crestedgeko
+3 Gecko
+4 Leopardgeko
+5 Lguana
+6 Lizard
+7 Other
