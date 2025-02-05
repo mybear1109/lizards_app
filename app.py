@@ -12,7 +12,7 @@ selected_option = render_sidebar()
 
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
-    st.title("🦎 파충류 정보 검색 앱")
+    st.title("🦎 파충류를 종아해서 파충류와 함께하기를 원하는 귀염둥이")
     st.write("""
         - 도마뱀 이미지 분석
         - 파충류 전문 병원 검색
