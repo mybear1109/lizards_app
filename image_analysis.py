@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py  # h5 파일 무결성 체크
-from description import get_species_description
+from species_info import get_species_description
 
 # ✅ 커스텀 레이어 정의 (DepthwiseConv2D 호환성 문제 해결)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
