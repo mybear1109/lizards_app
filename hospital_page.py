@@ -61,7 +61,7 @@ def display_hospitals():
     query = st.session_state.get("hospital_query", "").strip()
 
     if not query:
-        st.warning("검색어를 입력하세요.")
+        st.info("병원 검색어를 사이드바에 입력하세요.")
         return
 
     st.title("🏥 병원 검색 결과")
@@ -78,4 +78,4 @@ def display_hospitals():
                 st.markdown(f"[🔗 네이버 상세보기]({hospital['link']})", unsafe_allow_html=True)
                 st.divider()
     else:
-        st.warning("검색 결과가 없습니다. 다시 검색해 주세요.")
+        st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")

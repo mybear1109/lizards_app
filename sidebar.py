@@ -6,7 +6,7 @@ def render_sidebar():
         # 사이드바 이미지 추가
         st.image("image/home_image.png", width=300)
 
-        # ✅ 검색창과 메뉴 생성
+        # ✅ 검색창 스타일 및 메뉴 생성
         selected_option = option_menu(
             menu_title="앱 탐색",  # 메뉴 제목
             options=["홈", "도마뱀 분석", "병원 검색", "유튜브 검색"],  # 메뉴 항목
@@ -26,11 +26,13 @@ def render_sidebar():
             },
         )
 
-        # ✅ 병원 검색창 (검색어 입력 및 세션 상태 업데이트)
+        # ✅ 병원 검색창 (검색어 입력)
         if selected_option == "병원 검색":
             st.subheader("🔍 병원 검색")
-            hospital_query = st.text_input("검색어 입력", placeholder="예: 파충류 동물병원")
-            if st.button("🔎 검색"):
-                st.session_state["hospital_query"] = hospital_query  # 검색어를 세션에 저장
+            hospital_query = st.text_input(
+                "검색어 입력", 
+                placeholder="예: 파충류 동물병원", 
+                key="hospital_query",  # 검색어를 세션 상태로 저장
+            )
 
         return selected_option
