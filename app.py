@@ -91,7 +91,7 @@ def display_home():
 
         st.write(f"디버깅: 이미지 경로 - {image_path}")  # 경로 디버깅 로그
         if os.path.exists(image_path):
-            st.image(image_path, width=300, use_container_width=True)  # 홈 화면 이미지
+            st.image(image_path, width=300)  # 홈 화면 이미지
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다. 경로를 확인하세요.")
 
