@@ -87,7 +87,7 @@ def display_home():
     with col1:
         # 이미지 파일 경로 설정
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        image_path = os.path.join(BASE_DIR, "image", "001.PNG")
+        image_path = os.path.join(BASE_DIR, "image", "001.jpg")
 
         st.write(f"디버깅: 이미지 경로 - {image_path}")  # 경로 디버깅 로그
         if os.path.exists(image_path):
