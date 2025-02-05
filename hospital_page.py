@@ -57,6 +57,11 @@ def display_hospital_map(address):
     google_maps_url = f"https://www.google.com/maps/search/?api=1&query={address_encoded}"
     st.markdown(f"[📍 Google 지도에서 보기]({google_maps_url})", unsafe_allow_html=True)
 
+def remove_html_tags(text):
+    """문자열에서 HTML 태그 제거"""
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
 # ✅ 병원 검색 결과 표시 함수
 def display_hospitals(query):
     st.title("🏥 병원 검색 결과")
