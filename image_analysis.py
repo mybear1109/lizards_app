@@ -101,7 +101,7 @@ def display_image_analysis():
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-            st.info(f'이미지에 따라 예측 결과가 달라질 수 있습니다. 신뢰도는 예측 결과의 정확도를 나타냅니다.')
+            st.info('예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있으며, 이는 참고용으로만 활용해 주시기 바랍니다. 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.')
             
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
