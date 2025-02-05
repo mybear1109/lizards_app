@@ -79,7 +79,7 @@ def display_home():
     with col1:
         image_path = os.path.join(BASE_DIR, "image", "001.jpg")
         if os.path.exists(image_path):
-            st.image(image_path, width=200)
+            st.image(image_path, width=400)
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다.")
 
