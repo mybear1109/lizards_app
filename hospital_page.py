@@ -4,7 +4,7 @@ import urllib.parse
 import os
 
 # ✅ Google Maps API Key (환경 변수 사용, 보안을 위해 직접 하드코딩하지 않음)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5")  # 여기에 본인의 API Key를 입력하세요.
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")  # 여기에 본인의 API Key를 입력하세요.
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
@@ -54,7 +54,7 @@ def display_hospital_map(address):
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다. `.env` 파일 또는 환경 변수에서 설정하세요.")
     
     # ✅ 추가: Google Maps에서 직접 보기 링크 제공
-    google_maps_url = f"https://www.google.com/maps/search/?api=1&query={address_encoded}"
+    map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
     st.markdown(f"[📍 Google 지도에서 보기]({google_maps_url})", unsafe_allow_html=True)
 
 # ✅ 병원 검색 결과 표시 함수
