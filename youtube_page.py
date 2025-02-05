@@ -56,6 +56,7 @@ def display_youtube_videos():
 
     # ✅ 검색어가 비어있을 경우 안내 메시지
     if not query:
+        st.subheader("⚠️ 파충류 관련 영상만 검색할 수 있습니다.")
         st.info("유튜브 검색어를 사이드바에서 입력하세요.")
         return
 
