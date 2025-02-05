@@ -5,7 +5,7 @@ import urllib.parse
 import os
 
 
-st.subheader('파충류 관련 병원만 검색이 가능합니다.')
+
 
 # ✅ Google Maps API Key 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")

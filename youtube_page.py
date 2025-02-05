@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import re
 
-st.subheader('파충류 관련 영상만 검색이 가능합니다.')
+
 
 # ✅ 유튜브 API 설정
 YOUTUBE_API_KEY = "AIzaSyC4lXnmvmSeZy5pCoxDddwMgVxNnKbB9CA" 
