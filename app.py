@@ -138,33 +138,42 @@ if st.session_state['page'] == "home":
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 # 📍 사이드바 탐색
+with st.sidebar:
+    # 사이드바 상단 이미지 추가
+    st.image("image/home_image.png", width=200)
+
     # 옵션 메뉴 생성
     choose = option_menu(
-        "앱 탐색",  # 메뉴 제목
-        ["홈으로", "병원 검색", "유튜브 검색"],  # 메뉴 항목
-        icons=['house.svg', 'bag-heart.svg', 'caret-right-square.svg'],  # FontAwesome 아이콘
+        menu_title="앱 탐색",  # 메뉴 제목
+        options=["홈으로", "병원 검색", "유튜브 검색"],  # 메뉴 항목
+        icons=["house", "stethoscope", "youtube"],  # FontAwesome 아이콘
         menu_icon="cast",  # 상단 메뉴 아이콘
         default_index=0,  # 기본 선택 항목
         styles={
             "container": {"padding": "5px", "background-color": "#f8f9fa"},
-            "icon": {"color": "#4caf50", "font-size": "20px"},
-            "nav-link": {"font-size": "16px", "margin": "0px", "padding": "5px"},
+            "icon": {"color": "green", "font-size": "20px"},
+            "nav-link": {
+                "font-size": "16px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#eee",
+            },
             "nav-link-selected": {"background-color": "#4caf50", "color": "white"},
-        }
+        },
     )
 
-st.sidebar.image("image/home_image.png", width=200)
-if st.sidebar.button("🏠 홈으로"):
+# 선택된 메뉴에 따라 페이지 전환
+if choose == "홈으로":
     st.session_state['page'] = "home"
-
-st.sidebar.header("🏥 병원 검색")
-hospital_query = st.sidebar.text_input("병원 검색어 입력", "파충류 동물병원")
-if st.sidebar.button("병원 검색"):
-    st.session_state['query'] = hospital_query
-    st.session_state['page'] = "hospital_page"
-
-st.sidebar.header("📺 유튜브 검색")
-youtube_query = st.sidebar.text_input("유튜브 검색어 입력", "파충류 사육")
-if st.sidebar.button("유튜브 검색"):
-    st.session_state['query'] = youtube_query
-    st.session_state['page'] = "youtube_page"
+elif choose == "병원 검색":
+    st.header("🏥 병원 검색")
+    hospital_query = st.text_input("🔍 병원 검색어 입력", "파충류 동물병원")
+    if st.button("병원 검색"):
+        st.session_state['query'] = hospital_query
+        st.session_state['page'] = "hospital_page"
+elif choose == "유튜브 검색":
+    st.header("📺 유튜브 검색")
+    youtube_query = st.text_input("🔍 유튜브 검색어 입력", "파충류 사육")
+    if st.button("유튜브 검색"):
+        st.session_state['query'] = youtube_query
+        st.session_state['page'] = "youtube_page"
