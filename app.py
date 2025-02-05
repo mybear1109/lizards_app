@@ -57,7 +57,7 @@ def load_labels():
 # 🦎 도마뱀 품종 예측 함수
 def predict_species(image, model, labels):
     try:
-        size = (224, 224)  # 모델 입력 크기 조정 (모델에 따라 변경 가능)
+        size = (224, 224)  # 모델 입력 크기 조정
         image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
         image_array = np.asarray(image)
         normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
@@ -89,7 +89,7 @@ def display_home():
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         image_path = os.path.join(BASE_DIR, "image", "001.PNG")
 
-        st.write(f"이미지 경로: {image_path}")  # 경로 디버깅 로그
+        st.write(f"디버깅: 이미지 경로 - {image_path}")  # 경로 디버깅 로그
         if os.path.exists(image_path):
             st.image(image_path, width=300, use_container_width=True)  # 홈 화면 이미지
         else:
