@@ -8,8 +8,8 @@ import os
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
 # ✅ 네이버 API 설정
-NAVER_CLIENT_ID = "YOUR_NAVER_CLIENT_ID"
-NAVER_CLIENT_SECRET = "YOUR_NAVER_CLIENT_SECRET"
+NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
+NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_API_URL = "https://openapi.naver.com/v1/search/local"
 
 # ✅ 네이버 API를 이용한 병원 검색
