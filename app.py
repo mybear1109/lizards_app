@@ -86,7 +86,12 @@ def display_home():
 
     with col1:
         # 이미지 파일 경로 설정
-        image_path = os.path.join("image", "001.PNG")
+        # 절대 경로 처리
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(BASE_DIR, "image", "001.PNG")  # 확장자 대소문자 수정
+
+        st.title("🦎 파충류 정보 검색 앱")
+
         if os.path.exists(image_path):
             st.image(image_path, width=300, use_container_width=True)  # 홈 화면 이미지
         else:
