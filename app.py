@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import DepthwiseConv2D
 from PIL import Image, ImageOps
 from hospital_page import display_hospitals
@@ -86,9 +86,7 @@ def display_home():
 
     with col1:
         # 이미지 파일 경로 설정
-        image_url = "https://raw.githubusercontent.com/<username>/<repository>/<branch>/image/001.png"
-        st.image(image_url, caption="홈 화면 이미지", use_column_width=True)
-
+        image_path = os.path.join("image", "001.png")
         if os.path.exists(image_path):
             st.image(image_path, width=300, use_container_width=True)  # 홈 화면 이미지
         else:
