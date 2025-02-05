@@ -109,24 +109,22 @@ def display_image_analysis():
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
-# ✅ 선택된 메뉴에 따라 페이지 전환
-if selected_option == "홈": # type: ignore
+# ✅ 사이드바 렌더링 및 선택 메뉴 처리
+from sidebar import render_sidebar
+
+# 사이드바 렌더링 및 선택 옵션
+selected_option = render_sidebar()
+
+# 선택된 메뉴에 따라 페이지 전환
+if selected_option == "홈":
     st.session_state["page"] = "home"
     display_home()
-elif selected_option == "도마뱀 분석": # type: ignore
+elif selected_option == "도마뱀 분석":
     st.session_state["page"] = "image_analysis"
     display_image_analysis()
-elif selected_option == "병원 검색": # type: ignore
+elif selected_option == "병원 검색":
     st.session_state["page"] = "hospital_page"
-    st.subheader("🔍 병원 검색")
-    hospital_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 동물병원")
-    if st.button("검색 실행"):
-        st.session_state["query"] = hospital_query
-        display_hospitals(hospital_query)
-elif selected_option == "유튜브 검색": # type: ignore
+    display_hospitals(st.session_state.get("query", "파충류 동물병원"))
+elif selected_option == "유튜브 검색":
     st.session_state["page"] = "youtube_page"
-    st.subheader("📺 유튜브 검색")
-    youtube_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 사육 방법")
-    if st.button("검색 실행"):
-        st.session_state["query"] = youtube_query
-        display_youtube_videos(youtube_query)
+    display_youtube_videos(st.session_state.get("query", "파충류 사육"))
