@@ -26,13 +26,24 @@ def render_sidebar():
             },
         )
 
-        # ✅ 병원 검색창 (검색어 입력)
+        # ✅ 병원 검색 기능
         if selected_option == "병원 검색":
             st.subheader("🔍 병원 검색")
-            hospital_query = st.text_input(
+            # 검색어 입력 시 자동으로 세션에 저장
+            st.text_input(
                 "검색어 입력", 
                 placeholder="예: 파충류 동물병원", 
-                key="hospital_query",  # 검색어를 세션 상태로 저장
+                key="hospital_query"  # 검색어를 세션 상태로 저장
+            )
+
+        # ✅ 유튜브 검색 기능
+        elif selected_option == "유튜브 검색":
+            st.subheader("📺 유튜브 검색")
+            # 검색어 입력 시 자동으로 세션에 저장
+            st.text_input(
+                "검색어 입력", 
+                placeholder="예: 파충류 사육 방법", 
+                key="youtube_query"  # 검색어를 세션 상태로 저장
             )
 
         return selected_option
