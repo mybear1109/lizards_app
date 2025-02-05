@@ -89,7 +89,7 @@ def display_home():
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         image_path = os.path.join(BASE_DIR, "image", "001.jpg")
 
-        st.write(f"디버깅: 이미지 경로 - {image_path}")  # 경로 디버깅 로그
+        
         if os.path.exists(image_path):
             st.image(image_path, width=300)  # 홈 화면 이미지
         else:
