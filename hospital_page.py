@@ -4,7 +4,7 @@ import requests
 import urllib.parse
 import os
 
-# ✅ Google Maps API Key
+# ✅ Google Maps API Key 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
 # ✅ 네이버 API 설정
@@ -51,13 +51,19 @@ def display_hospital_map(address):
     else:
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다.")
 
-# ✅ HTML 태그 제거
+# ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
 # ✅ 병원 검색 결과 표시
-def display_hospitals(query):
+def display_hospitals():
+    query = st.session_state.get("hospital_query", "").strip()
+
+    if not query:
+        st.warning("검색어를 입력하세요.")
+        return
+
     st.title("🏥 병원 검색 결과")
     hospitals = search_hospitals(query)
 
@@ -73,13 +79,3 @@ def display_hospitals(query):
                 st.divider()
     else:
         st.warning("검색 결과가 없습니다. 다시 검색해 주세요.")
-
-# ✅ Streamlit 앱 실행
-if __name__ == "__main__":
-    # 사이드바에서 검색
-    st.sidebar.title("🏥 병원 검색")
-    hospital_query = st.sidebar.text_input("🔎 병원 검색어 입력", "파충류 동물병원")
-
-    # 병원 검색 결과 표시
-    if hospital_query:
-        display_hospitals(hospital_query)
