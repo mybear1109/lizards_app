@@ -5,38 +5,47 @@ from PIL import Image, ImageOps
 from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects # type: ignore
+import h5py  # h5 파일 무결성 체크
 
-# ✅ 커스텀 레이어 정의 및 등록
-class CustomDepthwiseConv2D(DepthwiseConv2D):
+# ✅ 커스텀 레이어 정의 (DepthwiseConv2D 호환성 문제 해결)
+class DepthwiseConv2DCompat(DepthwiseConv2D):
     def __init__(self, *args, **kwargs):
-        kwargs.pop("groups", None)  # 'groups' 키워드 제거
+        kwargs.pop("groups", None)  # 'groups' 제거 (Keras 3.x 대비)
         super().__init__(*args, **kwargs)
 
-get_custom_objects()["CustomDepthwiseConv2D"] = CustomDepthwiseConv2D
+# ✅ 커스텀 레이어 등록
+get_custom_objects()["DepthwiseConv2DCompat"] = DepthwiseConv2DCompat
 
-# ✅ 전역 디렉토리 설정
+# ✅ 모델 및 레이블 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
 LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
 
+# ✅ 모델 존재 여부 확인 함수
+def check_model_exists():
+    if not os.path.exists(MODEL_PATH):
+        st.error("❌ 모델 파일이 존재하지 않습니다. 올바른 경로를 확인하세요.")
+        return False
+    try:
+        with h5py.File(MODEL_PATH, "r") as f:  # h5 파일 무결성 체크
+            pass
+        return True
+    except Exception as e:
+        st.error(f"❌ 모델 파일이 손상되었습니다. 다시 업로드하세요. 오류: {e}")
+        return False
+
 # ✅ 모델 및 레이블 불러오기 함수
 @st.cache_data
 def load_model_cached():
-    try:
-        # 모델 경로 존재 여부 확인
-        if not os.path.exists(MODEL_PATH):
-            st.error("❌ 모델 파일이 존재하지 않습니다.")
-            return None
-        
-        # 모델 로드 시도
-        model = load_model(MODEL_PATH, compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
-        return model
-    except Exception as e:
-        # 오류 디버깅 출력
-        st.error(f"❌ 모델 로드 중 오류 발생: {e}")
-        st.error(f"모델 경로: {MODEL_PATH}")
+    if not check_model_exists():
         return None
 
+    try:
+        model = load_model(MODEL_PATH, compile=False, custom_objects={"DepthwiseConv2D": DepthwiseConv2DCompat})
+        return model
+    except Exception as e:
+        st.error(f"❌ 모델 로드 중 오류 발생: {e}")
+        return None
 
 @st.cache_data
 def load_labels():
@@ -71,22 +80,27 @@ def predict_species(image, model, labels):
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
+
+    # 모델 및 레이블 불러오기
     model = load_model_cached()
     labels = load_labels()
-    model = load_model("model/keras_model.h5", compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
-    model.save("model/keras_model_fixed.h5")
 
+    # 모델이 정상적으로 로드되지 않았으면 중단
+    if model is None or not labels:
+        st.error("⚠️ 분석을 실행할 수 없습니다. 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
+        return
 
+    # ✅ 이미지 업로드 기능
     uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
             st.image(image, caption="업로드된 이미지", width=300)
-            if model and labels:
-                species, confidence = predict_species(image, model, labels)
-                st.success(f"**예측된 도마뱀 품종: {species}**")
-                st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-            else:
-                st.error("❌ 모델 또는 레이블이 준비되지 않았습니다.")
+            
+            # ✅ 이미지 분석 실행
+            species, confidence = predict_species(image, model, labels)
+            st.success(f"**예측된 도마뱀 품종: {species}**")
+            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+            
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
