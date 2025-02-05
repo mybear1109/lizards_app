@@ -36,7 +36,7 @@ def display_hospital_map(address):
     
     # ✅ 지도 iframe 생성
     if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YOUR_GOOGLE_MAPS_API_KEY":
-        map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
+        map_embed_url = f"https://www.google.com/maps/embed/v1/place?q={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
         st.markdown(
             f"""
             <iframe 
