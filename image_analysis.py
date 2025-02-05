@@ -1,4 +1,7 @@
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # 현재 디렉토리 추가
+from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어야 함
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
