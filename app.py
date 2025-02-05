@@ -22,17 +22,14 @@ def display_home():
     with col1:
         image_path = os.path.join(BASE_DIR, "image", "001.jpg")
         if os.path.exists(image_path):
-            st.image(image_path, width=400)
+            st.image(image_path, width=300)
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다.")
 
     with col2:
         st.title("🦎 파충류 정보 검색 앱")
         st.write("""
-        🦎 **앱 기능**
-        - 도마뱀 이미지 분석
-        - 파충류 전문 병원 검색
-        - 파충류 관련 유튜브 영상 검색
+
         """)
 
 # ✅ 사이드바 렌더링 및 선택 메뉴 처리
