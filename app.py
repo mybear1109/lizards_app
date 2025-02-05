@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from PIL import Image, ImageOps
 from hospital_page import display_hospitals
