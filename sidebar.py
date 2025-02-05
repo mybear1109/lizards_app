@@ -3,13 +3,13 @@ from streamlit_option_menu import option_menu
 
 def render_sidebar():
     """
-    사이드바 렌더링 함수
+    사이드바를 렌더링하고 검색어 입력 기능 제공
     """
     with st.sidebar:
         # 사이드바 상단 이미지 추가
         st.image("image/home_image.png", width=300)
 
-        # ✅ 검색창 스타일 변경 (CSS 적용)
+        # ✅ 검색창 스타일 변경
         st.markdown(
             "<style>"
             "input {font-size: 16px !important; font-family: Arial, sans-serif;}"
@@ -21,7 +21,7 @@ def render_sidebar():
         selected_option = option_menu(
             menu_title="앱 탐색",  # 메뉴 제목
             options=["홈", "도마뱀 분석", "병원 검색", "유튜브 검색"],  # 메뉴 항목
-            icons=["house-door", "camera", "geo-alt", "play-circle"],  # 아이콘 변경
+            icons=["house-door", "camera", "geo-alt", "play-circle"],  # 아이콘
             menu_icon="menu-button",  # 상단 메뉴 아이콘
             default_index=0,  # 기본 선택 항목
             styles={
@@ -37,10 +37,12 @@ def render_sidebar():
             },
         )
 
-        # 병원 검색 기능 추가
+        # 병원 검색 기능
         if selected_option == "병원 검색":
             st.subheader("🔍 병원 검색")
             hospital_query = st.text_input("검색어 입력", placeholder="예: 파충류 동물병원")
-            st.session_state["hospital_query"] = hospital_query.strip()  # 세션 상태에 검색어 저장
+            # 검색어가 입력되면 세션 상태에 저장
+            if hospital_query:
+                st.session_state["hospital_query"] = hospital_query.strip()
 
     return selected_option

@@ -58,6 +58,7 @@ def remove_html_tags(text):
 
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
+    # 세션 상태에서 검색어 가져오기
     query = st.session_state.get("hospital_query", "").strip()
 
     if not query:
