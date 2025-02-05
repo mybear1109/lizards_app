@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
 LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
 
-# ✅ 모델 불러오기 함수
+# ✅ 모델 및 레이블 불러오기 함수
 @st.cache_data
 def load_model_cached():
     try:
@@ -37,7 +37,6 @@ def load_model_cached():
         st.error(f"❌ 모델 로드 중 오류 발생: {e}")
         return None
 
-# ✅ 레이블 불러오기 함수
 @st.cache_data
 def load_labels():
     try:
@@ -50,22 +49,19 @@ def load_labels():
         st.error(f"❌ 레이블 파일 로드 중 오류 발생: {e}")
         return []
 
-# 🦎 도마뱀 품종 예측 함수
+# ✅ 도마뱀 품종 예측 함수
 def predict_species(image, model, labels):
     try:
-        size = (224, 224)  # 모델 입력 크기
+        size = (224, 224)
         image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
         image_array = np.asarray(image)
         normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
 
-        # 모델 입력 데이터 준비
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
         data[0] = normalized_image_array
 
-        # 예측 실행
         prediction = model.predict(data)
         index = np.argmax(prediction)
-
         return labels[index], prediction[0][index] * 100  # 신뢰도 (%)
     except Exception as e:
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
@@ -75,7 +71,7 @@ def predict_species(image, model, labels):
 if "page" not in st.session_state:
     st.session_state["page"] = "home"
 
-# ✅ 페이지 렌더링 함수
+# ✅ 홈 페이지 렌더링 함수
 def display_home():
     st.title("🦎 파충류 정보 검색 앱")
     col1, col2 = st.columns([1, 2])
@@ -102,15 +98,12 @@ def display_image_analysis():
 
     uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
     if uploaded_file:
-        try:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="업로드된 이미지", width=300)
-            if model and labels:
-                species, confidence = predict_species(image, model, labels)
-                st.success(f"**예측된 도마뱀 품종: {species}**")
-                st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-        except Exception as e:
-            st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
+        image = Image.open(uploaded_file)
+        st.image(image, caption="업로드된 이미지", width=300)
+        if model and labels:
+            species, confidence = predict_species(image, model, labels)
+            st.success(f"**예측된 도마뱀 품종: {species}**")
+            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
@@ -125,4 +118,3 @@ elif selected_option == "병원 검색":
 elif selected_option == "유튜브 검색":
     st.session_state["page"] = "youtube_page"
     display_youtube_videos(st.session_state.get("query", "파충류 사육"))
-
