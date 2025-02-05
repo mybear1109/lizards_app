@@ -3,16 +3,16 @@ from streamlit_option_menu import option_menu
 
 def render_sidebar():
     with st.sidebar:
-        # 사이드바 이미지 추가
+        # ✅ 사이드바 이미지 추가
         st.image("image/home_image.png", width=300)
 
         # ✅ 메뉴 생성
         selected_option = option_menu(
-            menu_title="앱 탐색",
-            options=["홈", "도마뱀 분석", "병원 검색", "유튜브 검색"],
-            icons=["house-door", "camera", "geo-alt", "play-circle"],
-            menu_icon="menu-button",
-            default_index=0,
+            menu_title="앱 탐색",  # 메뉴 제목
+            options=["홈", "도마뱀 분석", "병원 검색", "유튜브 검색"],  # 메뉴 항목
+            icons=["house-door", "camera", "geo-alt", "play-circle"],  # 아이콘
+            menu_icon="menu-button",  # 상단 메뉴 아이콘
+            default_index=0,  # 기본 선택 항목
             styles={
                 "container": {"padding": "5px", "background-color": "#f8f9fa"},
                 "icon": {"font-size": "18px"},
