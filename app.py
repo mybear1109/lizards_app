@@ -138,6 +138,21 @@ if st.session_state['page'] == "home":
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 # 📍 사이드바 탐색
+    # 옵션 메뉴 생성
+    choose = option_menu(
+        "앱 탐색",  # 메뉴 제목
+        ["홈으로", "병원 검색", "유튜브 검색"],  # 메뉴 항목
+        icons=['house.svg', 'bag-heart.svg', 'caret-right-square.svg'],  # FontAwesome 아이콘
+        menu_icon="cast",  # 상단 메뉴 아이콘
+        default_index=0,  # 기본 선택 항목
+        styles={
+            "container": {"padding": "5px", "background-color": "#f8f9fa"},
+            "icon": {"color": "#4caf50", "font-size": "20px"},
+            "nav-link": {"font-size": "16px", "margin": "0px", "padding": "5px"},
+            "nav-link-selected": {"background-color": "#4caf50", "color": "white"},
+        }
+    )
+
 st.sidebar.image("image/home_image.png", width=200)
 if st.sidebar.button("🏠 홈으로"):
     st.session_state['page'] = "home"
