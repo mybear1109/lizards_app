@@ -6,6 +6,7 @@ from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py  # h5 파일 무결성 체크
+from description import get_species_description
 
 # ✅ 커스텀 레이어 정의 (DepthwiseConv2D 호환성 문제 해결)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -101,6 +102,9 @@ def display_image_analysis():
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+            species_name = "Crestedgeko"
+            description = get_species_description(species_name)
+            print(f"{species_name}: {description}")
             st.info("""
                     예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
 
