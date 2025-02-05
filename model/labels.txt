@@ -1,6 +1,19 @@
-0 Beardy
-1 Chameleon
+0 Beardy Dragon
+1 Panther Chamaeleon
 2 Crestedgeko
 3 Leopardgeko
-4 Lguana
+4 Iguana
 5 Other
+6 Frog
+7 Salamander
+8 Snake
+9 Turtle
+10.Newt
+11.Pacman
+12.Toad
+13.Leachianus Gecko
+14.Gecko
+15.Chahoua Gecko
+16.Gargoyle Gecko
+17.Skink
+18.Chamaeleon
