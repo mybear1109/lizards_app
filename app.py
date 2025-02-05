@@ -136,6 +136,7 @@ if st.session_state['page'] == "home":
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 # 📍 사이드바 탐색
+st.sidebar.image("image/home_image.png", width=150, use_column_width=True)
 st.sidebar.title("📍 탐색")
 if st.sidebar.button("🏠 홈으로"):
     st.session_state['page'] = "home"
