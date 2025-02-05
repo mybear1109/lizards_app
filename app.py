@@ -117,8 +117,12 @@ selected_option = render_sidebar()
 
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
+    st.session_state["page"] = "home"
     display_home()
 elif selected_option == "병원 검색":
+    st.session_state["page"] = "hospital_page"
     display_hospitals(st.session_state.get("query", "파충류 동물병원"))
 elif selected_option == "유튜브 검색":
+    st.session_state["page"] = "youtube_page"
     display_youtube_videos(st.session_state.get("query", "파충류 사육"))
+

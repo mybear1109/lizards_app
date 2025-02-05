@@ -20,17 +20,13 @@ def render_sidebar():
         """아이콘을 HTML로 변환하는 함수"""
         return f'<img src="{icon_path}" width="20" style="margin-right:10px">'
 
-    # ✅ 옵션 메뉴 생성
-    choose = option_menu(
-        menu_title="앱 탐색",
-        options=["홈", "병원 검색", "유튜브 검색"],
-        icons=[
-            get_icon_html(icons_path["홈"]),
-            get_icon_html(icons_path["병원 검색"]),
-            get_icon_html(icons_path["유튜브 검색"]),
-        ],
-        menu_icon="cast",
-        default_index=0,
+     # 메뉴 생성
+    selected_option = option_menu(
+        menu_title="앱 탐색",  # 메뉴 제목
+        options=["홈", "병원 검색", "유튜브 검색"],  # 메뉴 항목
+        icons=["house", "hospital", "youtube"],  # FontAwesome 아이콘
+        menu_icon="cast",  # 상단 메뉴 아이콘
+        default_index=0,  # 기본 선택 항목
         styles={
             "container": {"padding": "5px", "background-color": "#f8f9fa"},
             "icon": {"font-size": "20px"},
@@ -43,4 +39,4 @@ def render_sidebar():
             "nav-link-selected": {"background-color": "#4caf50", "color": "white"},
         },
     )
-    return choose
+    return selected_option
