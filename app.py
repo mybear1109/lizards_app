@@ -10,31 +10,28 @@ from streamlit_option_menu import option_menu
 # ✅ 스트림릿 페이지 설정
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
-# ✅ DepthwiseConv2D 커스텀 레이어 등록
+# ✅ DepthwiseConv2D 커스텀 레이어 등록 (Keras 3.x 및 TensorFlow 최신 버전 대응)
 class CustomDepthwiseConv2D(DepthwiseConv2D):
     def __init__(self, *args, **kwargs):
-        kwargs.pop("groups", None)  # 'groups' 파라미터 제거
+        kwargs.pop("groups", None)  # 'groups' 키워드 제거
         super().__init__(*args, **kwargs)
 
-# Keras에 사용자 정의 레이어 등록
+# ✅ Keras에 커스텀 레이어 등록
 tf.keras.utils.get_custom_objects()["CustomDepthwiseConv2D"] = CustomDepthwiseConv2D
 
-# ✅ 모델 및 레이블 경로 설정
-MODEL_PATH = "./model/keras_model.h5"
-LABELS_PATH = "./model/labels.txt"
-
-# ✅ 모델 불러오기 함수
-@st.cache_data
+# ✅ 모델 불러오기 함수 수정
 def load_model_cached():
     try:
-        if not os.path.exists(MODEL_PATH):
-            st.error("❌ 모델 파일이 존재하지 않습니다.")
-            return None
-        return load_model(MODEL_PATH, compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
+        model_path = "./model/keras_model.h5"
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("❌ 모델 파일이 존재하지 않습니다.")
+        
+        # 🔹 커스텀 레이어 적용하여 모델 로드
+        model = load_model(model_path, compile=False, custom_objects={"DepthwiseConv2D": CustomDepthwiseConv2D})
+        return model
     except Exception as e:
-        st.error(f"❌ 모델 로드 중 오류 발생: {e}")
+        print(f"❌ 모델 로드 중 오류 발생: {e}")
         return None
-
 # ✅ 레이블 불러오기 함수
 @st.cache_data
 def load_labels():
@@ -127,8 +124,8 @@ with st.sidebar:
     choose = option_menu(
         menu_title="앱 탐색",  # 메뉴 제목
         options=["홈으로", "병원 검색", "유튜브 검색"],  # 메뉴 항목
-        icons=["house", "stethoscope", "youtube"],  # FontAwesome 아이콘
-        menu_icon="cast",  # 상단 메뉴 아이콘
+        icons=["house.svg", "stethoscope", "bag-heart.svg","caret-right-square.svg"],  # FontAwesome 아이콘
+        menu_icon="icons",  # 상단 메뉴 아이콘
         default_index=0,  # 기본 선택 항목
         styles={
             "container": {"padding": "5px", "background-color": "#f8f9fa"},
