@@ -34,20 +34,4 @@ def render_sidebar():
             },
         )
 
-        # ✅ 병원 검색 기능
-        if selected_option == "병원 검색":
-            st.subheader("🔍 병원 검색")
-            hospital_query = st.text_input("검색어 입력", placeholder="예: 파충류 동물병원")
-            if st.button("🔎 검색"):
-                st.session_state["query"] = hospital_query
-                st.success(f"'{hospital_query}' 검색이 실행되었습니다.")
-
-        # ✅ 유튜브 검색 기능
-        elif selected_option == "유튜브 검색":
-            st.subheader("📺 유튜브 검색")
-            youtube_query = st.text_input("검색어 입력", placeholder="예: 파충류 사육 방법")
-            if st.button("🔎 검색"):
-                st.session_state["query"] = youtube_query
-                st.success(f"'{youtube_query}' 검색이 실행되었습니다.")
-
-    return selected_option
+    
