@@ -91,6 +91,7 @@ def display_home():
         - 파충류 관련 유튜브 영상 검색
         """)
 
+# ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
     model = load_model_cached()
@@ -105,16 +106,23 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-# ✅ 사이드바 렌더링
+# ✅ 사이드바 렌더링 및 검색창 추가
 selected_option = render_sidebar()
 
-# ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
     st.session_state["page"] = "home"
     display_home()
 elif selected_option == "병원 검색":
     st.session_state["page"] = "hospital_page"
-    display_hospitals(st.session_state.get("query", "파충류 동물병원"))
+    st.subheader("🔍 병원 검색")
+    hospital_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 동물병원")
+    if st.button("검색 실행"):
+        st.session_state["query"] = hospital_query
+        display_hospitals(hospital_query)
 elif selected_option == "유튜브 검색":
     st.session_state["page"] = "youtube_page"
-    display_youtube_videos(st.session_state.get("query", "파충류 사육"))
+    st.subheader("📺 유튜브 검색")
+    youtube_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 사육 방법")
+    if st.button("검색 실행"):
+        st.session_state["query"] = youtube_query
+        display_youtube_videos(youtube_query)
