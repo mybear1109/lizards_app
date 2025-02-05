@@ -137,7 +137,6 @@ if st.session_state['page'] == "home":
 
 # 📍 사이드바 탐색
 st.sidebar.image("image/home_image.png", width=150, use_column_width=True)
-st.sidebar.title("📍 탐색")
 if st.sidebar.button("🏠 홈으로"):
     st.session_state['page'] = "home"
 
