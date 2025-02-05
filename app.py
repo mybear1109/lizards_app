@@ -89,9 +89,8 @@ def display_home():
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         image_path = os.path.join(BASE_DIR, "image", "001.jpg")
 
-        
         if os.path.exists(image_path):
-            st.image(image_path, width=300)  # 홈 화면 이미지
+            st.image(image_path, width=200)  # 크기 줄임
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다. 경로를 확인하세요.")
 
@@ -123,20 +122,21 @@ if st.session_state['page'] == "home":
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file)
-            st.image(image, caption="업로드된 이미지", use_container_width=True)
+            st.image(image, caption="업로드된 이미지", width=300)  # 크기 조정
 
             with st.spinner("🔍 이미지 분석 중..."):
                 if model and labels:
                     species, confidence = predict_species(image, model, labels)
                     st.success(f"예측된 도마뱀 품종: **{species}**")
                     st.write(f"✅ 신뢰도: **{confidence:.2f} %**")
+                    st.info(f"신뢰도가 높을수록 모델이 {species} 품종에 대해 더 정확히 예측하고 있음을 나타냅니다.")
                 else:
                     st.error("❌ 모델이 준비되지 않았습니다. 파일을 확인해주세요.")
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 # 📍 사이드바 탐색
-st.sidebar.image("image/home_image.png", width=150, use_column_width=True)
+st.sidebar.image("image/home_image.png", width=150)
 if st.sidebar.button("🏠 홈으로"):
     st.session_state['page'] = "home"
 
