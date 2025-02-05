@@ -1,10 +1,10 @@
 import streamlit as st
 import requests
 import urllib.parse
-import os  # API Key 환경 변수 저장용
+import os
 
-# ✅ Google Maps API Key (보안을 위해 환경 변수 사용 추천)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5")  # 환경 변수에서 불러오기
+# ✅ Google Maps API Key (환경 변수 사용, 보안을 위해 직접 하드코딩하지 않음)
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5")  # 여기에 본인의 API Key를 입력하세요.
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
@@ -29,25 +29,33 @@ def search_hospitals(query="파충류 동물병원", display=5):
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
 
-# ✅ 지도 Embed 함수
+# ✅ Google 지도 Embed 함수
 def display_hospital_map(address):
-    """구글 지도 API를 통해 병원 위치를 화면에 삽입"""
+    """Google Maps Embed API를 통해 병원 위치를 표시"""
     address_encoded = urllib.parse.quote(address)
-    map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
-
-    st.markdown(
-        f"""
-        <iframe 
-            src="{map_embed_url}" 
-            width="100%" 
-            height="250" 
-            style="border-radius:10px; border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>
-        """,
-        unsafe_allow_html=True,
-    )
+    
+    # ✅ 지도 iframe 생성
+    if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YOUR_GOOGLE_MAPS_API_KEY":
+        map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
+        st.markdown(
+            f"""
+            <iframe 
+                src="{map_embed_url}" 
+                width="100%" 
+                height="250" 
+                style="border-radius:10px; border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.error("⚠️ Google Maps API Key가 설정되지 않았습니다. `.env` 파일 또는 환경 변수에서 설정하세요.")
+    
+    # ✅ 추가: Google Maps에서 직접 보기 링크 제공
+    google_maps_url = f"https://www.google.com/maps/search/?api=1&query={address_encoded}"
+    st.markdown(f"[📍 Google 지도에서 보기]({google_maps_url})", unsafe_allow_html=True)
 
 # ✅ 병원 검색 결과 표시 함수
 def display_hospitals(query):
