@@ -23,7 +23,9 @@ def display_home():
         st.write("""
 
         """)
-
+# ✅ 앱 초기화 시 세션 상태 초기화
+if "hospital_query" not in st.session_state:
+    st.session_state["hospital_query"] = ""  # 병원 검색어 기본값
 
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
