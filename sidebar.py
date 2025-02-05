@@ -7,7 +7,7 @@ def render_sidebar():
     """
     with st.sidebar:  # 사이드바 컨텍스트 내에서 렌더링
         # 사이드바 상단 이미지 추가
-        st.image("image/001.png", width=100)
+        st.image("image/home_image.png", width=300)
 
         # ✅ 메뉴 생성
         selected_option = option_menu(
