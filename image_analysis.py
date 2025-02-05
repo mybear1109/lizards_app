@@ -105,7 +105,7 @@ def display_image_analysis():
             species_name = "Crestedgeko"
             description = get_species_description(species_name)
             print(f"{species_name}: {description}")
-            st.info("""
+            st.error("""
                     예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
 
                     이 결과는 참고용으로만 활용해 주시기 바랍니다.
