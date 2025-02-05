@@ -89,7 +89,11 @@ def display_hospitals(query):
 # ✅ Streamlit 실행
 if __name__ == "__main__":
     st.sidebar.title("🏥 병원 검색")
-    hospital_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
+
+    # ✅ 사이드바 검색창 추가
+    hospital_query = st.sidebar.text_input("🔎 병원 검색어 입력", "파충류 동물병원")
     
-    if st.sidebar.button("검색"):
-        display_hospitals(hospital_query)
+    if st.sidebar.button("🔍 검색 실행"):
+        st.session_state["query"] = hospital_query  # 검색어를 세션에 저장
+        st.success(f"'{hospital_query}' 검색을 실행합니다.")
+        display_hospitals(hospital_query)  # 검색 실행
