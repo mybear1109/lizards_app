@@ -2,9 +2,9 @@ import os
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects
+from tensorflow.keras.utils import get_custom_objects # type: ignore
 from sidebar import render_sidebar
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
