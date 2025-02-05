@@ -4,9 +4,18 @@ import streamlit as st
 from PIL import Image, ImageOps
 from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
+from tensorflow.keras.utils import get_custom_objects # type: ignore
 from sidebar import render_sidebar
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
+
+# 커스텀 레이어 정의
+class CustomDepthwiseConv2D(DepthwiseConv2D):
+    def __init__(self, *args, **kwargs):
+        kwargs.pop("groups", None)  # 'groups' 제거
+        super(CustomDepthwiseConv2D, self).__init__(*args, **kwargs)
+
+
 
 # ✅ 스트림릿 페이지 설정
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
@@ -17,8 +26,8 @@ class CustomDepthwiseConv2D(DepthwiseConv2D):
         kwargs.pop("groups", None)  # 'groups' 키워드 제거
         super().__init__(*args, **kwargs)
 
-# ✅ Keras에 커스텀 레이어 등록
-tf.keras.utils.get_custom_objects()["CustomDepthwiseConv2D"] = CustomDepthwiseConv2D
+# 커스텀 레이어 등록
+get_custom_objects()["CustomDepthwiseConv2D"] = CustomDepthwiseConv2D
 
 # ✅ 모델 및 레이블 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -67,6 +76,8 @@ def predict_species(image, model, labels):
         # 예측 실행
         prediction = model.predict(data)
         index = np.argmax(prediction)
+        model = load_model("keras_model.h5", compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
+        model.save("new_model.h5")
 
         return labels[index], prediction[0][index] * 100  # 신뢰도를 %로 변환
     except Exception as e:
