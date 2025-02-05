@@ -91,7 +91,7 @@ def display_home():
 
         
         if os.path.exists(image_path):
-            st.image(image, caption="업로드된 이미지")  # 홈 화면 이미지
+            st.image(image_path, width=300)  # 홈 화면 이미지
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다. 경로를 확인하세요.")
 
