@@ -4,7 +4,7 @@ import urllib.parse
 import os  # API Key 환경 변수 저장용
 
 # ✅ Google Maps API Key (보안을 위해 환경 변수 사용 추천)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "key=AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5")  # 환경 변수에서 불러오기
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5")  # 환경 변수에서 불러오기
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
