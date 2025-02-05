@@ -73,6 +73,9 @@ def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
     model = load_model_cached()
     labels = load_labels()
+    model = load_model("model/keras_model.h5", compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
+    model.save("model/keras_model_fixed.h5")
+
 
     uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
     if uploaded_file:
