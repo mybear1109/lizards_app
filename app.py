@@ -164,16 +164,27 @@ with st.sidebar:
 
 # 선택된 메뉴에 따라 페이지 전환
 if choose == "홈으로":
+    # 홈 화면 UI
     st.session_state['page'] = "home"
+    st.title("🦎 파충류 정보 검색 앱")
+    st.write("홈 화면에 오신 것을 환영합니다!")
+
 elif choose == "병원 검색":
+    # 병원 검색 UI
+    st.session_state['page'] = "hospital_page"
     st.header("🏥 병원 검색")
     hospital_query = st.text_input("🔍 병원 검색어 입력", "파충류 동물병원")
     if st.button("병원 검색"):
+        st.success(f"'{hospital_query}' 검색을 시작합니다!")
+        # 병원 검색 기능 호출
         st.session_state['query'] = hospital_query
-        st.session_state['page'] = "hospital_page"
+
 elif choose == "유튜브 검색":
+    # 유튜브 검색 UI
+    st.session_state['page'] = "youtube_page"
     st.header("📺 유튜브 검색")
     youtube_query = st.text_input("🔍 유튜브 검색어 입력", "파충류 사육")
     if st.button("유튜브 검색"):
+        st.success(f"'{youtube_query}' 검색을 시작합니다!")
+        # 유튜브 검색 기능 호출
         st.session_state['query'] = youtube_query
-        st.session_state['page'] = "youtube_page"
