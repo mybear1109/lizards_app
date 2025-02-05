@@ -19,14 +19,31 @@ if selected_option == "홈":
         st.image("image/001.jpg", use_column_width=True)  # 이미지 추가 (경로는 필요에 맞게 변경)
 
     with col2:
-        st.title("🦎 파충류와 함께하기 위한 앱")
-        st.subheader("🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.")
-        st.write(
+        # ✅ 제목 및 스타일 적용
+        st.markdown(
             """
-            - 🏷 **도마뱀 이미지 분석 (품종 예측)**
-            - 🏥 **파충류 전문 병원 검색**
-            - 🎥 **파충류 관련 유튜브 영상 검색**
+            <h1 style="color:#4CAF50; font-size:42px; font-weight:bold;">🦎 파충류 탐험의 세계</h1>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
             """
+            <h3 style="color:#555; font-size:24px;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # ✅ 기능 목록 (아이콘 및 스타일 적용)
+        st.markdown(
+            """
+            <ul style="font-size:20px; color:#333;">
+                <li>🏷 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
+                <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
+                <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
+            </ul>
+            """,
+            unsafe_allow_html=True,
         )
 
 elif selected_option == "도마뱀 분석":
