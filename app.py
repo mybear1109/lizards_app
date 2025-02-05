@@ -32,18 +32,22 @@ def load_model_cached():
     except Exception as e:
         print(f"❌ 모델 로드 중 오류 발생: {e}")
         return None
+ 
+    
 # ✅ 레이블 불러오기 함수
 @st.cache_data
 def load_labels():
+    global LABELS_PATH  # 전역 변수로 사용하도록 설정
     try:
-        if not os.path.exists(LABELS_PATH): # type: ignore
-            st.error("❌ 레이블 파일이 존재하지 않습니다.")
+        if not os.path.exists(LABELS_PATH):
+            st.error(f"❌ 레이블 파일이 존재하지 않습니다: {LABELS_PATH}")
             return []
-        with open(LABELS_PATH, "r", encoding="utf-8") as f: # type: ignore
+        with open(LABELS_PATH, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines()]
     except Exception as e:
         st.error(f"❌ 레이블 파일 로드 중 오류 발생: {e}")
         return []
+    
 
 # 🦎 도마뱀 품종 예측 함수
 def predict_species(image, model, labels):
