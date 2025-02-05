@@ -70,7 +70,8 @@ def display_hospitals(query):
     if hospitals:
         for hospital in hospitals:
             with st.container():
-                st.markdown(f"### 🏥 {hospital['title']}")
+                hospital_name = remove_html_tags(hospital['title'])
+                st.markdown(f"### 🏥 {hospital_name}")
                 st.write(f"📍 **주소**: {hospital['address']}")
                 
                 # 🗺️ 지도 표시
