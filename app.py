@@ -8,6 +8,8 @@ from tensorflow.keras.layers import DepthwiseConv2D
 from PIL import Image, ImageOps
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
+from streamlit_option_menu import option_menu
+import streamlit.components.v1 as html
 
 # ✅ 스트림릿 페이지 설정 (반드시 코드 최상단에 위치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
