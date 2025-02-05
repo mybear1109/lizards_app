@@ -24,4 +24,22 @@ def render_sidebar():
                 "nav-link-selected": {"background-color": "#4caf50", "color": "white"},
             },
         )
+
+        # ✅ 검색 기능 추가
+        if selected_option == "병원 검색":
+            st.subheader("🔍 병원 검색")
+            hospital_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 동물병원")
+
+            if st.button("검색 실행"):
+                st.session_state["query"] = hospital_query  # 검색어 저장
+                st.success(f"'{hospital_query}' 검색을 실행합니다.")
+
+        elif selected_option == "유튜브 검색":
+            st.subheader("📺 유튜브 검색")
+            youtube_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 사육 방법")
+
+            if st.button("검색 실행"):
+                st.session_state["query"] = youtube_query  # 검색어 저장
+                st.success(f"'{youtube_query}' 검색을 실행합니다.")
+
     return selected_option
