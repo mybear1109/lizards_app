@@ -23,13 +23,20 @@ LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
 @st.cache_data
 def load_model_cached():
     try:
+        # 모델 경로 존재 여부 확인
         if not os.path.exists(MODEL_PATH):
             st.error("❌ 모델 파일이 존재하지 않습니다.")
             return None
-        return load_model(MODEL_PATH, compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
+        
+        # 모델 로드 시도
+        model = load_model(MODEL_PATH, compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D})
+        return model
     except Exception as e:
+        # 오류 디버깅 출력
         st.error(f"❌ 모델 로드 중 오류 발생: {e}")
+        st.error(f"모델 경로: {MODEL_PATH}")
         return None
+
 
 @st.cache_data
 def load_labels():
