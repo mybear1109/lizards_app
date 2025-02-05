@@ -1,5 +1,5 @@
 import streamlit as st
-from image_analysis import display_image_analysis  # 올바른 모듈 import
+from image_analysis import BASE_DIR, display_image_analysis  # 올바른 모듈 import
 from sidebar import render_sidebar
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
