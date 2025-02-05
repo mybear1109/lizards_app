@@ -54,7 +54,7 @@ def display_hospital_map(address):
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다. `.env` 파일 또는 환경 변수에서 설정하세요.")
     
     # ✅ 추가: Google Maps에서 직접 보기 링크 제공
-    map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
+    google_maps_url = f"https://www.google.com/maps/search/?api=1&query={address_encoded}"
     st.markdown(f"[📍 Google 지도에서 보기]({google_maps_url})", unsafe_allow_html=True)
 
 # ✅ 병원 검색 결과 표시 함수
