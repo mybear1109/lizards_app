@@ -6,6 +6,8 @@ from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from PIL import Image, ImageOps
 from streamlit_option_menu import option_menu
+from hospital_page import display_hospitals
+from youtube_page import display_youtube_videos
 
 # ✅ 스트림릿 페이지 설정
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
@@ -19,25 +21,28 @@ class CustomDepthwiseConv2D(DepthwiseConv2D):
 # ✅ Keras에 커스텀 레이어 등록
 tf.keras.utils.get_custom_objects()["CustomDepthwiseConv2D"] = CustomDepthwiseConv2D
 
-# ✅ 모델 불러오기 함수 수정
+# ✅ 모델 및 레이블 경로 설정
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
+LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
+
+# ✅ 모델 불러오기 함수
+@st.cache_data
 def load_model_cached():
     try:
-        model_path = "./model/keras_model.h5"
-        if not os.path.exists(model_path):
-            raise FileNotFoundError("❌ 모델 파일이 존재하지 않습니다.")
-        
-        # 🔹 커스텀 레이어 적용하여 모델 로드
-        model = load_model(model_path, compile=False, custom_objects={"DepthwiseConv2D": CustomDepthwiseConv2D})
-        return model
+        if not os.path.exists(MODEL_PATH):
+            st.error("❌ 모델 파일이 존재하지 않습니다.")
+            return None
+        return load_model(
+            MODEL_PATH, compile=False, custom_objects={"CustomDepthwiseConv2D": CustomDepthwiseConv2D}
+        )
     except Exception as e:
-        print(f"❌ 모델 로드 중 오류 발생: {e}")
+        st.error(f"❌ 모델 로드 중 오류 발생: {e}")
         return None
- 
-    
+
 # ✅ 레이블 불러오기 함수
 @st.cache_data
 def load_labels():
-    global LABELS_PATH  # 전역 변수로 사용하도록 설정
     try:
         if not os.path.exists(LABELS_PATH):
             st.error(f"❌ 레이블 파일이 존재하지 않습니다: {LABELS_PATH}")
@@ -47,7 +52,6 @@ def load_labels():
     except Exception as e:
         st.error(f"❌ 레이블 파일 로드 중 오류 발생: {e}")
         return []
-    
 
 # 🦎 도마뱀 품종 예측 함수
 def predict_species(image, model, labels):
@@ -72,28 +76,27 @@ def predict_species(image, model, labels):
 
 # ✅ 페이지 상태 초기화
 if 'page' not in st.session_state:
-    st.session_state['page'] = "home"  # 초기 상태를 'home'으로 설정
+    st.session_state['page'] = "home"
 
 # 🏠 홈 화면 UI
 def display_home():
     st.title("🦎 파충류 정보 검색 앱")
-    col1, col2 = st.columns([1, 2])  # 첫 번째 열이 좁고, 두 번째 열이 넓음
+    col1, col2 = st.columns([1, 2])
 
     with col1:
         # 이미지 파일 경로 설정
-        image_path = "./image/001.jpg"
+        image_path = os.path.join(BASE_DIR, "image", "001.jpg")
         if os.path.exists(image_path):
             st.image(image_path, width=200)  # 크기 조정
         else:
             st.error("❌ 홈 화면 이미지 파일이 없습니다.")
 
     with col2:
-        # 설명 텍스트 표시
         st.write("""
-        이 앱은 다음 기능을 제공합니다:
-        - 🦎 도마뱀 이미지 분석
-        - 🏥 파충류 전문 병원 검색
-        - 📺 파충류 관련 유튜브 영상 검색
+        🦎 **앱 기능**
+        - 도마뱀 이미지 분석
+        - 파충류 전문 병원 검색
+        - 파충류 관련 유튜브 영상 검색
         """)
 
 # 📂 이미지 분석 기능
@@ -106,12 +109,12 @@ def display_image_analysis():
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file)
-            st.image(image, caption="업로드된 이미지", width=300)  # 크기 조정
+            st.image(image, caption="업로드된 이미지", width=300)
 
             with st.spinner("🔍 이미지 분석 중..."):
                 if model and labels:
                     species, confidence = predict_species(image, model, labels)
-                    st.success(f"예측된 도마뱀 품종: **{species}**")
+                    st.success(f"**예측된 도마뱀 품종: {species}**")
                     st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
                     st.info(f"신뢰도는 모델이 {species} 품종을 얼마나 정확히 예측했는지 나타냅니다.")
                 else:
@@ -124,16 +127,28 @@ with st.sidebar:
     # 사이드바 상단 이미지 추가
     st.image("image/home_image.png", width=200)
 
-    # 옵션 메뉴 생성
+    # ✅ 로컬 SVG 아이콘 파일 경로 설정
+    icons_path = {
+        "홈": "icons/house.svg",
+        "병원 검색": "icons/bag-heart.svg",
+        "유튜브 검색": "icons/caret-right-square.svg",
+    }
+
+    # ✅ HTML을 사용하여 아이콘 삽입
+    def get_icon_html(icon_path):
+        """아이콘을 HTML로 변환하는 함수"""
+        return f'<img src="{icon_path}" width="20" style="margin-right:10px">'
+
+    # ✅ 옵션 메뉴 생성 (아이콘을 HTML로 삽입)
     choose = option_menu(
-        menu_title="앱 탐색",  # 메뉴 제목
-        options=["홈으로", "병원 검색", "유튜브 검색"],  # 메뉴 항목
-        icons=["house.svg", "stethoscope", "bag-heart.svg","caret-right-square.svg"],  # FontAwesome 아이콘
-        menu_icon="icons",  # 상단 메뉴 아이콘
-        default_index=0,  # 기본 선택 항목
+        menu_title="앱 탐색",
+        options=["홈", "병원 검색", "유튜브 검색"],
+        icons=[get_icon_html(icons_path["홈"]), get_icon_html(icons_path["병원 검색"]), get_icon_html(icons_path["유튜브 검색"])],
+        menu_icon="cast",
+        default_index=0,
         styles={
             "container": {"padding": "5px", "background-color": "#f8f9fa"},
-            "icon": {"color": "green", "font-size": "20px"},
+            "icon": {"font-size": "20px"},
             "nav-link": {
                 "font-size": "16px",
                 "text-align": "left",
@@ -144,12 +159,10 @@ with st.sidebar:
         },
     )
 
-# 선택된 메뉴에 따라 페이지 전환
-if choose == "홈으로":
+# ✅ 선택된 메뉴에 따라 페이지 전환
+if choose == "홈":
     st.session_state['page'] = "home"
-    display_home()
-    display_image_analysis()
-
+    st.title("🦎 파충류 정보 검색 앱")
 elif choose == "병원 검색":
     st.session_state['page'] = "hospital_page"
     st.header("🏥 병원 검색")
@@ -157,7 +170,6 @@ elif choose == "병원 검색":
     if st.button("병원 검색"):
         st.success(f"'{hospital_query}' 검색을 시작합니다!")
         st.session_state['query'] = hospital_query
-
 elif choose == "유튜브 검색":
     st.session_state['page'] = "youtube_page"
     st.header("📺 유튜브 검색")
