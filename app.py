@@ -73,7 +73,7 @@ if "page" not in st.session_state:
 
 # ✅ 홈 페이지 렌더링 함수
 def display_home():
-    st.title("🦎 파충류 정보 검색 앱")
+    
     col1, col2 = st.columns([1, 2])
 
     with col1:
@@ -84,6 +84,7 @@ def display_home():
             st.error("❌ 홈 화면 이미지 파일이 없습니다.")
 
     with col2:
+        st.title("🦎 파충류 정보 검색 앱")
         st.write("""
       
         """)
@@ -96,27 +97,33 @@ def display_image_analysis():
 
     uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
     if uploaded_file:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="업로드된 이미지", width=300)
-        if model and labels:
-            species, confidence = predict_species(image, model, labels)
-            st.success(f"**예측된 도마뱀 품종: {species}**")
-            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+        try:
+            image = Image.open(uploaded_file)
+            st.image(image, caption="업로드된 이미지", width=300)
+            if model and labels:
+                species, confidence = predict_species(image, model, labels)
+                st.success(f"**예측된 도마뱀 품종: {species}**")
+                st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+            else:
+                st.error("❌ 모델 또는 레이블이 준비되지 않았습니다.")
+        except Exception as e:
+            st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
-# ✅ 사이드바 렌더링 및 검색창 추가
-selected_option = render_sidebar()
-
-if selected_option == "홈":
+# ✅ 선택된 메뉴에 따라 페이지 전환
+if selected_option == "홈": # type: ignore
     st.session_state["page"] = "home"
     display_home()
-elif selected_option == "병원 검색":
+elif selected_option == "도마뱀 분석": # type: ignore
+    st.session_state["page"] = "image_analysis"
+    display_image_analysis()
+elif selected_option == "병원 검색": # type: ignore
     st.session_state["page"] = "hospital_page"
     st.subheader("🔍 병원 검색")
     hospital_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 동물병원")
     if st.button("검색 실행"):
         st.session_state["query"] = hospital_query
         display_hospitals(hospital_query)
-elif selected_option == "유튜브 검색":
+elif selected_option == "유튜브 검색": # type: ignore
     st.session_state["page"] = "youtube_page"
     st.subheader("📺 유튜브 검색")
     youtube_query = st.text_input("검색어를 입력하세요", placeholder="예: 파충류 사육 방법")
