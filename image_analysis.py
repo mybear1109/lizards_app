@@ -8,10 +8,10 @@ from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 
-# ✅ 커스텀 레이어 정의 (DepthwiseConv2D 호환성 문제 해결)
+# ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
     def __init__(self, *args, **kwargs):
-        kwargs.pop("groups", None)  # 'groups' 제거 (Keras 3.x 대비)
+        kwargs.pop("groups", None)  
         super().__init__(*args, **kwargs)
 
 # ✅ 커스텀 레이어 등록
@@ -22,13 +22,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
 LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
 
-# ✅ 모델 존재 여부 확인 함수
+# ✅ 모델 무결성 체크
 def check_model_exists():
     if not os.path.exists(MODEL_PATH):
         st.error("❌ 모델 파일이 존재하지 않습니다. 올바른 경로를 확인하세요.")
         return False
     try:
-        with h5py.File(MODEL_PATH, "r") as f:  # h5 파일 무결성 체크
+        with h5py.File(MODEL_PATH, "r") as f:
             pass
         return True
     except Exception as e:
@@ -40,7 +40,6 @@ def check_model_exists():
 def load_model_cached():
     if not check_model_exists():
         return None
-
     try:
         model = load_model(MODEL_PATH, compile=False, custom_objects={"DepthwiseConv2D": DepthwiseConv2DCompat})
         return model
@@ -78,6 +77,28 @@ def predict_species(image, model, labels):
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
         return "알 수 없음", 0
 
+# ✅ 품종 설명 UI 표시 함수
+def display_species_info(species_name):
+    species_info = get_species_description(species_name)
+
+    st.markdown(
+        f"""
+        <div style="
+            background-color: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            ">
+            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
+            <p><b>📝 설명:</b> {species_info.get('설명')}</p>
+            <p><b>📍 서식지:</b> {species_info.get('서식지')}</p>
+            <p><b>🍽️ 먹이:</b> {species_info.get('먹이')}</p>
+            <p><b>✨ 특징:</b> {species_info.get('특징')}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
@@ -102,17 +123,19 @@ def display_image_analysis():
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-            species_name = "Crestedgeko"
-            description = get_species_description(species_name)
-            print(f"{species_name}: {description}")
+
+            # ✅ 품종 설명 표시
+            display_species_info(species)
+
+            # ✅ 안내 메시지 추가
             st.info("""
-                    예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
+                    🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
 
-                    이 결과는 참고용으로만 활용해 주시기 바랍니다.
+                    ⚠️ 이 결과는 참고용으로만 활용해 주시기 바랍니다.
 
-                    실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
+                    📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
                     """)
 
-            
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
+
