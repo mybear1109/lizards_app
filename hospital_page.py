@@ -4,9 +4,6 @@ import requests
 import urllib.parse
 import os
 
-
-
-
 # ✅ Google Maps API Key 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
@@ -73,6 +70,9 @@ def filter_search_query(user_query):
     # ✅ 동물 관련 키워드 포함 여부 확인
     if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS):
         filtered_query = f"파충류 {filtered_query}"
+    else:
+        st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
+        return None
 
     return filtered_query
 
@@ -107,6 +107,9 @@ def display_hospitals():
 
     # ✅ 검색어 필터 적용
     search_query = filter_search_query(user_query)
+
+    if not search_query:
+        return  # 검색어가 허용되지 않으면 종료
 
     st.title("🏥 병원 검색 결과")
     st.write(f"🔎 검색어: `{search_query}`")
