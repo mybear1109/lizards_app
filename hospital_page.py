@@ -5,7 +5,7 @@ import urllib.parse
 import os
 
 # ✅ Google Maps API Key (환경 변수 사용, 보안을 위해 직접 하드코딩하지 않음)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "YOUR_GOOGLE_MAPS_API_KEY")  # 여기에 본인의 API Key를 입력하세요.
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")  # 여기에 본인의 API Key를 입력하세요.
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
@@ -36,7 +36,7 @@ def display_hospital_map(address):
     address_encoded = urllib.parse.quote(address)
     
     # ✅ 지도 iframe 생성
-    if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YOUR_GOOGLE_MAPS_API_KEY":
+    if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != ""AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw"":
         map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
         st.markdown(
             f"""
