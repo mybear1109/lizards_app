@@ -2,51 +2,59 @@ import streamlit as st
 import pandas as pd
 import os
 from PIL import Image
+import random
 
-# CSV와 이미지 경로 설정
-DATA_FILE = "model/thebreeder.csv"  # 실제 CSV 파일 경로로 변경
-IMAGE_DIR = "image/folders"  # 이미지 폴더 경로로 변경
-
-# Streamlit 앱
+# 앱 메인 함수
 def main():
-    st.title("종별 분류와 데이터 시각화")
-    st.info("업로드된 데이터와 이미지를 이용해 종별로 분류하고 시각화합니다.")
+    st.title("🦎 Guess the Species Game!")
+    st.info("이미지를 보고 해당 종(Species)을 맞춰보세요.")
 
-    # CSV 파일 읽기
-    try:
-        df = pd.read_csv(DATA_FILE)
-        st.subheader("📋 CSV 데이터 미리보기")
-        st.dataframe(df)
-    except Exception as e:
-        st.error(f"CSV 파일을 읽는 중 오류 발생: {e}")
+    # CSV 데이터 로드
+    data_file = "model/Lizards.csv"  # CSV 파일 이름
+    image_folder = "image"  # 이미지 폴더 이름
+
+    if not os.path.exists(data_file):
+        st.error("❌ CSV 파일이 존재하지 않습니다. 파일 경로를 확인하세요.")
         return
 
-    # 폴더 구조에서 이미지 분류
-    try:
-        st.subheader("📂 종별 이미지 분류")
-        folders = os.listdir(IMAGE_DIR)
-        for folder in folders:
-            folder_path = os.path.join(IMAGE_DIR, folder)
-            if os.path.isdir(folder_path):
-                st.write(f"### {folder}")
-                files = os.listdir(folder_path)
-                for file in files[:5]:  # 각 폴더에서 최대 5개 이미지 표시
-                    image_path = os.path.join(folder_path, file)
-                    try:
-                        image = Image.open(image_path)
-                        st.image(image, caption=file, use_column_width=True)
-                    except Exception as img_error:
-                        st.warning(f"이미지를 불러오지 못했습니다: {file} - {img_error}")
-    except Exception as e:
-        st.error(f"이미지 폴더를 읽는 중 오류 발생: {e}")
+    if not os.path.exists(image_folder):
+        st.error("❌ 이미지 폴더가 존재하지 않습니다. 폴더 경로를 확인하세요.")
         return
 
-    # 데이터 분석
-    st.subheader("📊 데이터 분석")
-    if "종" in df.columns:
-        st.write(df["종"].value_counts())
+    # 데이터 로드
+    df = pd.read_csv(data_file)
+
+    # 이미지와 종 정보 매칭
+    if "Filename" not in df.columns or "Species" not in df.columns:
+        st.error("❌ CSV 파일에 'Filename' 또는 'Species' 컬럼이 없습니다.")
+        return
+
+    # 이미지 선택 (랜덤)
+    image_files = df["Filename"].tolist()
+    selected_image = random.choice(image_files)
+    image_path = os.path.join(image_folder, selected_image)
+
+    # 이미지 표시
+    if os.path.exists(image_path):
+        st.image(Image.open(image_path), caption="Guess the Species!", use_column_width=True)
+
+        # 사용자 입력 (종 선택)
+        species_list = sorted(df["Species"].unique())
+        user_guess = st.selectbox("어떤 종인지 선택하세요:", species_list)
+
+        # 정답 확인 버튼
+        if st.button("정답 확인"):
+            actual_species = df[df["Filename"] == selected_image]["Species"].values[0]
+            if user_guess == actual_species:
+                st.success(f"🎉 정답입니다! 이 종은 **{actual_species}** 입니다.")
+            else:
+                st.error(f"❌ 틀렸습니다. 정답은 **{actual_species}** 입니다.")
     else:
-        st.warning("데이터에서 '종' 열을 찾을 수 없습니다.")
+        st.error(f"❌ 이미지 파일을 찾을 수 없습니다: {selected_image}")
+
+    # 추가 기능: 전체 데이터 보기
+    if st.checkbox("전체 데이터 보기"):
+        st.dataframe(df)
 
 if __name__ == "__main__":
     main()
