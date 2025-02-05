@@ -26,13 +26,4 @@ def render_sidebar():
             },
         )
 
-        # ✅ 병원 검색창 (검색어 입력)
-        if selected_option == "병원 검색":
-            st.subheader("🔍 병원 검색")
-            hospital_query = st.text_input(
-                "검색어 입력", 
-                placeholder="예: 파충류 동물병원", 
-                key="hospital_query",  # 검색어를 세션 상태로 저장
-            )
 
-        return selected_option
