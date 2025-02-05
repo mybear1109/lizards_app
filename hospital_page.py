@@ -5,7 +5,7 @@ import urllib.parse
 import os
 
 # ✅ Google Maps API Key (환경 변수 사용, 보안을 위해 직접 하드코딩하지 않음)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")  # 여기에 본인의 API Key를 입력하세요.
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "YOUR_GOOGLE_MAPS_API_KEY")  # 여기에 본인의 API Key를 입력하세요.
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
@@ -36,7 +36,7 @@ def display_hospital_map(address):
     address_encoded = urllib.parse.quote(address)
     
     # ✅ 지도 iframe 생성
-    if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YAIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw":
+    if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YOUR_GOOGLE_MAPS_API_KEY":
         map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
         st.markdown(
             f"""
@@ -90,10 +90,9 @@ def display_hospitals(query):
 if __name__ == "__main__":
     st.sidebar.title("🏥 병원 검색")
 
-    # ✅ 사이드바 검색창 추가
+    # ✅ 사이드바 검색창 (검색 시 바로 결과 업데이트)
     hospital_query = st.sidebar.text_input("🔎 병원 검색어 입력", "파충류 동물병원")
-    
-    if st.sidebar.button("🔍 검색 실행"):
-        st.session_state["query"] = hospital_query  # 검색어를 세션에 저장
-        st.success(f"'{hospital_query}' 검색을 실행합니다.")
-        display_hospitals(hospital_query)  # 검색 실행
+
+    # 검색어가 입력된 경우 즉시 검색
+    if hospital_query:
+        display_hospitals(hospital_query)
