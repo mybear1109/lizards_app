@@ -98,21 +98,50 @@ def display_image_analysis():
             image = Image.open(uploaded_file)
             st.image(image, caption="업로드된 이미지", width=300)
             
+# ✅ 도마뱀 이미지 분석 기능
+def display_image_analysis():
+    st.subheader("🦎 도마뱀 이미지 분석")
+
+    # 모델 및 레이블 불러오기
+    model = load_model_cached()
+    labels = load_labels()
+
+    # 모델이 정상적으로 로드되지 않았으면 중단
+    if model is None or not labels:
+        st.error("⚠️ 분석을 실행할 수 없습니다. 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
+        return
+
+    # ✅ 이미지 업로드 기능
+    uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
+    if uploaded_file:
+        try:
+            # 업로드된 이미지 표시
+            image = Image.open(uploaded_file)
+            st.image(image, caption="업로드된 이미지", width=300)
+
             # ✅ 이미지 분석 실행
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-            species_name = "Crestedgeko"
-            description = get_species_description(species_name)
-            print(f"{species_name}: {description}")
-            st.error("""
-                    예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
 
-                    이 결과는 참고용으로만 활용해 주시기 바랍니다.
+            # ✅ 품종 설명 출력
+            description = get_species_description(species)
+            if description:
+                st.markdown(f"### 🦎 품종 설명")
+                st.info(description)
+            else:
+                st.warning("해당 품종에 대한 추가 정보가 없습니다.")
 
-                    실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
-                    """)
-
+            # 안내 메시지 출력
+            st.markdown("""
+            ---
+            예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
             
+            이 결과는 참고용으로만 활용해 주시기 바랍니다.
+            
+            실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
+            """)
+
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
+
