@@ -102,8 +102,8 @@ def display_hospitals():
     user_query = st.session_state.get("hospital_query", "").strip()
 
     if not user_query:
-        st.info("병원 검색어를 사이드바에 입력하세요.")
         st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
+        st.info("병원 검색어를 사이드바에 입력하세요.")
         return
 
     # ✅ 검색어 필터 적용
