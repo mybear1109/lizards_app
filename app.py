@@ -36,10 +36,10 @@ def load_model_cached():
 @st.cache_data
 def load_labels():
     try:
-        if not os.path.exists(LABELS_PATH):
+        if not os.path.exists(LABELS_PATH): # type: ignore
             st.error("❌ 레이블 파일이 존재하지 않습니다.")
             return []
-        with open(LABELS_PATH, "r", encoding="utf-8") as f:
+        with open(LABELS_PATH, "r", encoding="utf-8") as f: # type: ignore
             return [line.strip() for line in f.readlines()]
     except Exception as e:
         st.error(f"❌ 레이블 파일 로드 중 오류 발생: {e}")
