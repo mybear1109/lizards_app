@@ -40,7 +40,7 @@ def display_hospitals(query):
             
             # 지도 Embed 생성
             address_encoded = urllib.parse.quote(hospital['address'])
-            map_embed_url = f"https://www.google.com/maps/embed/v1/place?q={address_encoded}&key=AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5Uo"
+            map_embed_url = f"https://www.google.com/maps/embed/v1/place?q={address_encoded}&key=AIzaSyAS_ZTJBz_vkppLJu2GkMe6uXy9sCda5"
             st.markdown(
                 f"""
                 <iframe 
