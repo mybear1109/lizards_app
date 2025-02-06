@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 import matplotlib.pyplot as plt
 from data_manager import save_prediction, load_existing_data  # ✅ 데이터 저장 및 로드
 
