@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model  # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
-from species_info import get_species_info  # ✅ 종 정보 가져오기
+from species_info import get_species_description  
 from data_manager import save_prediction  
 from data_analysis import display_data_analysis  
 
@@ -61,7 +61,7 @@ def load_labels():
 # ✅ 품종 설명 UI 표시 함수 (재귀 호출 문제 해결)
 def display_species_info(species_name):
     """ 도마뱀 품종 설명을 출력하는 함수 """
-    species_info = get_species_info(species_name)  # ✅ 종 정보 가져오기
+    species_info = get_species_description(species_name)  # ✅ 종 정보 가져오기
 
     if not species_info:  
         species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}  
