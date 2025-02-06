@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from plot import plot_prediction_chart # type: ignore
 from data_manager import save_prediction, load_existing_data
 from data_analysis import load_existing_data
+from species_info import display_species_info
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
