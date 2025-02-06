@@ -89,8 +89,6 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-            # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
 
             # ✅ 기존 데이터 확인
             st.markdown("### 📋 기존 분석 데이터")
@@ -100,9 +98,6 @@ def display_image_analysis():
             # ✅ 품종 설명 표시
             display_species_info(species) # type: ignore
 
-            # ✅ 확률 차트 생성
-            st.markdown("### 📊 예측 확률 분포")
-            plot_prediction_chart(labels, [confidence / 100])  # ✅ 시각화 추가
 
             # ✅ 안내 메시지 추가
             st.info("""
@@ -115,3 +110,10 @@ def display_image_analysis():
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
+
+
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
+            # ✅ 확률 차트 생성
+            st.markdown("### 📊 예측 확률 분포")
+            plot_prediction_chart(labels, [confidence / 100])  # ✅ 시각화 추가
