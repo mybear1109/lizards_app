@@ -5,6 +5,11 @@ import datetime
 # ✅ 데이터 파일 경로
 DATA_PATH = "data/Lizards.csv"
 
+def display_data_analysis():
+    st.title("📊 데이터 분석") # type: ignore
+    st.write("분석된 도마뱀 이미지 데이터를 시각화하고, 통계 데이터를 제공합니다.") # type: ignore
+
+
 # ✅ 분석 결과 저장 함수 (디렉터리 체크 추가)
 def save_prediction(image_name, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
