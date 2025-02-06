@@ -90,10 +90,6 @@ def display_image_analysis():
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
 
-            # ✅ 기존 데이터 확인
-            st.markdown("### 📋 기존 분석 데이터")
-            df = load_existing_data()
-            st.dataframe(df)
 
             # ✅ 품종 설명 표시
             display_species_info(species) # type: ignore
@@ -115,5 +111,10 @@ def display_image_analysis():
             # ✅ 분석 데이터 저장
             save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
             # ✅ 확률 차트 생성
+
+            # ✅ 기존 데이터 확인
+            st.markdown("### 📋 기존 분석 데이터")
+            df = load_existing_data()
+            st.dataframe(df)
             st.markdown("### 📊 예측 확률 분포")
             plot_prediction_chart(labels, [confidence / 100])  # ✅ 시각화 추가
