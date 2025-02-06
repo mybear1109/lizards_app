@@ -13,6 +13,7 @@ from species_info import get_species_description
 import matplotlib.pyplot as plt
 from plot import plot_prediction_chart # type: ignore
 from data_manager import save_prediction, load_existing_data
+from data_analysis import load_existing_data
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -134,7 +135,7 @@ def display_image_analysis():
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
             # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, top_label, top_confidence)
+            save_prediction(uploaded_file.name, top_label, top_confidence) # type: ignore
 
             # ✅ 기존 데이터 확인
             st.markdown("### 📋 기존 분석 데이터")
