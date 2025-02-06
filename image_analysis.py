@@ -3,9 +3,9 @@ from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects
+from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 import matplotlib.pyplot as plt
