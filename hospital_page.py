@@ -18,9 +18,9 @@ def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
-# ✅ 네이버 지도 API를 사용하여 병원 전화번호 보완
-def get_hospital_phone_from_naver_place(hospital_name):
-    """ 네이버 플레이스 API를 사용하여 병원 전화번호를 가져오는 함수 """
+# ✅ 네이버 지도 API를 사용하여 병원 연락처 정보 보완 (전화번호, 휴대폰, 팩스)
+def get_hospital_contact_from_naver_place(hospital_name):
+    """ 네이버 플레이스 API를 사용하여 병원 연락처 정보(전화번호, 휴대폰, 팩스 등)를 가져오는 함수 """
     params = {"query": hospital_name, "display": 1}
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
@@ -32,11 +32,16 @@ def get_hospital_phone_from_naver_place(hospital_name):
         if response.status_code == 200:
             data = response.json().get("items", [])
             if data:
-                return data[0].get("telephone", "정보 없음")  # ✅ 네이버 지도에서 전화번호 가져오기
-        return "정보 없음"
+                contact_info = {
+                    "telephone": data[0].get("telephone", "정보 없음"),
+                    "mobile": data[0].get("mobile", "정보 없음"),  # ✅ 휴대폰 번호 검색 추가
+                    "fax": data[0].get("fax", "정보 없음"),  # ✅ 팩스 번호 검색 추가
+                }
+                return contact_info
+        return {"telephone": "정보 없음", "mobile": "정보 없음", "fax": "정보 없음"}
     except Exception as e:
         st.error(f"❌ 네이버 플레이스 API 오류: {e}")
-        return "정보 없음"
+        return {"telephone": "정보 없음", "mobile": "정보 없음", "fax": "정보 없음"}
 
 # ✅ 병원 검색 함수 (네이버 API + 지도 API 보완)
 def search_hospitals(query="파충류 동물병원", display=5):
@@ -50,10 +55,12 @@ def search_hospitals(query="파충류 동물병원", display=5):
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
 
-            # ✅ 전화번호 보완 (네이버 플레이스 API 활용)
+            # ✅ 전화번호, 휴대폰, 팩스 보완 (네이버 플레이스 API 활용)
             for hospital in hospitals:
-                if "telephone" not in hospital or not hospital["telephone"]:
-                    hospital["telephone"] = get_hospital_phone_from_naver_place(hospital["title"])
+                contact_info = get_hospital_contact_from_naver_place(hospital["title"])
+                hospital["telephone"] = contact_info["telephone"]
+                hospital["mobile"] = contact_info["mobile"]
+                hospital["fax"] = contact_info["fax"]
 
             return hospitals
         else:
@@ -125,12 +132,13 @@ def display_hospitals():
                 )
                 display_hospital_map(hospital['address'])  # 지도 표시
 
-                # ✅ 전화번호 정보 (폰트 색상 변경, 네이버 지도 API 활용)
-                phone_number = hospital.get('telephone', '정보 없음')
+                # ✅ 연락처 정보 (전화번호, 휴대폰, 팩스 포함)
                 st.markdown(
                     f"""
                     <p style="font-size:16px; color:#E76F51;">
-                        📞 <b>전화번호:</b> {phone_number}
+                        📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}<br>
+                        📱 <b>휴대폰:</b> {hospital.get('mobile', '정보 없음')}<br>
+                        📠 <b>팩스:</b> {hospital.get('fax', '정보 없음')}
                     </p>
                     """,
                     unsafe_allow_html=True
