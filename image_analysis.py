@@ -6,10 +6,10 @@ from tensorflow.keras.models import load_model  # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
-from species_info import get_species_info  
+from species_info import get_species_description, get_species_info  
 from data_manager import save_prediction  
 from data_analysis import display_data_analysis  
-from species_info import get_species_info
+
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -125,28 +125,28 @@ def display_image_analysis():
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
-# ✅ 품종 설명 UI 표시 함수 (함수 호출 방식 수정)
-def display_species_info(species_name):
-    """ 종에 대한 정보를 UI에 출력하는 함수 """
-    species_info = get_species_info(species_name)  # ✅ species_name을 전달하도록 수정
+    # ✅ 품종 설명 UI 표시 함수
+    def display_species_info(species_name):
+        """ 종에 대한 정보를 UI에 출력하는 함수 """
+        species_info = get_species_description(species_name)  # ✅ species_name을 전달하도록 수정
 
-    st.markdown(
-        f"""
-        <div style="
-            background-color: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-            ">
-            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
-            <p><b>📝 설명:</b> {species_info.get('설명', '정보 없음')}</p>
-            <p><b>📍 서식지:</b> {species_info.get('서식지', '정보 없음')}</p>
-            <p><b>🍽️ 먹이:</b> {species_info.get('먹이', '정보 없음')}</p>
-            <p><b>✨ 특징:</b> {species_info.get('특징', '정보 없음')}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        st.markdown(
+            f"""
+            <div style="
+                background-color: #f8f9fa; 
+                padding: 15px; 
+                border-radius: 10px;
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+                ">
+                <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
+                <p><b>📝 설명:</b> {species_info.get('설명')}</p>
+                <p><b>📍 서식지:</b> {species_info.get('서식지')}</p>
+                <p><b>🍽️ 먹이:</b> {species_info.get('먹이')}</p>
+                <p><b>✨ 특징:</b> {species_info.get('특징')}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
@@ -179,7 +179,7 @@ def display_image_analysis():
             save_prediction(uploaded_file.name, species, confidence)  
 
             # ✅ 품종 설명 표시
-            display_species_info(species)
+            display_species_info(species) # type: ignore
 
             # ✅ 데이터 분석 화면 표시 (데이터 분석 페이지에서 실행)
             st.markdown("### 📊 기존 분석 데이터 확인")
