@@ -5,9 +5,13 @@ import datetime
 # ✅ 데이터 파일 경로
 DATA_PATH = "/mnt/data/Lizards.csv"
 
-# ✅ 분석 결과 저장 함수
+# ✅ 분석 결과 저장 함수 (디렉터리 체크 추가)
 def save_prediction(image_name, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
+    
+    # ✅ 저장 경로가 존재하지 않으면 생성
+    os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
+
     new_data = pd.DataFrame({
         "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
         "Image": [image_name],
@@ -22,6 +26,7 @@ def save_prediction(image_name, species, confidence):
         updated_data = new_data
 
     updated_data.to_csv(DATA_PATH, index=False)
+
 
 # ✅ 기존 데이터 로드 함수
 def load_existing_data():
