@@ -8,7 +8,7 @@ from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description  
 from data_manager import save_prediction  
-from data_analysis import display_data_analysis  
+
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -135,9 +135,6 @@ def display_image_analysis():
             # ✅ 품종 설명 표시 (올바르게 호출)
             display_species_info(species)
 
-            # ✅ 데이터 분석 페이지 표시
-            st.markdown("### 📊 기존 분석 데이터 확인")
-            display_data_analysis()
 
             st.info("""
                 🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.

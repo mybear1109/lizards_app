@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from data_manager import load_existing_data
+from image_analysis import display_image_analysis
 
 # ✅ 데이터 분석 및 시각화 함수
 def display_data_analysis():
@@ -18,6 +19,10 @@ def display_data_analysis():
 
     # ✅ 데이터프레임 표시
     st.dataframe(df)
+
+     # ✅ 데이터 분석 페이지 표시
+    st.markdown("### 📊 기존 분석 데이터 확인")
+    display_data_analysis()
 
     # ✅ 종별 예측 횟수 시각화
     species_count = df["Species"].value_counts()

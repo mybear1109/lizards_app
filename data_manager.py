@@ -3,13 +3,14 @@ import pandas as pd
 import datetime
 import streamlit as st
 
+
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
 
 # ✅ CSV 파일의 올바른 컬럼 구조
 EXPECTED_COLUMNS = ["Date", "Image", "Species", "Confidence"]
 
-# ✅ 분석 결과 저장 함수 (컬럼 구조 체크 추가)
+# ✅ 분석 결과 저장 함수 (컬럼 구조 자동 수정)
 def save_prediction(image_name, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
     
@@ -28,13 +29,16 @@ def save_prediction(image_name, species, confidence):
         if os.path.exists(DATA_PATH):
             existing_data = pd.read_csv(DATA_PATH)
 
-            # ✅ 컬럼 구조 자동 수정
-            if list(existing_data.columns) != EXPECTED_COLUMNS:
-                st.warning("⚠️ CSV 파일의 컬럼이 올바르지 않습니다. 자동 수정됩니다.")
-                existing_data = existing_data[EXPECTED_COLUMNS]  # ✅ 컬럼 정렬
-                existing_data.to_csv(DATA_PATH, index=False)
+            # ✅ 기존 데이터 컬럼 검사 및 자동 수정
+            missing_columns = [col for col in EXPECTED_COLUMNS if col not in existing_data.columns]
 
-            # ✅ 데이터 추가
+            if missing_columns:
+                st.warning(f"⚠️ CSV 파일의 일부 컬럼이 누락되었습니다. 자동 복구: {missing_columns}")
+                for col in missing_columns:
+                    existing_data[col] = None  # ✅ 누락된 컬럼 추가
+
+            # ✅ 컬럼 정렬 후 데이터 저장
+            existing_data = existing_data[EXPECTED_COLUMNS]
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
         else:
             updated_data = new_data
@@ -58,13 +62,15 @@ def load_existing_data():
                 st.warning("⚠️ 분석할 데이터가 없습니다. 이미지를 먼저 업로드하세요.")
                 return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
-            # ✅ 컬럼 체크
-            if list(df.columns) != EXPECTED_COLUMNS:
-                st.warning("⚠️ CSV 파일의 컬럼 구조가 맞지 않습니다. 자동 수정됩니다.")
-                df = df[EXPECTED_COLUMNS]  # ✅ 컬럼 정렬
-                df.to_csv(DATA_PATH, index=False)
+            # ✅ 컬럼 체크 및 자동 수정
+            missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
 
-            return df
+            if missing_columns:
+                st.warning(f"⚠️ CSV 파일의 일부 컬럼이 누락되었습니다. 자동 복구: {missing_columns}")
+                for col in missing_columns:
+                    df[col] = None  # ✅ 누락된 컬럼 추가
+
+            return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
         else:
             st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")
             return pd.DataFrame(columns=EXPECTED_COLUMNS)
