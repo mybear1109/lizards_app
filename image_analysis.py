@@ -125,10 +125,10 @@ def display_image_analysis():
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
-# ✅ 품종 설명 UI 표시 함수
+# ✅ 품종 설명 UI 표시 함수 (함수 호출 방식 수정)
 def display_species_info(species_name):
     """ 종에 대한 정보를 UI에 출력하는 함수 """
-    species_info = get_species_info(species_name)
+    species_info = get_species_info(species_name)  # ✅ species_name을 전달하도록 수정
 
     st.markdown(
         f"""
@@ -147,6 +147,7 @@ def display_species_info(species_name):
         """,
         unsafe_allow_html=True,
     )
+
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
