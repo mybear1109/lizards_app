@@ -60,4 +60,27 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
     except Exception as e:
         st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
 
+def load_existing_data():
+    """ 기존 분석 데이터를 불러오는 함수 """
+    try:
+        if os.path.exists(DATA_PATH):
+            df = pd.read_csv(DATA_PATH)
 
+            # ✅ CSV 파일이 비어있는 경우
+            if df.empty:
+                st.warning("⚠️ 분석할 데이터가 없습니다. 이미지를 먼저 업로드하세요.")
+                return pd.DataFrame(columns=EXPECTED_COLUMNS)
+
+            # ✅ 컬럼 체크 및 자동 수정
+            missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
+            for col in missing_columns:
+                df[col] = ""  # ✅ 누락된 컬럼 추가
+            print(st.success("안녕4"))  
+            return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
+        else:
+            st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")
+            return pd.DataFrame(columns=EXPECTED_COLUMNS)
+            print(st.success("안녕5"))  
+    except Exception as e:
+        st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
+        return pd.DataFrame(columns=EXPECTED_COLUMNS)
