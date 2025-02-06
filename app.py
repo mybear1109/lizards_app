@@ -46,7 +46,7 @@ if selected_option == "홈":
             """,
             unsafe_allow_html=True,
         )
-
+    show_about()
 elif selected_option == "도마뱀 분석":
     display_image_analysis()
 
