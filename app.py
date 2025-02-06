@@ -46,6 +46,7 @@ if selected_option == "홈":
             """,
             unsafe_allow_html=True,
         )
+elif selected_option == "뽐내는 글":
     show_about()
 elif selected_option == "도마뱀 분석":
     display_image_analysis()
