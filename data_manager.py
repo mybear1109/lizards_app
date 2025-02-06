@@ -42,6 +42,16 @@ def save_prediction(image_file, species, confidence):
         else:
             updated_data = new_data
 
+            def save_prediction(image_name, species, confidence, morph):
+                new_data = pd.DataFrame({
+                "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+                "Image": [image_name],
+                "Species": [species],
+                "Confidence": [confidence],
+                "Morph": [morph]  # ✅ 모프 데이터 추가
+            })
+
+
         # ✅ CSV 저장
         updated_data.to_csv(DATA_PATH, index=False)
         st.success("✅ 데이터 저장 완료!")
