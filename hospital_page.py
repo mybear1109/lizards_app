@@ -4,23 +4,23 @@ import requests
 import urllib.parse
 import os
 
-# ✅ Google Maps API Key 설정
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
-
-# ✅ 네이버 API 설정
+# ✅ 네이버 API 설정 (병원 검색 및 연락처 조회)
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
-NAVER_API_URL = "https://openapi.naver.com/v1/search/local"
-NAVER_PLACE_API_URL = "https://map.naver.com/v5/api/search"  # ✅ 네이버 지도 API 추가
+NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
+NAVER_PLACE_API_URL = "https://map.naver.com/v5/api/search"
+
+# ✅ Google Maps API 설정 (지도 표시)
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
 # ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
-# ✅ 네이버 지도 API를 사용하여 병원 연락처 정보 보완 (전화번호, 휴대폰, 팩스)
+# ✅ 네이버 API를 사용하여 병원 연락처 정보 가져오기
 def get_hospital_contact_from_naver_place(hospital_name):
-    """ 네이버 플레이스 API를 사용하여 병원 연락처 정보(전화번호, 휴대폰, 팩스 등)를 가져오는 함수 """
+    """ 네이버 지도 API를 활용하여 병원 연락처 정보(전화번호, 휴대폰)를 가져오는 함수 """
     params = {"query": hospital_name, "display": 1}
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
@@ -32,46 +32,46 @@ def get_hospital_contact_from_naver_place(hospital_name):
         if response.status_code == 200:
             data = response.json().get("items", [])
             if data:
-                contact_info = {
+                return {
                     "telephone": data[0].get("telephone", "정보 없음"),
-                    "mobile": data[0].get("mobile", "정보 없음"),  # ✅ 휴대폰 번호 검색 추가
-                    "fax": data[0].get("fax", "정보 없음"),  # ✅ 팩스 번호 검색 추가
+                    "mobile": data[0].get("mobile", "정보 없음"),
                 }
-                return contact_info
-        return {"telephone": "정보 없음", "mobile": "정보 없음", "fax": "정보 없음"}
+        return {"telephone": "정보 없음", "mobile": "정보 없음"}
     except Exception as e:
         st.error(f"❌ 네이버 플레이스 API 오류: {e}")
-        return {"telephone": "정보 없음", "mobile": "정보 없음", "fax": "정보 없음"}
+        return {"telephone": "정보 없음", "mobile": "정보 없음"}
 
-# ✅ 병원 검색 함수 (네이버 API + 지도 API 보완)
+# ✅ 병원 검색 API + 네이버 상세보기에서 전화번호 가져오기
 def search_hospitals(query="파충류 동물병원", display=5):
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
         "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
     }
     params = {"query": query, "display": display}
+    
     try:
-        response = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=5)
+        response = requests.get(NAVER_SEARCH_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
-
-            # ✅ 전화번호, 휴대폰, 팩스 보완 (네이버 플레이스 API 활용)
+            
+            # ✅ 병원 상세보기 페이지에서 전화번호와 휴대폰 크롤링
             for hospital in hospitals:
-                contact_info = get_hospital_contact_from_naver_place(hospital["title"])
-                hospital["telephone"] = contact_info["telephone"]
-                hospital["mobile"] = contact_info["mobile"]
-                hospital["fax"] = contact_info["fax"]
-
+                hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"])
+                hospital["mobile"] = get_hospital_contact_from_naver_detail(hospital["link"])
+            
             return hospitals
         else:
             st.error(f"❌ 네이버 병원 검색 실패: {response.status_code}")
             return []
+    
     except Exception as e:
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
-
-# ✅ Google 지도 Embed 함수
+    
+    
+# ✅ Google 지도 Embed 함수 (지도만 구글 API 사용)
 def display_hospital_map(address):
+    """ 구글 지도에서 병원 위치를 표시하는 함수 """
     address_encoded = urllib.parse.quote(address)
     if GOOGLE_MAPS_API_KEY and GOOGLE_MAPS_API_KEY != "YOUR_GOOGLE_MAPS_API_KEY":
         map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
@@ -111,7 +111,7 @@ def display_hospitals():
             with st.container():
                 hospital_name = remove_html_tags(hospital['title'])
 
-                # ✅ 병원명 스타일 변경 (굵게 + 색상 변경 + 아이콘 추가)
+                # ✅ 병원명 스타일 변경
                 st.markdown(
                     f"""
                     <h3 style="color:#2A9D8F; font-family: 'Arial Black', sans-serif;">
@@ -121,7 +121,7 @@ def display_hospitals():
                     unsafe_allow_html=True
                 )
 
-                # ✅ 주소 정보 (글씨 크기 및 색상 조정)
+                # ✅ 주소 정보
                 st.markdown(
                     f"""
                     <p style="font-size:16px; color:#264653;">
@@ -130,15 +130,14 @@ def display_hospitals():
                     """,
                     unsafe_allow_html=True
                 )
-                display_hospital_map(hospital['address'])  # 지도 표시
+                display_hospital_map(hospital['address'])  # ✅ 구글 지도 표시
 
-                # ✅ 연락처 정보 (전화번호, 휴대폰, 팩스 포함)
+                # ✅ 연락처 정보 (전화번호, 휴대폰 포함)
                 st.markdown(
                     f"""
                     <p style="font-size:16px; color:#E76F51;">
                         📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}<br>
-                        📱 <b>휴대폰:</b> {hospital.get('mobile', '정보 없음')}<br>
-                        📠 <b>팩스:</b> {hospital.get('fax', '정보 없음')}
+                        📱 <b>휴대폰:</b> {hospital.get('mobile', '정보 없음')}
                     </p>
                     """,
                     unsafe_allow_html=True
@@ -159,7 +158,7 @@ def display_hospitals():
                     unsafe_allow_html=True
                 )
 
-                # ✅ 병원 간 구분선 추가 (투명한 구분선)
+                # ✅ 병원 간 구분선 추가
                 st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
                 
     else:
