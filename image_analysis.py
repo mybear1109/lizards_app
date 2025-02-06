@@ -135,13 +135,6 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-            # ✅ 분석 데이터 저장 (변수명 수정)
-            save_prediction(uploaded_file.name, species, confidence)  # ✅ species와 confidence 사용
-
-            # ✅ 기존 데이터 확인
-            st.markdown("### 📋 기존 분석 데이터")
-            df = load_existing_data()
-            st.dataframe(df)
 
             # ✅ 품종 설명 표시
             display_species_info(species)
