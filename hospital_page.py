@@ -56,8 +56,8 @@ def search_hospitals(query="파충류 동물병원", display=5):
             
             # ✅ 병원 상세보기 페이지에서 전화번호와 휴대폰 크롤링
             for hospital in hospitals:
-                hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"])
-                hospital["mobile"] = get_hospital_contact_from_naver_detail(hospital["link"])
+                hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"]) # type: ignore
+                hospital["mobile"] = get_hospital_contact_from_naver_detail(hospital["link"]) # type: ignore
             
             return hospitals
         else:
@@ -68,7 +68,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
     
-    
+
 # ✅ Google 지도 Embed 함수 (지도만 구글 API 사용)
 def display_hospital_map(address):
     """ 구글 지도에서 병원 위치를 표시하는 함수 """
