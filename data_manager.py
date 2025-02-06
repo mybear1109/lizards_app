@@ -6,10 +6,10 @@ import streamlit as st
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
 
-# ✅ CSV 파일의 올바른 컬럼 구조
-EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence"]
+# ✅ CSV 파일의 올바른 컬럼 구조 (Morph 컬럼 추가)
+EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence", "Morph"]
 
-def save_prediction(image_file, species, confidence):
+def save_prediction(image_file, species, confidence, morph):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
     try:
         # ✅ 저장 디렉토리가 없으면 생성
@@ -19,26 +19,14 @@ def save_prediction(image_file, species, confidence):
         image_name = image_file.name if hasattr(image_file, "name") else image_file
         image_path = f"data/images/{image_name}"
 
-         # ✅ 모프 데이터 추가
-        def save_prediction(image_name, species, confidence, morph):
-            new_data = pd.DataFrame({
-            "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-            "Image": [image_name],
-            "Species": [species],
-            "Confidence": [confidence],
-            "Morph": [morph] 
-              })
-
-
-
-
-        # ✅ 새로운 데이터 생성
+        # ✅ 새로운 데이터 생성 (Morph 포함)
         new_data = pd.DataFrame({
             "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
             "Image": [image_name],
             "Image_Path": [image_path],
             "Species": [species],
-            "Confidence": [confidence]
+            "Confidence": [confidence],
+            "Morph": [morph]  # ✅ Morph 정보 저장
         })
 
         # ✅ 기존 데이터 로드 및 컬럼 정리
@@ -54,8 +42,6 @@ def save_prediction(image_file, species, confidence):
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
         else:
             updated_data = new_data
-
-            
 
         # ✅ CSV 저장
         updated_data.to_csv(DATA_PATH, index=False)
