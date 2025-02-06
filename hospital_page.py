@@ -171,6 +171,6 @@ def display_hospitals():
 
                 # ✅ 병원 간 구분선 추가 (투명한 구분선)
                 st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
-                st.divider()
+                
     else:
         st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
