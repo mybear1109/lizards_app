@@ -15,26 +15,29 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
     try:
         # ✅ 저장 디렉토리가 없으면 생성
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
+        print(f"안녕1")
 
         # ✅ 이미지 파일명 생성 (유니크한 이름)
         if hasattr(image_file, "name"):
             image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
         else:
             image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file}"
-
+        print(f"안녕2")
         image_path = os.path.join(IMAGE_FOLDER, image_name)
 
-        # ✅ 새로운 데이터 생성 (Morph, Size, Price 기본값 처리)
-        new_data = pd.DataFrame({
-            "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-            "Image": [image_name],
-            "Size": [size if size else ""],  # ✅ 없으면 공란
-            "Species": [species],
-            "Confidence": [confidence],
-            "Morph": [morph if morph else ""],  # ✅ 없으면 공란
-            "Price": [price if price else ""]  # ✅ 없으면 공란
-        })
 
+        # ✅ 새로운 데이터 생성 (기본값 자동 적용)
+        new_data = pd.DataFrame([{
+            "Date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "Image": image_name,
+            "Size": size,
+            "Species": species,
+            "Confidence": confidence,
+            "Morph": morph,
+            "Price": price
+        }])
+
+        print(st.success("✅ 저장이안됨왜!!!!"))
         # ✅ 기존 데이터 로드 및 컬럼 정리
         if os.path.exists(DATA_PATH):
             existing_data = pd.read_csv(DATA_PATH)
@@ -52,7 +55,7 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
         # ✅ CSV 저장
         updated_data.to_csv(DATA_PATH, index=False)
         st.success("✅ 데이터 저장 완료!")
-
+        print(st.success("✅ 저장이안됨"))
     except Exception as e:
         st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
 
