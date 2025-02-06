@@ -117,15 +117,60 @@ def display_hospitals():
 
     hospitals = search_hospitals(search_query)
 
+    """ 병원 정보를 스타일링하여 표시하는 함수 """
     if hospitals:
         for hospital in hospitals:
             with st.container():
                 hospital_name = remove_html_tags(hospital['title'])
-                st.markdown(f"### 🏥 {hospital_name}")
-                st.write(f"📍 **주소**: {hospital['address']}")
-                display_hospital_map(hospital['address'])
-                st.write(f"📞 **전화번호**: {hospital.get('telephone', '정보 없음')}")
-                st.markdown(f"[🔗 네이버 상세보기]({hospital['link']})", unsafe_allow_html=True)
+
+                # ✅ 병원명 스타일 변경 (굵게 + 색상 변경 + 아이콘 추가)
+                st.markdown(
+                    f"""
+                    <h3 style="color:#2A9D8F; font-family: 'Arial Black', sans-serif;">
+                        🏥 {hospital_name}
+                    </h3>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # ✅ 주소 정보 (글씨 크기 및 색상 조정)
+                st.markdown(
+                    f"""
+                    <p style="font-size:16px; color:#264653;">
+                        📍 <b>주소:</b> {hospital['address']}
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
+                display_hospital_map(hospital['address'])  # 지도 표시
+
+                # ✅ 전화번호 정보 (폰트 색상 변경)
+                st.markdown(
+                    f"""
+                    <p style="font-size:16px; color:#E76F51;">
+                        📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # ✅ 네이버 링크 버튼 스타일 변경
+                st.markdown(
+                    f"""
+                    <p style="font-size:16px;">
+                        <a href="{hospital['link']}" target="_blank"
+                        style="text-decoration:none; background-color:#F4A261;
+                        color:white; padding:8px 12px; border-radius:5px;
+                        font-weight:bold;">
+                        🔗 네이버 상세보기
+                        </a>
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # ✅ 병원 간 구분선 추가 (투명한 구분선)
+                st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
                 st.divider()
     else:
         st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
