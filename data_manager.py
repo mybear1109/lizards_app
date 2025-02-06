@@ -5,28 +5,34 @@ import streamlit as st
 
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
+IMAGE_FOLDER = "data/images/"
 
-# ✅ CSV 파일의 올바른 컬럼 구조 (Morph 컬럼 추가)
-EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence", "Morph"]
+# ✅ CSV 파일의 올바른 컬럼 구조 (Morph 및 Price 컬럼 포함)
+EXPECTED_COLUMNS = ["Date", "Image", "Size", "Species", "Confidence", "Morph", "Price"]
 
-def save_prediction(image_file, species, confidence, morph):
-    """ 분석된 결과를 CSV 파일에 저장하는 함수 """
+def save_prediction(image_file, species, confidence, morph="", size="", price=""):
+    """ 분석된 결과를 CSV 파일에 추가하는 함수 """
     try:
         # ✅ 저장 디렉토리가 없으면 생성
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
 
-        # ✅ 이미지 파일명과 경로 저장
-        image_name = image_file.name if hasattr(image_file, "name") else image_file
-        image_path = f"data/images/{image_name}"
+        # ✅ 이미지 파일명 생성 (유니크한 이름)
+        if hasattr(image_file, "name"):
+            image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
+        else:
+            image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file}"
 
-        # ✅ 새로운 데이터 생성 (Morph 포함)
+        image_path = os.path.join(IMAGE_FOLDER, image_name)
+
+        # ✅ 새로운 데이터 생성 (Morph, Size, Price 기본값 처리)
         new_data = pd.DataFrame({
             "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
             "Image": [image_name],
-            "Image_Path": [image_path],
+            "Size": [size if size else ""],  # ✅ 없으면 공란
             "Species": [species],
             "Confidence": [confidence],
-            "Morph": [morph]  # ✅ Morph 정보 저장
+            "Morph": [morph if morph else ""],  # ✅ 없으면 공란
+            "Price": [price if price else ""]  # ✅ 없으면 공란
         })
 
         # ✅ 기존 데이터 로드 및 컬럼 정리
@@ -36,7 +42,7 @@ def save_prediction(image_file, species, confidence, morph):
             # ✅ 기존 컬럼과 기대하는 컬럼 비교하여 수정
             missing_columns = [col for col in EXPECTED_COLUMNS if col not in existing_data.columns]
             for col in missing_columns:
-                existing_data[col] = None  # 누락된 컬럼 추가
+                existing_data[col] = ""  # ✅ 누락된 컬럼을 공란으로 추가
 
             existing_data = existing_data[EXPECTED_COLUMNS]
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
@@ -64,7 +70,7 @@ def load_existing_data():
             # ✅ 컬럼 체크 및 자동 수정
             missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
             for col in missing_columns:
-                df[col] = None  # 누락된 컬럼 추가
+                df[col] = ""  # ✅ 누락된 컬럼 추가
 
             return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
         else:
