@@ -1,5 +1,5 @@
 import os
-from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어야 함
+from plot import plot_prediction_chart  # ✅ plot.py에서 시각화 함수 가져오기
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
@@ -9,7 +9,9 @@ from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 import matplotlib.pyplot as plt
-from data_manager import save_prediction, load_existing_data  # ✅ 데이터 저장 및 로드
+from data_manager import save_prediction
+from data_analysis import load_existing_data  # ✅ 올바른 위치에서 가져오기
+from species_info import display_species_info  # ✅ 품종 설명 표시 함수 가져오기
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -24,24 +26,9 @@ get_custom_objects()["DepthwiseConv2DCompat"] = DepthwiseConv2DCompat
 MODEL_PATH = "model/keras_model.h5"
 LABELS_PATH = "model/labels.txt"
 
-# ✅ 모델 무결성 체크
-def check_model_exists():
-    if not os.path.exists(MODEL_PATH):
-        st.error("❌ 모델 파일이 존재하지 않습니다. 올바른 경로를 확인하세요.")
-        return False
-    try:
-        with h5py.File(MODEL_PATH, "r") as f:
-            pass
-        return True
-    except Exception as e:
-        st.error(f"❌ 모델 파일이 손상되었습니다. 다시 업로드하세요. 오류: {e}")
-        return False
-
 # ✅ 모델 및 레이블 불러오기 함수
 @st.cache_data
 def load_model_cached():
-    if not check_model_exists():
-        return None
     try:
         model = load_model(MODEL_PATH, compile=False, custom_objects={"DepthwiseConv2D": DepthwiseConv2DCompat})
         return model
@@ -52,9 +39,6 @@ def load_model_cached():
 @st.cache_data
 def load_labels():
     try:
-        if not os.path.exists(LABELS_PATH):
-            st.error(f"❌ 레이블 파일이 존재하지 않습니다: {LABELS_PATH}")
-            return []
         with open(LABELS_PATH, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines()]
     except Exception as e:
@@ -79,28 +63,6 @@ def predict_species(image, model, labels):
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
         return "알 수 없음", 0
 
-# ✅ 품종 설명 UI 표시 함수
-def display_species_info(species_name):
-    species_info = get_species_description(species_name)
-
-    st.markdown(
-        f"""
-        <div style="
-            background-color: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-            ">
-            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
-            <p><b>📝 설명:</b> {species_info.get('설명')}</p>
-            <p><b>📍 서식지:</b> {species_info.get('서식지')}</p>
-            <p><b>🍽️ 먹이:</b> {species_info.get('먹이')}</p>
-            <p><b>✨ 특징:</b> {species_info.get('특징')}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
@@ -119,7 +81,6 @@ def display_image_analysis():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
-            # ✅ RGBA → RGB 변환
             if image.mode != "RGB":
                 image = image.convert("RGB")
             st.image(image, caption="업로드된 이미지", width=300)
@@ -130,7 +91,7 @@ def display_image_analysis():
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
             # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, species, confidence)  # ✅ 데이터 저장 추가
+            save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
 
             # ✅ 기존 데이터 확인
             st.markdown("### 📋 기존 분석 데이터")
@@ -138,7 +99,7 @@ def display_image_analysis():
             st.dataframe(df)
 
             # ✅ 품종 설명 표시
-            display_species_info(species)
+            display_species_info(species) # type: ignore
 
             # ✅ 확률 차트 생성
             st.markdown("### 📊 예측 확률 분포")
