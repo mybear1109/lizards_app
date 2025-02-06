@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from data_manager import load_existing_data
 
 def display_data_analysis():
