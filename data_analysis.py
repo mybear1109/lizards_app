@@ -1,8 +1,6 @@
-import os
-import pandas as pd
 import streamlit as st
-from data_manager import save_prediction, load_existing_data  # ✅ 데이터 저장 모듈 가져오기
-from plot import plot_prediction_chart  # ✅ 시각화 모듈 가져오기
+import pandas as pd
+import os
 
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
@@ -29,16 +27,11 @@ def load_existing_data():
         st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
         return pd.DataFrame(columns=["Date", "Image", "Species", "Confidence"])
 
-# ✅ 데이터 분석 및 통계
+# ✅ 데이터 분석 및 시각화
 def display_data_analysis():
     """ 저장된 데이터를 기반으로 분석 결과를 출력하는 함수 """
-    st.title("📊 데이터 분석")
-    st.write("분석된 도마뱀 이미지 데이터를 시각화하고, 통계 데이터를 제공합니다.")
-
-    # 기존 데이터 로드
     df = load_existing_data()
 
-    # 데이터가 존재하는 경우만 실행
     if not df.empty:
         st.dataframe(df)
 
@@ -50,11 +43,6 @@ def display_data_analysis():
         avg_confidence = df.groupby("Species")["Confidence"].mean()
         st.bar_chart(avg_confidence)
 
-        # ✅ 확률 차트 생성
-        st.markdown("### 📊 예측 확률 분포")
-        species_labels = df["Species"].unique().tolist()
-        confidence_values = [df[df["Species"] == species]["Confidence"].mean() / 100 for species in species_labels]
-        plot_prediction_chart(species_labels, confidence_values)
-
+        st.success("📊 분석 데이터가 성공적으로 로드되었습니다.")
     else:
-        st.warning("❌ 데이터가 존재하지 않습니다. 이미지를 분석한 후 다시 확인해주세요.")
+        st.warning("❌ 분석할 데이터가 없습니다. 이미지를 먼저 업로드하세요.")
