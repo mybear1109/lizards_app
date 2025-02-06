@@ -11,7 +11,6 @@ from species_info import get_species_description
 import matplotlib.pyplot as plt
 from data_manager import save_prediction
 from data_analysis import load_existing_data  # ✅ 올바른 위치에서 가져오기
-from species_info import display_species_info  # ✅ 품종 설명 표시 함수 가져오기
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
