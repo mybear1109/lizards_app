@@ -11,6 +11,7 @@ from species_info import get_species_info  # ✅ 품종 정보 가져오기
 import matplotlib.pyplot as plt
 from data_manager import save_prediction  # ✅ 데이터 저장 함수 가져오기
 from data_analysis import load_existing_data  # ✅ 기존 데이터 불러오기
+from species_info import get_species_info 
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -65,7 +66,7 @@ def predict_species(image, model, labels):
 # ✅ 품종 설명 UI 표시 함수
 def display_species_info(species_name):
     """ 종에 대한 정보를 UI에 출력하는 함수 """
-    species_info = get_species_info(species_name)
+    species_info = get_species_info(species_name)  # ✅ species_name을 전달
 
     st.markdown(
         f"""
@@ -85,6 +86,7 @@ def display_species_info(species_name):
         unsafe_allow_html=True,
     )
 
+    
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
