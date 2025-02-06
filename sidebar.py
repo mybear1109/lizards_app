@@ -9,8 +9,8 @@ def render_sidebar():
         # ✅ 검색창 스타일 및 메뉴 생성
         selected_option = option_menu(
             menu_title="🔍 탐색 메뉴",
-            options=["홈", "설명", "도마뱀 분석", "병원 검색", "유튜브 검색"],
-            icons=["house-door", "info-circle", "camera", "geo-alt", "play-circle"],
+            options=["홈", "설명", "도마뱀 분석", "병원 검색", "유튜브 검색", "분석 데이터"],
+            icons=["house-door", "info-circle", "camera", "geo-alt", "play-circle", "bar-chart-line"],
             menu_icon="menu-button",
             default_index=0,
             styles={
