@@ -12,6 +12,7 @@ import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 import matplotlib.pyplot as plt
 from plot import plot_prediction_chart # type: ignore
+from data_manager import save_prediction, load_existing_data
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -132,9 +133,29 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, top_label, top_confidence) # type: ignore
+
+            # ✅ 기존 데이터 확인
+            st.markdown("### 📋 기존 분석 데이터")
+            df = load_existing_data()
+            st.dataframe(df)
 
             # ✅ 품종 설명 표시
             display_species_info(species)
+
+            # ✅ 확률 차트 생성
+            st.markdown("### 📊 예측 확률 분포")
+            fig, ax = plt.subplots(figsize=(8, 5))
+            ax.barh(labels, predictions * 100, color="skyblue") # type: ignore
+            ax.set_xlabel("확률 (%)", fontsize=12)
+            ax.set_ylabel("품종", fontsize=12)
+            ax.set_title("품종별 예측 확률", fontsize=16)
+            ax.set_xlim(0, 100)
+            for i, v in enumerate(predictions * 100): # type: ignore
+                ax.text(v + 1, i, f"{v:.1f}%", color="blue", va="center", fontsize=10)
+            st.pyplot(fig)
+
 
             # ✅ 안내 메시지 추가
             st.info("""
