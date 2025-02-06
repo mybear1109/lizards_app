@@ -53,10 +53,10 @@ elif selected_option == "설명":
     show_about()
 elif selected_option == "도마뱀 분석":
     display_image_analysis()
-elif selected_option == "데이터 분석":
-    display_data_analysis()     # type: ignore
+
 elif selected_option == "병원 검색":
     display_hospitals()
-
 elif selected_option == "유튜브 검색":
     display_youtube_videos()
+elif selected_option == "데이터 분석":
+    display_data_analysis()     # type: ignore    
