@@ -122,6 +122,9 @@ def display_image_analysis():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
+                    # ✅ RGBA → RGB 변환
+            if image.mode != "RGB":
+                image = image.convert("RGB")
             st.image(image, caption="업로드된 이미지", width=300)
             
             # ✅ 이미지 분석 실행
