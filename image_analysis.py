@@ -13,6 +13,7 @@ from species_info import get_species_description
 import matplotlib.pyplot as plt
 from plot import plot_prediction_chart # type: ignore
 from data_manager import save_prediction, load_existing_data
+from data_analysis import save_prediction, load_existing_data
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -145,17 +146,7 @@ def display_image_analysis():
             # ✅ 품종 설명 표시
             display_species_info(species)
 
-            # ✅ 확률 차트 생성
-            st.markdown("### 📊 예측 확률 분포")
-            fig, ax = plt.subplots(figsize=(8, 5))
-            ax.barh(labels, predictions * 100, color="skyblue") # type: ignore
-            ax.set_xlabel("확률 (%)", fontsize=12)
-            ax.set_ylabel("품종", fontsize=12)
-            ax.set_title("품종별 예측 확률", fontsize=16)
-            ax.set_xlim(0, 100)
-            for i, v in enumerate(predictions * 100): # type: ignore
-                ax.text(v + 1, i, f"{v:.1f}%", color="blue", va="center", fontsize=10)
-            st.pyplot(fig)
+
 
             # ✅ 안내 메시지 추가
             st.info("""
