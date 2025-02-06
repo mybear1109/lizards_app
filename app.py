@@ -54,7 +54,7 @@ elif selected_option == "설명":
 elif selected_option == "도마뱀 분석":
     display_image_analysis()
 elif selected_option == "데이터 분석":
-    display_image_analysis()    
+    display_data_analysis()     # type: ignore
 elif selected_option == "병원 검색":
     display_hospitals()
 
