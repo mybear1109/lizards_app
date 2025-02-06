@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 
 # ✅ 모델 및 레이블 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
-LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
 DATA_PATH = os.path.join(BASE_DIR, "model", "Lizards.csv")
 
 def display_data_analysis():
