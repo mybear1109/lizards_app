@@ -10,25 +10,31 @@ IMAGE_FOLDER = "data/images/"  # 이미지 저장 폴더
 # ✅ CSV 파일의 올바른 컬럼 구조
 EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence"]
 
-
-
-# ✅ 분석 결과 저장 함수 (이미지 경로 추가)
+# ✅ 분석 결과 저장 함수 (이미지 경로 저장)
 def save_prediction(image_file, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
-
+    
     try:
         # ✅ 저장 디렉토리가 없으면 생성
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
         os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
-        # ✅ 이미지 저장 경로 설정
-        image_path = os.path.join(IMAGE_FOLDER, image_file.name)
-        with open(image_path, "wb") as f:
-            f.write(image_file.getbuffer())
+        # ✅ image_file이 스트링(파일명)인지 확인 후 처리
+        if isinstance(image_file, str):
+            image_name = image_file  # 문자열 파일명
+            image_path = os.path.join(IMAGE_FOLDER, image_name)
+        else:
+            # ✅ 이미지 저장 경로 설정
+            image_name = image_file.name
+            image_path = os.path.join(IMAGE_FOLDER, image_name)
+
+            # ✅ 파일을 실제로 저장
+            with open(image_path, "wb") as f:
+                f.write(image_file.getbuffer())
 
         new_data = pd.DataFrame({
             "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-            "Image": [image_file.name],
+            "Image": [image_name],
             "Image_Path": [image_path],  # ✅ 이미지 경로 저장
             "Species": [species],
             "Confidence": [confidence]
@@ -59,31 +65,3 @@ def save_prediction(image_file, species, confidence):
     except Exception as e:
         st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
 
-# ✅ 기존 데이터 로드 함수 (이미지 경로 포함)
-def load_existing_data():
-    """ 기존 분석 데이터를 불러오는 함수 """
-    try:
-        if os.path.exists(DATA_PATH):
-            df = pd.read_csv(DATA_PATH)
-
-            # ✅ CSV 파일이 비어있는 경우
-            if df.empty:
-                st.warning("⚠️ 분석할 데이터가 없습니다. 이미지를 먼저 업로드하세요.")
-                return pd.DataFrame(columns=EXPECTED_COLUMNS)
-
-            # ✅ 컬럼 체크 및 자동 수정
-            missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
-
-            if missing_columns:
-                st.warning(f"⚠️ CSV 파일의 일부 컬럼이 누락되었습니다. 자동 복구: {missing_columns}")
-                for col in missing_columns:
-                    df[col] = None  # ✅ 누락된 컬럼 추가
-
-            return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
-        else:
-            st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")
-            return pd.DataFrame(columns=EXPECTED_COLUMNS)
-
-    except Exception as e:
-        st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
-        return pd.DataFrame(columns=EXPECTED_COLUMNS)
