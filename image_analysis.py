@@ -63,30 +63,6 @@ def predict_species(image, model, labels):
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
         return "알 수 없음", 0
 
-# ✅ 품종 설명 UI 표시 함수
-def display_species_info(species_name):
-    """ 종에 대한 정보를 UI에 출력하는 함수 """
-    species_info = get_species_info(species_name)  # ✅ species_name을 전달
-
-    st.markdown(
-        f"""
-        <div style="
-            background-color: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-            ">
-            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
-            <p><b>📝 설명:</b> {species_info.get('설명', '정보 없음')}</p>
-            <p><b>📍 서식지:</b> {species_info.get('서식지', '정보 없음')}</p>
-            <p><b>🍽️ 먹이:</b> {species_info.get('먹이', '정보 없음')}</p>
-            <p><b>✨ 특징:</b> {species_info.get('특징', '정보 없음')}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    
 # ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
@@ -119,6 +95,33 @@ def display_image_analysis():
 
             # ✅ 품종 설명 표시
             display_species_info(species)
+
+
+
+            # ✅ 품종 설명 UI 표시 함수
+            def display_species_info(species_name):
+                """ 종에 대한 정보를 UI에 출력하는 함수 """
+                species_info = get_species_info(species_name)  # ✅ species_name을 전달
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color: #f8f9fa; 
+                        padding: 15px; 
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+                        ">
+                        <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
+                        <p><b>📝 설명:</b> {species_info.get('설명', '정보 없음')}</p>
+                        <p><b>📍 서식지:</b> {species_info.get('서식지', '정보 없음')}</p>
+                        <p><b>🍽️ 먹이:</b> {species_info.get('먹이', '정보 없음')}</p>
+                        <p><b>✨ 특징:</b> {species_info.get('특징', '정보 없음')}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+    
 
             # ✅ 기존 데이터 표시
             st.markdown("### 📋 기존 분석 데이터")
