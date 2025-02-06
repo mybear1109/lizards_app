@@ -1,6 +1,7 @@
 import os
 import sys
-from plot import plot_prediction_chart # type: ignore
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # 현재 디렉토리 추가
+from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어야 함
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
@@ -12,7 +13,6 @@ from species_info import get_species_description
 import matplotlib.pyplot as plt
 from plot import plot_prediction_chart # type: ignore
 from data_manager import save_prediction, load_existing_data
-from data_analysis import save_prediction, load_existing_data
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -123,34 +123,26 @@ def display_image_analysis():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
-            # ✅ RGBA → RGB 변환
+                    # ✅ RGBA → RGB 변환
             if image.mode != "RGB":
                 image = image.convert("RGB")
             st.image(image, caption="업로드된 이미지", width=300)
-
+            
             # ✅ 이미지 분석 실행
-            predictions = predict_species(image, model, labels)
-            top_index = np.argmax(predictions)
-            top_label = labels[top_index]
-            top_confidence = predictions[top_index] * 100
-            st.success(f"**예측된 도마뱀 품종: {top_label}**")
-            st.write(f"✅ 신뢰도: **{top_confidence:.2f}%**")
+            species, confidence = predict_species(image, model, labels)
+            st.success(f"**예측된 도마뱀 품종: {species}**")
+            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+
             # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, top_label, top_confidence)  # ✅ 수정됨
+            save_prediction(uploaded_file.name, top_label, top_confidence)
 
             # ✅ 기존 데이터 확인
             st.markdown("### 📋 기존 분석 데이터")
             df = load_existing_data()
             st.dataframe(df)
-
-            # ✅ 확률 차트 생성
-            plot_prediction_chart(labels, predictions)
-
-
+            
             # ✅ 품종 설명 표시
-            display_species_info(species) # type: ignore
-
-
+            display_species_info(species)
 
             # ✅ 안내 메시지 추가
             st.info("""
@@ -163,5 +155,4 @@ def display_image_analysis():
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
-
 
