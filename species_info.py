@@ -1,8 +1,10 @@
 import streamlit as st
 
 # ✅ 기존 get_species_info() 함수가 인수를 받을 수 있도록 수정
+# ✅ 기존 get_species_info() 함수가 인수를 받을 수 있도록 수정
 def get_species_info(species_name):
-    return {
+    """ 주어진 도마뱀 종(species_name)에 대한 정보를 반환하는 함수 """
+    species_data = {
         "0 Beardy Dragon": {
             "설명": "비어디 드래곤은 온순한 성격을 가진 도마뱀으로, 호주의 사막 지역에서 서식합니다. 특징적인 턱 아래 수염 모양의 비늘을 가지고 있으며, 체온 조절을 위해 수염을 펼치기도 합니다.",
             "서식지": "호주 건조지대, 사바나",
