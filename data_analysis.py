@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import streamlit as st
+from data_manager import save_prediction, load_existing_data  # ✅ 데이터 저장 모듈 가져오기
+from plot import plot_prediction_chart  # ✅ 시각화 모듈 가져오기
 
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
@@ -47,5 +49,12 @@ def display_data_analysis():
         # ✅ 신뢰도 평균 시각화
         avg_confidence = df.groupby("Species")["Confidence"].mean()
         st.bar_chart(avg_confidence)
+
+        # ✅ 확률 차트 생성
+        st.markdown("### 📊 예측 확률 분포")
+        species_labels = df["Species"].unique().tolist()
+        confidence_values = [df[df["Species"] == species]["Confidence"].mean() / 100 for species in species_labels]
+        plot_prediction_chart(species_labels, confidence_values)
+
     else:
         st.warning("❌ 데이터가 존재하지 않습니다. 이미지를 분석한 후 다시 확인해주세요.")

@@ -10,7 +10,8 @@ import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 import matplotlib.pyplot as plt
 from data_manager import save_prediction
-from data_analysis import load_existing_data  # ✅ 올바른 위치에서 가져오기
+from data_analysis import load_existing_data
+from species_info import get_species_info
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -90,7 +91,6 @@ def display_image_analysis():
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
 
-
             # ✅ 품종 설명 표시
             display_species_info(species) # type: ignore
 
@@ -104,17 +104,8 @@ def display_image_analysis():
                     📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
                     """)
 
+
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 
-            # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
-            # ✅ 확률 차트 생성
-
-            # ✅ 기존 데이터 확인
-            st.markdown("### 📋 기존 분석 데이터")
-            df = load_existing_data()
-            st.dataframe(df)
-            st.markdown("### 📊 예측 확률 분포")
-            plot_prediction_chart(labels, [confidence / 100])  # ✅ 시각화 추가
