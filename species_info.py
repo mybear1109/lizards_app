@@ -134,7 +134,8 @@ def get_species_info(species_name):
         "설명": "해당 종에 대한 설명이 없습니다.",
         "서식지": "미확인",
         "먹이": "미확인",
-        "특징": "미확인"
+        "특징": "미확인",
+        "이미지": "images/default.jpg"
     })
 
 # ✅ 종 설명을 가져오는 함수
@@ -142,3 +143,24 @@ def get_species_description(species_name):
     """ 종에 대한 설명을 가져오는 함수 """
     return get_species_info(species_name)  # ✅ 무한 재귀 방지 완료!
 
+
+# ✅ 대표 이미지를 포함한 종 설명 UI 표시 함수
+def display_species_info(species_name):
+    """ 종 정보를 UI에 표시하는 함수 (이미지 포함) """
+    species_info = get_species_info(species_name)
+
+    # ✅ UI 디자인 개선 (이미지 + 설명)
+    st.markdown(
+        f"""
+        <div style="
+            background-color: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            ">
+            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )

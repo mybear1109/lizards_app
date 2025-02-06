@@ -106,7 +106,7 @@ def display_image_analysis():
             st.write("")
             # ✅ 품종 설명 표시
             display_species_info(species)
-            
+
             st.write("")
             # ✅ 주의 사항 안내
             st.error("""
@@ -127,6 +127,10 @@ def display_species_info(species_name):
 
     if not species_info:  
         species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}  
+
+    # ✅ 대표 이미지 표시
+    st.image(species_info["이미지"], caption=f"{species_name} 대표 이미지", width=300)
+
 
     st.markdown(
         f"""
