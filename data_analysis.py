@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from data_manager import load_existing_data
 from image_analysis import display_image_analysis
-from data_manager import save_prediction  # type: ignore
+
 
 # ✅ 데이터 분석 및 시각화 함수
 def display_data_analysis():

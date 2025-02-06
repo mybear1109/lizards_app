@@ -7,7 +7,7 @@ from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description  
-
+from data_manager import save_prediction  
 
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
