@@ -123,18 +123,18 @@ def display_image_analysis():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
-                    # ✅ RGBA → RGB 변환
+            # ✅ RGBA → RGB 변환
             if image.mode != "RGB":
                 image = image.convert("RGB")
             st.image(image, caption="업로드된 이미지", width=300)
-            
+
             # ✅ 이미지 분석 실행
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-            # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, top_label, top_confidence) # type: ignore
+            # ✅ 분석 데이터 저장 (변수명 수정)
+            save_prediction(uploaded_file.name, species, confidence)  # ✅ species와 confidence 사용
 
             # ✅ 기존 데이터 확인
             st.markdown("### 📋 기존 분석 데이터")
@@ -156,7 +156,6 @@ def display_image_analysis():
                 ax.text(v + 1, i, f"{v:.1f}%", color="blue", va="center", fontsize=10)
             st.pyplot(fig)
 
-
             # ✅ 안내 메시지 추가
             st.info("""
                     🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
@@ -168,4 +167,5 @@ def display_image_analysis():
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
+
 
