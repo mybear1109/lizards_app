@@ -106,7 +106,8 @@ def display_image_analysis():
             st.write("")
             # ✅ 품종 설명 표시
             display_species_info(species)
-
+            
+            st.write("")
             # ✅ 주의 사항 안내
             st.error("""
                 🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
