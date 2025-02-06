@@ -1,8 +1,8 @@
 import streamlit as st
-from about import show_about
-from image_analysis import display_image_analysis
-from hospital_search import search_hospitals # type: ignore
-from youtube_search import search_youtube # type: ignore
+from .about import show_about
+from .image_analysis import display_image_analysis
+from .hospital_page import search_hospitals # type: ignore
+from .youtube_page import search_youtube # type: ignore
 
 # ✅ Streamlit 페이지 설정
 st.set_page_config(page_title="파충류 탐험의 세계", layout="wide")
