@@ -30,7 +30,7 @@ get_custom_objects()["DepthwiseConv2DCompat"] = DepthwiseConv2DCompat
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
 LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
-DATA_PATH = os.path.join(BASE_DIR, "data", "Lizards.csv")
+
 
 # ✅ 모델 무결성 체크
 def check_model_exists():
