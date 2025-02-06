@@ -1,5 +1,4 @@
 import os
-from plot import plot_prediction_chart  # ✅ 시각화 함수
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
@@ -7,9 +6,9 @@ from tensorflow.keras.models import load_model  # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
-from species_info import get_species_info  # ✅ 품종 정보
-from data_manager import save_prediction  # ✅ 데이터 저장
-from data_analysis import display_data_analysis  # ✅ 데이터 분석 화면 표시
+from species_info import get_species_info  
+from data_manager import save_prediction  
+from data_analysis import display_data_analysis  
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -20,13 +19,29 @@ class DepthwiseConv2DCompat(DepthwiseConv2D):
 # ✅ 커스텀 레이어 등록
 get_custom_objects()["DepthwiseConv2DCompat"] = DepthwiseConv2DCompat
 
-# ✅ 모델 경로 설정
+# ✅ 모델 및 레이블 경로 설정
 MODEL_PATH = "model/keras_model.h5"
 LABELS_PATH = "model/labels.txt"
 
-# ✅ 모델 및 레이블 불러오기 함수
-@st.cache_data
+# ✅ 모델 무결성 체크 및 캐시 초기화
+def check_model_integrity():
+    """ 모델 파일이 존재하고 손상되지 않았는지 확인하는 함수 """
+    if not os.path.exists(MODEL_PATH):
+        st.error("❌ 모델 파일이 존재하지 않습니다. 올바른 경로를 확인하세요.")
+        return False
+    try:
+        with h5py.File(MODEL_PATH, "r") as f:
+            pass
+        return True
+    except Exception:
+        st.error("❌ 모델 파일이 손상되었습니다. 다시 업로드해주세요.")
+        return False
+
+# ✅ 모델 및 레이블 불러오기 함수 (캐싱 제거)
 def load_model_cached():
+    """ 캐싱 없이 모델을 불러오는 함수 (오류 방지) """
+    if not check_model_integrity():
+        return None
     try:
         model = load_model(MODEL_PATH, compile=False, custom_objects={"DepthwiseConv2D": DepthwiseConv2DCompat})
         return model
@@ -34,8 +49,8 @@ def load_model_cached():
         st.error(f"❌ 모델 로드 중 오류 발생: {e}")
         return None
 
-@st.cache_data
 def load_labels():
+    """ 레이블 파일을 불러오는 함수 """
     try:
         with open(LABELS_PATH, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines()]
@@ -45,6 +60,7 @@ def load_labels():
 
 # ✅ 도마뱀 품종 예측 함수
 def predict_species(image, model, labels):
+    """ 업로드된 이미지로 도마뱀 품종을 예측하는 함수 """
     try:
         size = (224, 224)
         image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
@@ -60,6 +76,53 @@ def predict_species(image, model, labels):
     except Exception as e:
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
         return "알 수 없음", 0
+
+# ✅ 도마뱀 이미지 분석 기능
+def display_image_analysis():
+    st.subheader("🦎 도마뱀 이미지 분석")
+
+    # ✅ 모델 및 레이블 불러오기
+    model = load_model_cached()
+    labels = load_labels()
+
+    if model is None or not labels:
+        st.error("⚠️ 분석을 실행할 수 없습니다. 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
+        return
+
+    # ✅ 이미지 업로드 기능
+    uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
+    if uploaded_file:
+        try:
+            image = Image.open(uploaded_file)
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            st.image(image, caption="업로드된 이미지", width=300)
+
+            # ✅ 이미지 분석 실행
+            species, confidence = predict_species(image, model, labels)
+            st.success(f"**예측된 도마뱀 품종: {species}**")
+            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
+
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, species, confidence)
+
+            # ✅ 품종 설명 표시
+            display_species_info(species)
+
+            # ✅ 데이터 분석 페이지 표시
+            st.markdown("### 📊 기존 분석 데이터 확인")
+            display_data_analysis()
+
+            st.info("""
+                🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
+
+                ⚠️ 이 결과는 참고용으로만 활용해 주시기 바랍니다.
+
+                📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
+            """)
+
+        except Exception as e:
+            st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
 
 # ✅ 품종 설명 UI 표시 함수
 def display_species_info(species_name):
@@ -83,52 +146,3 @@ def display_species_info(species_name):
         """,
         unsafe_allow_html=True,
     )
-
-# ✅ 도마뱀 이미지 분석 기능
-def display_image_analysis():
-    st.subheader("🦎 도마뱀 이미지 분석")
-
-    # 모델 및 레이블 불러오기
-    model = load_model_cached()
-    labels = load_labels()
-
-    # 모델이 정상적으로 로드되지 않았으면 중단
-    if model is None or not labels:
-        st.error("⚠️ 분석을 실행할 수 없습니다. 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
-        return
-
-    # ✅ 이미지 업로드 기능
-    uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
-    if uploaded_file:
-        try:
-            image = Image.open(uploaded_file)
-            if image.mode != "RGB":
-                image = image.convert("RGB")
-            st.image(image, caption="업로드된 이미지", width=300)
-
-            # ✅ 이미지 분석 실행
-            species, confidence = predict_species(image, model, labels)
-            st.success(f"**예측된 도마뱀 품종: {species}**")
-            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-
-            # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, species, confidence)  
-
-            # ✅ 품종 설명 표시
-            display_species_info(species)
-
-            # ✅ 데이터 분석 화면 표시 (데이터 분석 페이지에서 실행)
-            st.markdown("### 📊 기존 분석 데이터 확인")
-            display_data_analysis()
-
-            # ✅ 안내 메시지 추가
-            st.info("""
-                    🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
-
-                    ⚠️ 이 결과는 참고용으로만 활용해 주시기 바랍니다.
-
-                    📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
-                    """)
-
-        except Exception as e:
-            st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
