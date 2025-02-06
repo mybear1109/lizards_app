@@ -1,7 +1,7 @@
 import os
 import sys
-from data_analysis import load_existing_data  # ✅ data_analysis 모듈에서 함수 가져오기
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # 현재 디렉토리 추가
+from data_analysis import load_existing_data  # ✅ data_analysis 모듈에서 함수 가져오기
 from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어야 함
 import numpy as np
 import streamlit as st
