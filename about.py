@@ -7,6 +7,9 @@ def show_about():
         AI 모델을 이용해 총 **18종의 파충류 및 양서류**를 자동으로 분류하고,
                 
         병원 검색과 유튜브 검색 기능까지 제공하는 간단하고 편리한 웹 애플리케이션입니다.
+                
+        자세한 설명은 아래를 참고부탁드립니다.🎉
+        https://github.com/mybear1109/lizards_app/blob/main/README.md                 
             
     """)
 
