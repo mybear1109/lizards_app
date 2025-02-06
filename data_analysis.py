@@ -1,54 +1,91 @@
-import streamlit as st
+import os
 import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.express as px
+import datetime
+import streamlit as st  # ✅ Streamlit 모듈 추가
+import matplotlib.pyplot as plt  # ✅ 데이터 시각화를 위한 Matplotlib 추가
 
 # ✅ 데이터 파일 경로
-DATA_PATH = "data/Lizards.csv"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "data", "Lizards.csv")
 
+# ✅ 데이터 분석 페이지
 def display_data_analysis():
-    st.title("📊 데이터 분석")
-    st.write("분석된 도마뱀 이미지 데이터를 시각화하고, 통계 데이터를 제공합니다.")
+    st.title("📊 도마뱀 이미지 분석 데이터")
+    
+    # ✅ 기존 데이터 로드
+    df = load_existing_data()
 
+    if df.empty:
+        st.warning("⚠️ 저장된 데이터가 없습니다. 먼저 이미지를 분석하세요!")
+        return
+
+    # ✅ 데이터 미리보기
+    st.subheader("📋 데이터 미리보기")
+    st.dataframe(df)
+
+    # ✅ 품종별 데이터 개수 시각화
+    st.subheader("📊 품종별 분석 개수")
+    species_counts = df["Species"].value_counts()
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    species_counts.plot(kind="bar", color="skyblue", ax=ax)
+    ax.set_xlabel("도마뱀 품종")
+    ax.set_ylabel("분석 횟수")
+    ax.set_title("품종별 분석 데이터 분포")
+    st.pyplot(fig)
+
+# ✅ 분석 결과 저장 함수
+def save_prediction(image_name, species, confidence):
+    """ 분석된 결과를 CSV 파일에 저장하는 함수 """
+    
     try:
-        # ✅ 데이터 로드
-        if not DATA_PATH or not pd.io.common.file_exists(DATA_PATH):
-            st.warning("⚠️ 저장된 데이터가 없습니다. 이미지를 업로드해 분석을 실행하세요.")
-            return
+        # ✅ 저장 경로가 존재하지 않으면 생성
+        os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
 
-        df = pd.read_csv(DATA_PATH)
+        new_data = pd.DataFrame({
+            "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+            "Image": [image_name],
+            "Species": [species],
+            "Confidence": [confidence]
+        })
 
-        if df.empty:
-            st.warning("⚠️ 데이터가 없습니다. 분석을 진행하세요.")
-            return
+        if os.path.exists(DATA_PATH):
+            existing_data = pd.read_csv(DATA_PATH)
 
-        # ✅ 데이터 요약
-        st.markdown("### 📋 데이터 요약")
-        st.dataframe(df)
+            # ✅ 컬럼이 올바른지 확인
+            expected_columns = ["Date", "Image", "Species", "Confidence"]
+            if list(existing_data.columns) != expected_columns:
+                st.error("❌ 기존 데이터 컬럼이 올바르지 않습니다. CSV 파일을 확인하세요.")
+                return
 
-        # ✅ 종별 데이터 집계
-        species_counts = df["Species"].value_counts()
-        species_confidence_avg = df.groupby("Species")["Confidence"].mean()
+            # ✅ 데이터 추가 후 저장
+            updated_data = pd.concat([existing_data, new_data], ignore_index=True)
+        else:
+            updated_data = new_data
 
-        # ✅ Plotly를 사용해 막대 그래프 생성
-        st.markdown("### 📊 예측 결과 분포")
-        fig = px.bar(
-            x=species_confidence_avg.index,
-            y=species_confidence_avg.values,
-            text=species_confidence_avg.values,
-            color=species_confidence_avg.index,
-            labels={"x": "Species", "y": "Average Confidence (%)"},
-            title="도마뱀 품종별 예측 평균 신뢰도",
-            template="plotly_white",
-        )
-        fig.update_traces(texttemplate='%{text:.1f}%', textposition="outside")
-        fig.update_layout(
-            xaxis_title="도마뱀 품종",
-            yaxis_title="평균 신뢰도 (%)",
-            margin=dict(l=40, r=40, t=40, b=40),
-            height=400,
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        updated_data.to_csv(DATA_PATH, index=False)
+        st.success("✅ 데이터 저장 완료!")
 
     except Exception as e:
-        st.error(f"❌ 데이터 분석 중 오류 발생: {e}")
+        st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
+
+# ✅ 기존 데이터 로드 함수
+def load_existing_data():
+    """ 기존 분석 데이터를 불러오는 함수 """
+    try:
+        if os.path.exists(DATA_PATH):
+            df = pd.read_csv(DATA_PATH)
+
+            # ✅ 컬럼 체크
+            expected_columns = ["Date", "Image", "Species", "Confidence"]
+            if list(df.columns) != expected_columns:
+                st.error("❌ CSV 파일의 컬럼 구조가 맞지 않습니다. 데이터를 확인하세요.")
+                return pd.DataFrame(columns=expected_columns)
+
+            return df
+        else:
+            return pd.DataFrame(columns=["Date", "Image", "Species", "Confidence"])
+
+    except Exception as e:
+        st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
+        return pd.DataFrame(columns=["Date", "Image", "Species", "Confidence"])
