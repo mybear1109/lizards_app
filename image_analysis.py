@@ -103,7 +103,8 @@ def display_image_analysis():
 
                     📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
                     """)
-
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, species, confidence)  # ✅ 저장 추가
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
