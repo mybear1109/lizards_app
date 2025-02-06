@@ -28,17 +28,31 @@
 > **세분화된 파일 구성**으로 각 기능이 모듈화되어 있습니다.
 
 ```bash
+
 project_root/
-├── data/                 # 데이터 관리 디렉토리
-├── model/                # AI 모델 디렉토리
+├── __pycache__/
+├── .git/
+├── data/
+├── icons/
+├── image/
+├── model/
+├── test_image/
+├── .gitignore
+├── lisards.ipynb
+├── README.md
+├── requirements.txt
+├── about.py
 ├── app.py                # Streamlit 메인 애플리케이션
+├── data_analysis.py      # 데이터로드와 시각화
+├── data_manager.py       # 데이터저장과 수정
 ├── hospital_page.py      # 병원 검색 기능
-├── youtube_page.py       # 유튜브 검색 기능
-├── image_analysis.py     # AI 이미지 분석 기능
+├── image_analysis.py     # 이미지 분석(AI 모델) 기능
 ├── plot.py               # 데이터 시각화
-├── sidebar.py            # 사이드바 UI 관리
+├── sidebar.py            # 사이드바 UI
 ├── species_info.py       # 종별 상세 설명
-└── ... (기타 파일 및 디렉토리)
+├── youtube_page.py       # 유튜브 검색 기능
+
+
 ```
 
 ---
@@ -55,7 +69,7 @@ project_root/
 | 📈 **Matplotlib, Seaborn, Plotly**| 데이터 시각화 및 통계 차트 생성                               |
 | 🎥 **YouTube API**             | 파충류 관련 영상 검색                                          |
 | 🗺️ **병원 검색 API**            | 네이버/구글 병원 데이터 연계 및 정확도 향상                   |
-| 📝 **블로그/인스타 데이터 연계** | 병원 정보의 신뢰도 향상을 위한 추가 데이터 사용               |
+| 📝 **블로그/데이터 연계** | 병원 정보의 신뢰도 향상을 위한 추가 데이터 사용               |
 
 ---
 
