@@ -2,9 +2,9 @@ import streamlit as st
 from sidebar import render_sidebar
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
-from image_analysis import display_image_analysis
 from about import show_about # type: ignore
 from data_analysis import display_data_analysis
+from image_analysis import display_image_analysis
 
 
 # ✅ Streamlit 페이지 설정

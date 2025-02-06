@@ -5,39 +5,42 @@ import streamlit as st
 
 # ✅ 데이터 파일 경로 설정
 DATA_PATH = "data/Lizards.csv"
+
+# ✅ CSV 파일의 올바른 컬럼 구조
 EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence"]
 
 def save_prediction(image_name, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
     try:
-        # ✅ 디렉토리 확인 및 생성
+        # ✅ 저장 디렉토리가 없으면 생성
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
 
         # ✅ 새로운 데이터 생성
         new_data = pd.DataFrame({
             "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
             "Image": [image_name],
+            "Image_Path": [os.path.join("images", image_name)],  # 이미지 경로 추가
             "Species": [species],
-            "Confidence": [confidence],
-            "Image_Path": [os.path.join("images", image_name)]  # 이미지 경로 추가
+            "Confidence": [confidence]
         })
 
         # ✅ 기존 데이터 로드
         if os.path.exists(DATA_PATH):
             existing_data = pd.read_csv(DATA_PATH)
 
-            # ✅ 컬럼 체크 및 자동 수정
+            # ✅ 컬럼 정렬 및 누락된 컬럼 처리
             if list(existing_data.columns) != EXPECTED_COLUMNS:
                 missing_columns = [col for col in EXPECTED_COLUMNS if col not in existing_data.columns]
                 for col in missing_columns:
-                    existing_data[col] = None
+                    existing_data[col] = None  # 누락된 컬럼 추가
                 existing_data = existing_data[EXPECTED_COLUMNS]
 
+            # ✅ 기존 데이터에 새 데이터 추가
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
         else:
             updated_data = new_data
 
-        # ✅ CSV 저장
+        # ✅ CSV 파일 저장
         updated_data.to_csv(DATA_PATH, index=False)
         st.success("✅ 데이터 저장 완료!")
     except Exception as e:
@@ -53,11 +56,11 @@ def load_existing_data():
             if list(df.columns) != EXPECTED_COLUMNS:
                 missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
                 for col in missing_columns:
-                    df[col] = None
+                    df[col] = None  # 누락된 컬럼 추가
                 df = df[EXPECTED_COLUMNS]
             return df
         else:
-            st.warning("⚠️ 저장된 데이터가 없습니다.")
+            st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")
             return pd.DataFrame(columns=EXPECTED_COLUMNS)
     except Exception as e:
         st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
