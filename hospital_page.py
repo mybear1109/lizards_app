@@ -1,8 +1,9 @@
 import re
-import streamlit as st
-import requests
-import urllib.parse
 import os
+import requests
+import streamlit as st
+import urllib.parse
+from datetime import datetime
 
 # ✅ Google Maps API Key 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
@@ -11,12 +12,10 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_API_URL = "https://openapi.naver.com/v1/search/local"
+NAVER_BLOG_API_URL = "https://openapi.naver.com/v1/search/blog.json"
 
-# ✅ 허용된 검색 키워드 목록 (파충류 관련)
-VALID_ANIMAL_KEYWORDS = {
-    "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
-    "특이동물", "특수동물", "희귀동물", "이색동물"
-}
+# ✅ 병원 검색 가능한 지역 및 키워드
+VALID_ANIMAL_KEYWORDS = {"파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온", "특이동물", "특수동물", "희귀동물", "이색동물"}
 
 # ✅ 세분화된 지역 목록 (광역시/도 → 시/구/동까지 포함)
 REGIONS = [
@@ -34,47 +33,32 @@ REGIONS = [
     "양주", "구리", "남양주", "여주", "동두천", "포천", "연천",
 ]
 
-# ✅ HTML 태그 제거 함수 (NameError 해결)
+# ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
-# ✅ 병원 검색 함수 (네이버 API)
+# ✅ 네이버 병원 검색 함수
 def search_hospitals(query="파충류 동물병원", display=5):
-    headers = {
-        "X-Naver-Client-Id": NAVER_CLIENT_ID,
-        "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
-    }
+    headers = {"X-Naver-Client-Id": NAVER_CLIENT_ID, "X-Naver-Client-Secret": NAVER_CLIENT_SECRET}
     params = {"query": query, "display": display}
     try:
         response = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
             return response.json().get("items", [])
         else:
-            st.error(f"❌ API 호출 실패: 상태 코드 {response.status_code}")
+            st.error(f"❌ 네이버 병원 검색 실패: {response.status_code}")
             return []
     except Exception as e:
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
 
-# ✅ 검색어 필터링 함수 (지역 + 동물 키워드 반영)
-def filter_search_query(user_query):
-    filtered_query = "동물병원"
-
-    # ✅ 지역 검색 포함 여부 확인
-    for region in REGIONS:
-        if region in user_query:
-            filtered_query = f"{region} {filtered_query}"
-            break
-
-    # ✅ 동물 관련 키워드 포함 여부 확인
-    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS):
-        filtered_query = f"파충류 {filtered_query}"
-    else:
-        st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
-        return None
-
-    return filtered_query
+# ✅ 네이버 블로그 검색 함수
+def search_naver_blog(query):
+    headers = {"X-Naver-Client-Id": NAVER_CLIENT_ID, "X-Naver-Client-Secret": NAVER_CLIENT_SECRET}
+    params = {"query": query, "display": 5, "sort": "date"}
+    response = requests.get(NAVER_BLOG_API_URL, headers=headers, params=params)
+    return response.json()
 
 # ✅ Google 지도 Embed 함수
 def display_hospital_map(address):
@@ -83,94 +67,110 @@ def display_hospital_map(address):
         map_embed_url = f"https://www.google.com/maps/embed/v1/place?key={GOOGLE_MAPS_API_KEY}&q={address_encoded}"
         st.markdown(
             f"""
-            <iframe 
-                src="{map_embed_url}" 
-                width="100%" 
-                height="250" 
-                style="border-radius:10px; border:0;" 
-                allowfullscreen="" 
-                loading="lazy">
-            </iframe>
+            <iframe src="{map_embed_url}" width="100%" height="250" style="border-radius:10px; border:0;" allowfullscreen="" loading="lazy"></iframe>
             """,
             unsafe_allow_html=True,
         )
-    else:
-        st.error("⚠️ Google Maps API Key가 설정되지 않았습니다.")
 
-# ✅ 병원 검색 결과 표시
+# ✅ 병원 검색 UI 및 결과 출력
 def display_hospitals():
-    user_query = st.session_state.get("hospital_query", "").strip()
+    st.title("🏥 파충류 병원 검색")
+    
+    location = st.text_input("지역을 입력하세요 (예: 서울, 경기)")
+    animal_type = st.selectbox("파충류 종류를 선택하세요", ["도마뱀", "뱀", "거북", "양서류", "기타"])
+    service_type = st.multiselect("필요한 서비스", ["24시간", "야간진료", "응급진료"])
+    
+    if st.button("🔍 병원 검색"):
+        search_query = f"{location} {animal_type} 파충류 동물병원 특수동물 병원 {' '.join(service_type)}"
+        hospitals = search_hospitals(search_query)
 
-    if not user_query:
-        st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
-        st.info("병원 검색어를 사이드바에 입력하세요.")
-        return
+        if hospitals:
+            for hospital in hospitals:
+                with st.container():
+                    hospital_name = remove_html_tags(hospital['title'])
 
-    # ✅ 검색어 필터 적용
-    search_query = filter_search_query(user_query)
+                    st.markdown(
+                        f"""
+                        <h3 style="color:#2A9D8F; font-family: 'Arial Black', sans-serif;">
+                            🏥 {hospital_name}
+                        </h3>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-    if not search_query:
-        return  # 검색어가 허용되지 않으면 종료
+                    st.markdown(
+                        f"""
+                        <p style="font-size:16px; color:#264653;">
+                            📍 <b>주소:</b> {hospital['address']}
+                        </p>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                    display_hospital_map(hospital['address'])
 
-    st.title("🏥 병원 검색 결과")
-    st.write(f"🔎 검색어: `{search_query}`")
+                    st.markdown(
+                        f"""
+                        <p style="font-size:16px; color:#E76F51;">
+                            📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}
+                        </p>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-    hospitals = search_hospitals(search_query)
+                    st.markdown(
+                        f"""
+                        <p style="font-size:16px;">
+                            <a href="{hospital['link']}" target="_blank"
+                            style="text-decoration:none; background-color:#F4A261;
+                            color:white; padding:8px 12px; border-radius:5px;
+                            font-weight:bold;">
+                            🔗 네이버 상세보기
+                            </a>
+                        </p>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-    """ 병원 정보를 스타일링하여 표시하는 함수 """
-    if hospitals:
-        for hospital in hospitals:
-            with st.container():
-                hospital_name = remove_html_tags(hospital['title'])
+                    st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
+        else:
+            st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
 
-                # ✅ 병원명 스타일 변경 (굵게 + 색상 변경 + 아이콘 추가)
+# ✅ 네이버 블로그 검색 UI 및 결과 출력
+def display_naver_blog_search():
+    st.subheader("📝 네이버 블로그 검색")
+    user_query = st.text_input("검색어 입력 (예: 파충류 병원, 이구아나 진료 후기)")
+
+    if st.button("🔍 블로그 검색"):
+        blog_results = search_naver_blog(user_query)
+
+        if "items" in blog_results:
+            for item in blog_results["items"]:
                 st.markdown(
                     f"""
-                    <h3 style="color:#2A9D8F; font-family: 'Arial Black', sans-serif;">
-                        🏥 {hospital_name}
-                    </h3>
+                    <h4 style="color:#2A9D8F;">📌 {remove_html_tags(item['title'])}</h4>
+                    <p>📝 {remove_html_tags(item['description'])}</p>
+                    <p>📅 {datetime.strptime(item['postdate'], "%Y%m%d").strftime("%Y-%m-%d")}</p>
+                    <a href="{item['link']}" target="_blank"
+                    style="text-decoration:none; background-color:#E76F51; color:white;
+                    padding:8px 12px; border-radius:5px; font-weight:bold;">
+                    🔗 블로그 보기
+                    </a>
+                    <hr style='border:1px solid #DADADA; margin:20px 0;'>
                     """,
                     unsafe_allow_html=True
                 )
+        else:
+            st.warning("검색 결과가 없습니다.")
 
-                # ✅ 주소 정보 (글씨 크기 및 색상 조정)
-                st.markdown(
-                    f"""
-                    <p style="font-size:16px; color:#264653;">
-                        📍 <b>주소:</b> {hospital['address']}
-                    </p>
-                    """,
-                    unsafe_allow_html=True
-                )
-                display_hospital_map(hospital['address'])  # 지도 표시
+# ✅ 스트림릿 실행
+def main():
+    st.sidebar.title("🔍 검색 옵션")
+    page = st.sidebar.radio("검색 유형 선택", ["🏥 병원 검색", "📝 블로그 검색"])
 
-                # ✅ 전화번호 정보 (폰트 색상 변경)
-                st.markdown(
-                    f"""
-                    <p style="font-size:16px; color:#E76F51;">
-                        📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}
-                    </p>
-                    """,
-                    unsafe_allow_html=True
-                )
+    if page == "🏥 병원 검색":
+        display_hospitals()
+    elif page == "📝 블로그 검색":
+        display_naver_blog_search()
 
-                # ✅ 네이버 링크 버튼 스타일 변경
-                st.markdown(
-                    f"""
-                    <p style="font-size:16px;">
-                        <a href="{hospital['link']}" target="_blank"
-                        style="text-decoration:none; background-color:#F4A261;
-                        color:white; padding:8px 12px; border-radius:5px;
-                        font-weight:bold;">
-                        🔗 네이버 상세보기
-                        </a>
-                    </p>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                # ✅ 병원 간 구분선 추가 (투명한 구분선)
-                st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
-                
-    else:
-        st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
+if __name__ == "__main__":
+    main()
