@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from data_manager import load_existing_data  # ✅ 여기서 데이터 로드
+from data_manager import load_existing_data  # ✅ 데이터 로드만 담당
 
 def display_data_analysis():
     st.title("📊 데이터 분석")
