@@ -3,8 +3,8 @@ import pandas as pd
 import datetime
 
 # ✅ 데이터 파일 경로
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = os.path.join(BASE_DIR, "data", "Lizards.csv")
+
+DATA_PATH =  "data/Lizards.csv"
 
 # ✅ 분석 결과 저장 함수 (디렉터리 체크 추가)
 def save_prediction(image_name, species, confidence):
