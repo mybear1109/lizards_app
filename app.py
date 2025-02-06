@@ -3,6 +3,7 @@ from sidebar import render_sidebar
 from hospital_page import display_hospitals
 from youtube_page import display_youtube_videos
 from image_analysis import display_image_analysis
+from about import show_about
 
 # ✅ Streamlit 페이지 설정
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
