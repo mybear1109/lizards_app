@@ -3,8 +3,11 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# ✅ 데이터 파일 경로
-DATA_PATH = "data/Lizards.csv"
+# ✅ 모델 및 레이블 경로 설정
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
+LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
+DATA_PATH = os.path.join(BASE_DIR, "model", "Lizards.csv")
 
 def display_data_analysis():
     st.title("📊 분석 데이터 보기")
