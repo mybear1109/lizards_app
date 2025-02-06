@@ -91,7 +91,8 @@ def display_image_analysis():
                 'Hypo', 'Lily', 'Frapuccino', 'Cappuccino', 'Stripe', 'Dark',
                 'Spotless', 'Black', 'Dalmatian', 'Cream', 'Hat', 'Axanthic', 'Yellow'
             ]
-            morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택하세요.", morph_options)
+            morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택해주세요.", morph_options)
+            st.info(f"🔍 선택한 모프: **{morph}**")
 
             # ✅ 분석 데이터 저장 (모프 추가)
             save_prediction(uploaded_file.name, species, confidence, morph)
