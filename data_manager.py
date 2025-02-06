@@ -10,6 +10,25 @@ IMAGE_FOLDER = "data/images/"  # 이미지 저장 폴더
 # ✅ CSV 파일의 올바른 컬럼 구조
 EXPECTED_COLUMNS = ["Date", "Image", "Image_Path", "Species", "Confidence"]
 
+# ✅ CSV 파일의 올바른 컬럼 구조 확인 함수
+def validate_csv_columns(file_path, expected_columns):
+    """ CSV 파일의 컬럼 구조를 확인하고 누락된 컬럼을 자동으로 추가하는 함수 """
+    if os.path.exists(file_path):
+        df = pd.read_csv(file_path)
+        missing_columns = [col for col in expected_columns if col not in df.columns]
+        if missing_columns:
+            st.warning(f"⚠️ CSV 파일의 일부 컬럼이 누락되었습니다. 자동 복구: {missing_columns}")
+            for col in missing_columns:
+                df[col] = None  # ✅ 누락된 컬럼 추가
+            df.to_csv(file_path, index=False)
+    else:
+        st.warning("⚠️ CSV 파일이 존재하지 않습니다. 새로운 파일을 생성합니다.")
+        df = pd.DataFrame(columns=expected_columns)
+        df.to_csv(file_path, index=False)
+
+# ✅ CSV 파일의 올바른 컬럼 구조 확인
+validate_csv_columns(DATA_PATH, EXPECTED_COLUMNS)
+
 # ✅ 분석 결과 저장 함수 (이미지 경로 추가)
 def save_prediction(image_file, species, confidence):
     """ 분석된 결과를 CSV 파일에 저장하는 함수 """
