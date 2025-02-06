@@ -19,6 +19,19 @@ def save_prediction(image_file, species, confidence):
         image_name = image_file.name if hasattr(image_file, "name") else image_file
         image_path = f"data/images/{image_name}"
 
+         # ✅ 모프 데이터 추가
+        def save_prediction(image_name, species, confidence, morph):
+            new_data = pd.DataFrame({
+            "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+            "Image": [image_name],
+            "Species": [species],
+            "Confidence": [confidence],
+            "Morph": [morph] 
+              })
+
+
+
+
         # ✅ 새로운 데이터 생성
         new_data = pd.DataFrame({
             "Date": [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
