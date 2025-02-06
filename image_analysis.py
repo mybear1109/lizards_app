@@ -1,21 +1,15 @@
 import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # 현재 디렉토리 추가
-from data_analysis import load_existing_data  # ✅ data_analysis 모듈에서 함수 가져오기
 from plot import plot_prediction_chart  # ✅ plot.py가 같은 폴더에 있어야 함
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects # type: ignore
+from tensorflow.keras.utils import get_custom_objects
 import h5py  # h5 파일 무결성 체크
 from species_info import get_species_description
 import matplotlib.pyplot as plt
-from plot import plot_prediction_chart # type: ignore
-from data_manager import save_prediction, load_existing_data
-from data_analysis import load_existing_data
-
+from data_manager import save_prediction, load_existing_data  # ✅ 데이터 저장 및 로드
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -26,11 +20,9 @@ class DepthwiseConv2DCompat(DepthwiseConv2D):
 # ✅ 커스텀 레이어 등록
 get_custom_objects()["DepthwiseConv2DCompat"] = DepthwiseConv2DCompat
 
-# ✅ 모델 및 레이블 경로 설정
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "keras_model.h5")
-LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.txt")
-
+# ✅ 모델 경로 설정
+MODEL_PATH = "model/keras_model.h5"
+LABELS_PATH = "model/labels.txt"
 
 # ✅ 모델 무결성 체크
 def check_model_exists():
@@ -127,19 +119,30 @@ def display_image_analysis():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
-                    # ✅ RGBA → RGB 변환
+            # ✅ RGBA → RGB 변환
             if image.mode != "RGB":
                 image = image.convert("RGB")
             st.image(image, caption="업로드된 이미지", width=300)
-            
+
             # ✅ 이미지 분석 실행
             species, confidence = predict_species(image, model, labels)
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, species, confidence)  # ✅ 데이터 저장 추가
+
+            # ✅ 기존 데이터 확인
+            st.markdown("### 📋 기존 분석 데이터")
+            df = load_existing_data()
+            st.dataframe(df)
 
             # ✅ 품종 설명 표시
             display_species_info(species)
+
+            # ✅ 확률 차트 생성
+            st.markdown("### 📊 예측 확률 분포")
+            plot_prediction_chart(labels, [confidence / 100])  # ✅ 시각화 추가
 
             # ✅ 안내 메시지 추가
             st.info("""
@@ -150,7 +153,5 @@ def display_image_analysis():
                     📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
                     """)
 
-
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
-
