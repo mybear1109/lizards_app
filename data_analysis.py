@@ -20,6 +20,14 @@ def display_data_analysis():
     st.markdown("### 📋 저장된 분석 데이터")
     st.dataframe(df)
 
+    # ✅ 이미지 표시 (최근 5개만)
+    st.markdown("### 🖼️ 최근 분석된 이미지")
+    for index, row in df.tail(5).iterrows():  # ✅ 최신 5개만 표시
+        if row["Image_Path"] and os.path.exists(row["Image_Path"]):
+            st.image(row["Image_Path"], caption=f"{row['Species']} - {row['Confidence']:.2f}%", width=200)
+        else:
+            st.warning(f"❌ 이미지 파일이 존재하지 않습니다: {row['Image_Path']}")
+
     # ✅ 종별 예측 횟수 시각화
     st.markdown("### 📊 도마뱀 종별 예측 횟수")
     species_count = df["Species"].value_counts()
