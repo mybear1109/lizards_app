@@ -2,8 +2,9 @@ import os
 import pandas as pd
 import datetime
 
-# ✅ 데이터 파일 경로
-DATA_PATH = "/mnt/data/Lizards.csv"
+# ✅ 데이터 파일 경로 변경 (쓰기 권한 문제 해결)
+DATA_PATH = "./data/Lizards.csv"  # ✅ 현재 디렉토리의 data 폴더 사용 (권장)
+# DATA_PATH = "/tmp/Lizards.csv"  # ✅ Streamlit Cloud 또는 서버 환경에서는 /tmp 사용 가능
 
 # ✅ 분석 결과 저장 함수 (디렉터리 체크 추가)
 def save_prediction(image_name, species, confidence):
