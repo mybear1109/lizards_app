@@ -46,12 +46,12 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
             missing_columns = [col for col in EXPECTED_COLUMNS if col not in existing_data.columns]
             for col in missing_columns:
                 existing_data[col] = ""  # ✅ 누락된 컬럼을 공란으로 추가
-
+                print(f"안녕4")
             existing_data = existing_data[EXPECTED_COLUMNS]
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
         else:
             updated_data = new_data
-
+            print(f"안녕5")
             # ✅ CSV 저장
             updated_data.to_csv(DATA_PATH, index=False, encoding="utf-8-sig")
 
@@ -75,12 +75,12 @@ def load_existing_data():
             missing_columns = [col for col in EXPECTED_COLUMNS if col not in df.columns]
             for col in missing_columns:
                 df[col] = ""  # ✅ 누락된 컬럼 추가
-            print(st.success("안녕4"))  
+            print(st.success("안녕6"))  
             return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
         else:
             st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")
             return pd.DataFrame(columns=EXPECTED_COLUMNS)
-            print(st.success("안녕5"))  
+            print(st.success("안녕7"))  
     except Exception as e:
         st.error(f"❌ 데이터 로드 중 오류 발생: {e}")
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
