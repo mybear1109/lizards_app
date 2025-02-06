@@ -39,8 +39,8 @@ if selected_option == "홈":
         st.markdown(
             """
             <ul style="font-size:20px; color:#333;">
-                <li>🏷 <b style="color:#5F04B4;">간단한 사용 설명서 </b> (뽑내는 글 맞음 )</li>           
-                <li>🏷 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
+                <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서 </b> (뽑내는 글 맞음 )</li>           
+                <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
                 <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
                 <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
             </ul>
