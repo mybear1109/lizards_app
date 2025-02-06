@@ -11,35 +11,34 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_API_URL = "https://openapi.naver.com/v1/search/local"
+NAVER_PLACE_API_URL = "https://map.naver.com/v5/api/search"  # ✅ 네이버 지도 API 추가
 
-# ✅ 허용된 검색 키워드 목록 (파충류 관련)
-VALID_ANIMAL_KEYWORDS = {
-    "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
-    "특이동물", "특수동물", "희귀동물", "이색동물"
-}
-
-# ✅ 세분화된 지역 목록 (광역시/도 → 시/구/동까지 포함)
-REGIONS = [
-    "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
-    "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
-    "경상북도", "경상남도", "제주도",
-    # ✅ 서울 주요 구
-    "강남구", "서초구", "송파구", "강동구", "강서구", "양천구", "영등포구", 
-    "마포구", "종로구", "용산구", "성동구", "광진구", "성북구", "강북구", 
-    "도봉구", "노원구", "중랑구", "동대문구", "서대문구", "중구", "은평구", 
-    "구로구", "금천구", "동작구",
-    # ✅ 경기 주요 도시
-    "성남", "수원", "용인", "고양", "부천", "안양", "안산", "평택", "시흥",
-    "파주", "의정부", "김포", "광주", "광명", "군포", "이천", "오산", "하남",
-    "양주", "구리", "남양주", "여주", "동두천", "포천", "연천",
-]
-
-# ✅ HTML 태그 제거 함수 (NameError 해결)
+# ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
-# ✅ 병원 검색 함수 (네이버 API)
+# ✅ 네이버 지도 API를 사용하여 병원 전화번호 보완
+def get_hospital_phone_from_naver_place(hospital_name):
+    """ 네이버 플레이스 API를 사용하여 병원 전화번호를 가져오는 함수 """
+    params = {"query": hospital_name, "display": 1}
+    headers = {
+        "X-Naver-Client-Id": NAVER_CLIENT_ID,
+        "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
+    }
+
+    try:
+        response = requests.get(NAVER_PLACE_API_URL, headers=headers, params=params, timeout=5)
+        if response.status_code == 200:
+            data = response.json().get("items", [])
+            if data:
+                return data[0].get("telephone", "정보 없음")  # ✅ 네이버 지도에서 전화번호 가져오기
+        return "정보 없음"
+    except Exception as e:
+        st.error(f"❌ 네이버 플레이스 API 오류: {e}")
+        return "정보 없음"
+
+# ✅ 병원 검색 함수 (네이버 API + 지도 API 보완)
 def search_hospitals(query="파충류 동물병원", display=5):
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
@@ -49,32 +48,20 @@ def search_hospitals(query="파충류 동물병원", display=5):
     try:
         response = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
-            return response.json().get("items", [])
+            hospitals = response.json().get("items", [])
+
+            # ✅ 전화번호 보완 (네이버 플레이스 API 활용)
+            for hospital in hospitals:
+                if "telephone" not in hospital or not hospital["telephone"]:
+                    hospital["telephone"] = get_hospital_phone_from_naver_place(hospital["title"])
+
+            return hospitals
         else:
-            st.error(f"❌ API 호출 실패: 상태 코드 {response.status_code}")
+            st.error(f"❌ 네이버 병원 검색 실패: {response.status_code}")
             return []
     except Exception as e:
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
-
-# ✅ 검색어 필터링 함수 (지역 + 동물 키워드 반영)
-def filter_search_query(user_query):
-    filtered_query = "동물병원"
-
-    # ✅ 지역 검색 포함 여부 확인
-    for region in REGIONS:
-        if region in user_query:
-            filtered_query = f"{region} {filtered_query}"
-            break
-
-    # ✅ 동물 관련 키워드 포함 여부 확인
-    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS):
-        filtered_query = f"파충류 {filtered_query}"
-    else:
-        st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
-        return None
-
-    return filtered_query
 
 # ✅ Google 지도 Embed 함수
 def display_hospital_map(address):
@@ -106,16 +93,10 @@ def display_hospitals():
         st.info("병원 검색어를 사이드바에 입력하세요.")
         return
 
-    # ✅ 검색어 필터 적용
-    search_query = filter_search_query(user_query)
-
-    if not search_query:
-        return  # 검색어가 허용되지 않으면 종료
-
     st.title("🏥 병원 검색 결과")
-    st.write(f"🔎 검색어: `{search_query}`")
+    st.write(f"🔎 검색어: `{user_query}`")
 
-    hospitals = search_hospitals(search_query)
+    hospitals = search_hospitals(user_query)
 
     """ 병원 정보를 스타일링하여 표시하는 함수 """
     if hospitals:
@@ -144,11 +125,12 @@ def display_hospitals():
                 )
                 display_hospital_map(hospital['address'])  # 지도 표시
 
-                # ✅ 전화번호 정보 (폰트 색상 변경)
+                # ✅ 전화번호 정보 (폰트 색상 변경, 네이버 지도 API 활용)
+                phone_number = hospital.get('telephone', '정보 없음')
                 st.markdown(
                     f"""
                     <p style="font-size:16px; color:#E76F51;">
-                        📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}
+                        📞 <b>전화번호:</b> {phone_number}
                     </p>
                     """,
                     unsafe_allow_html=True
