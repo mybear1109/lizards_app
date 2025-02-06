@@ -9,6 +9,7 @@ import h5py  # h5 파일 무결성 체크
 from species_info import get_species_info  
 from data_manager import save_prediction  
 from data_analysis import display_data_analysis  
+from species_info import get_species_info
 
 # ✅ DepthwiseConv2D 호환성 해결 (Keras 3.x 대비)
 class DepthwiseConv2DCompat(DepthwiseConv2D):
