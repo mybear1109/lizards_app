@@ -1,7 +1,7 @@
 import streamlit as st
 
-# ✅ 기존 get_species_info() 함수가 인수를 받을 수 있도록 수정
-def get_species_info(species_name):
+# ✅ 기존 display_species_info() 함수가 인수를 받을 수 있도록 수정
+def display_species_info(species_name):
     """ 주어진 도마뱀 종(species_name)에 대한 정보를 반환하는 함수 """
     species_data = {
         "0 Beardy Dragon": {
@@ -127,7 +127,7 @@ def get_species_info(species_name):
     })
 
 # ✅ 표종 설명을 가져오는 함수
-def get_species_description(species_name):
+def display_species_info(species_name):
     """ 종에 대한 설명을 가져오는 함수 """
-    return get_species_info(species_name)  # ✅ species_name을 전달하도록 수정
+    return display_species_info(species_name)  # ✅ species_name을 전달하도록 수정
 

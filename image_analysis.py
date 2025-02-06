@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model  # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects  # type: ignore
 import h5py  # h5 파일 무결성 체크
-from species_info import get_species_description, get_species_info  
+from species_info import display_species_info
 from data_manager import save_prediction  
 from data_analysis import display_data_analysis  
 
@@ -128,7 +128,7 @@ def display_image_analysis():
     # ✅ 품종 설명 UI 표시 함수
     def display_species_info(species_name):
         """ 종에 대한 정보를 UI에 출력하는 함수 """
-        species_info = get_species_description(species_name)  # ✅ species_name을 전달하도록 수정
+        species_info = display_species_info(species_name)  # ✅ species_name을 전달하도록 수정
 
         st.markdown(
             f"""
