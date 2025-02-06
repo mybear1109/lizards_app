@@ -85,6 +85,11 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+
             # ✅ 모프 선택 기능 추가
             morph_options = [
                 'White', 'Albino', 'Green', 'Undefined', 'Berry', 'Red', 'Normal',
@@ -96,7 +101,9 @@ def display_image_analysis():
 
             # ✅ 분석 데이터 저장 (모프 추가)
             save_prediction(uploaded_file.name, species, confidence, morph)
-
+            st.write("")
+            st.write("")
+            st.write("")
             # ✅ 품종 설명 표시
             display_species_info(species)
 
