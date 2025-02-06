@@ -1,8 +1,9 @@
 import streamlit as st
-from .about import show_about
-from .image_analysis import display_image_analysis
-from .hospital_page import search_hospitals # type: ignore
-from .youtube_page import search_youtube # type: ignore
+from sidebar import render_sidebar
+from hospital_page import display_hospitals, search_hospitals
+from youtube_page import display_youtube_videos
+from image_analysis import display_image_analysis
+from about import show_about
 
 # ✅ Streamlit 페이지 설정
 st.set_page_config(page_title="파충류 탐험의 세계", layout="wide")
@@ -60,4 +61,4 @@ elif page == "병원 검색":
     search_hospitals()
 
 elif page == "유튜브 검색":
-    search_youtube()
+    search_youtube() # type: ignore
