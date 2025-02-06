@@ -2,9 +2,9 @@ import os
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects
+from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py
 from species_info import get_species_description
 from data_manager import save_prediction
@@ -92,7 +92,7 @@ def display_image_analysis():
                 'Spotless', 'Black', 'Dalmatian', 'Cream', 'Hat', 'Axanthic', 'Yellow'
             ]
             morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택해주세요.", morph_options)
-            st.info(f"🔍 선택한 모프: **{morph}**")
+            st.info(f"🔍 선택한 모프: **{morph}** 입니다. 소중한 정보 감사합니다.")
 
             # ✅ 분석 데이터 저장 (모프 추가)
             save_prediction(uploaded_file.name, species, confidence, morph)
