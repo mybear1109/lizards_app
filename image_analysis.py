@@ -135,14 +135,7 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-            # ✅ 분석 데이터 저장
-            save_prediction(uploaded_file.name, top_label, top_confidence) # type: ignore
 
-            # ✅ 기존 데이터 확인
-            st.markdown("### 📋 기존 분석 데이터")
-            df = load_existing_data()
-            st.dataframe(df)
-            
             # ✅ 품종 설명 표시
             display_species_info(species)
 
@@ -154,6 +147,15 @@ def display_image_analysis():
 
                     📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
                     """)
+            
+            # ✅ 분석 데이터 저장
+            save_prediction(uploaded_file.name, top_label, top_confidence) # type: ignore
+
+            # ✅ 기존 데이터 확인
+            st.markdown("### 📋 기존 분석 데이터")
+            df = load_existing_data()
+            st.dataframe(df)
+                        
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
