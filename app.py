@@ -11,7 +11,7 @@ try:
 except ImportError as e:
     st.error(f"❌ 모듈 로드 오류: {e}")
 
-# ✅ Streamlit 페이지 설정 (최상단 배치)
+# ✅ 앱 페이지 설정 (가장 먼저 실행)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ 사이드바 렌더링
