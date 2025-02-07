@@ -16,38 +16,62 @@ except ImportError as e:
     st.error(f"❌ 모듈 로드 오류: {e}")
     st.stop()
 
+# ✅ 이미지 파일 경로
+base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
+image_path = os.path.join(base_dir, "image", "home_image3.png")
+
+# ✅ 이미지 파일 존재 여부 확인 후 출력
+if not os.path.isfile(image_path):
+    st.warning(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
+    image_path = os.path.join(base_dir, "default_image.jpg")  # 기본 이미지 설정
+
+    # 기본 이미지도 없으면 실행 중단
+    if not os.path.isfile(image_path):
+        st.error("🚨 기본 이미지도 존재하지 않습니다. 파일을 확인해주세요.")
+        st.stop()
+
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
 
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
-    # ✅ 텍스트 중심의 홈 화면
-    st.markdown(
-        """
-        <h1 style="color:#4CAF50; font-size:42px; font-weight:bold; text-align:center;">🦎 파충류 탐험의 세계</h1>
-        """,
-        unsafe_allow_html=True,
-    )
+    # ✅ 컬럼을 이용해 이미지와 텍스트 정렬
+    col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
-    st.markdown(
-        """
-        <h3 style="color:#555; font-size:24px; text-align:center;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
-        """,
-        unsafe_allow_html=True,
-    )
+    with col1:
+        try:
+            st.image(image_path, use_container_width=True)  # ✅ 존재하는 경우만 출력
+        except Exception as e:
+            st.error(f"❌ 이미지 표시 오류: {e}")
 
-    # ✅ 기능 목록 (아이콘 및 스타일 적용)
-    st.markdown(
-        """
-        <ul style="font-size:20px; color:#333; padding-left:20px;">
-            <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서</b> (기본 기능 안내)</li>           
-            <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
-            <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
-            <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
-        </ul>
-        """,
-        unsafe_allow_html=True,
-    )
+    with col2:
+        # ✅ 제목 및 스타일 적용
+        st.markdown(
+            """
+            <h1 style="color:#4CAF50; font-size:42px; font-weight:bold; text-align:center;">🦎 파충류 탐험의 세계</h1>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
+            <h3 style="color:#555; font-size:24px; text-align:center;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # ✅ 기능 목록 (아이콘 및 스타일 적용)
+        st.markdown(
+            """
+            <ul style="font-size:20px; color:#333; padding-left:20px;">
+                <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서</b> (기본 기능 안내)</li>           
+                <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
+                <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
+                <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
+            </ul>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # ✅ 각 메뉴별 기능 실행
 elif selected_option == "설명":

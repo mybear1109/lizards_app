@@ -1,32 +1,59 @@
 import os
 import pandas as pd
 import datetime
+from PIL import Image
 import streamlit as st
 
-# ✅ 데이터 파일 경로 설정
+# ✅ 데이터 및 이미지 저장 경로 설정
 DATA_PATH = "data/Lizards.csv"
 IMAGE_FOLDER = "data/images/"
 
-# ✅ CSV 파일의 올바른 컬럼 구조 (Morph 및 Price 컬럼 포함)
+# ✅ CSV 파일의 올바른 컬럼 구조
 EXPECTED_COLUMNS = ["Date", "Image", "Size", "Species", "Confidence", "Morph", "Price"]
 
-def save_prediction(image_file, species, confidence, morph="", size="", price=""):
-    """ 분석된 결과를 CSV 파일에 추가하는 함수 """
-    try:
-        # ✅ 저장 디렉토리가 없으면 생성
-        os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
-        print(f"안녕1")
+# ✅ 디렉토리 생성 함수
+def ensure_directory_exists(directory):
+    """ 경로가 존재하지 않으면 생성하는 함수 """
+    os.makedirs(directory, exist_ok=True)
 
-        # ✅ 이미지 파일명 생성 (유니크한 이름)
-        if hasattr(image_file, "name"):
-            image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
-        else:
-            image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file}"
-        print(f"안녕2")
+# ✅ 이미지 저장 함수
+def save_image(image_file):
+    """ 이미지를 'data/images/' 폴더에 저장하고 경로 및 파일명을 반환하는 함수 """
+    try:
+        ensure_directory_exists(IMAGE_FOLDER)
+
+        # 이미지 파일명 생성 (유니크한 이름)
+        image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
         image_path = os.path.join(IMAGE_FOLDER, image_name)
 
+        # 이미지 저장
+        image = Image.open(image_file)
 
-        # ✅ 새로운 데이터 생성 (기본값 자동 적용)
+        # 파일 형식 확인 (지원되는 이미지 형식인지)
+        if image.format not in ['JPEG', 'PNG']:
+            st.error("❌ 지원되지 않는 이미지 형식입니다. JPG 또는 PNG 파일을 업로드해주세요.")
+            return None, None
+
+        image.save(image_path)
+        st.success(f"✅ 이미지가 성공적으로 저장되었습니다: {image_name}")
+
+        return image_path, image_name
+
+    except Exception as e:
+        st.error(f"❌ 이미지 저장 중 오류 발생: {e}")
+        return None, None
+
+# ✅ 분석 데이터 저장 함수
+def save_prediction(image_file, species, confidence, morph="", size="", price=""):
+    """ 분석된 결과를 CSV 파일에 저장하는 함수 """
+    try:
+        ensure_directory_exists(os.path.dirname(DATA_PATH))
+
+        # 이미지 파일명 생성
+        image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
+        image_path = os.path.join(IMAGE_FOLDER, image_name)
+
+        # 새로운 데이터 생성
         new_data = pd.DataFrame([{
             "Date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "Image": image_name,
@@ -36,57 +63,52 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
             "Morph": morph,
             "Price": price
         }])
-        print(f"안녕3")
-  
-        # ✅ 기존 데이터 로드 및 컬럼 정리
+
+        # 기존 데이터 로드 및 컬럼 정리
         if os.path.exists(DATA_PATH):
             try:
                 existing_data = pd.read_csv(DATA_PATH, encoding="utf-8-sig", on_bad_lines="skip")
 
-                # ✅ 기존 컬럼 체크 및 자동 수정
+                # 기존 컬럼이 없으면 자동 생성
                 for col in EXPECTED_COLUMNS:
                     if col not in existing_data.columns:
                         existing_data[col] = ""
 
-                existing_data = existing_data[EXPECTED_COLUMNS]  # ✅ 컬럼 정렬
+                existing_data = existing_data[EXPECTED_COLUMNS]
                 updated_data = pd.concat([existing_data, new_data], ignore_index=True)
-                
-                print("✅ Step 4: 기존 데이터 로드 및 병합 완료")
 
             except Exception as e:
                 st.error(f"❌ 기존 데이터 읽기 오류: {e}")
                 updated_data = new_data  # 기존 데이터가 깨진 경우 새로운 데이터만 저장
 
         else:
-            updated_data = new_data  # 기존 데이터가 없을 경우 새로 생성
-            print("✅ Step 5: 기존 데이터 없음, 새 파일 생성")
+            updated_data = new_data  # 기존 데이터가 없을 경우 새 파일 생성
 
-        # ✅ CSV 저장
+        # CSV 저장
         updated_data.to_csv(DATA_PATH, index=False, encoding="utf-8-sig")
         st.success("✅ 데이터 저장 완료!")
-        print("✅ Step 6: 데이터 저장 완료")
 
     except Exception as e:
         st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
 
+# ✅ 기존 데이터 로드 함수
 def load_existing_data():
     """ 기존 분석 데이터를 불러오는 함수 """
     try:
         if os.path.exists(DATA_PATH):
             df = pd.read_csv(DATA_PATH, encoding="utf-8-sig", on_bad_lines="skip")
 
-            # ✅ CSV 파일이 비어있는 경우
+            # CSV 파일이 비어있는 경우
             if df.empty:
                 st.warning("⚠️ 분석할 데이터가 없습니다. 이미지를 먼저 업로드하세요.")
                 return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
-            # ✅ 컬럼 체크 및 자동 수정
+            # 기존 컬럼 체크 및 자동 수정
             for col in EXPECTED_COLUMNS:
                 if col not in df.columns:
                     df[col] = ""
 
-            print("✅ Step 7: 기존 데이터 로드 완료")  
-            return df[EXPECTED_COLUMNS]  # ✅ 올바른 컬럼 구조 유지
+            return df[EXPECTED_COLUMNS]  # 올바른 컬럼 구조 유지
 
         else:
             st.warning("⚠️ 저장된 데이터가 없습니다. 데이터를 분석한 후 다시 확인하세요.")

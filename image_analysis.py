@@ -7,7 +7,6 @@ from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects # type: ignore
 from species_info import get_species_description
 from data_manager import save_prediction
-from image_manager import save_image
 
 
 
