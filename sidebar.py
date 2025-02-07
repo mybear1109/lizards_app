@@ -1,25 +1,17 @@
-import os
 import streamlit as st
 from streamlit_option_menu import option_menu
 
 def render_sidebar():
     with st.sidebar:
-        # ✅ 이미지 파일 경로 설정
-        image_path = "image/home_image.png"
-        default_image = "default_image.jpg"  # 기본 이미지 (없을 경우 대비)
-
-        # ✅ 이미지 파일 존재 여부 확인
-        if not os.path.isfile(image_path):
-            st.warning("⚠️ 이미지 파일이 존재하지 않습니다. 기본 이미지를 표시합니다.")
-            image_path = default_image  # 기본 이미지 사용
-
-            if not os.path.isfile(image_path):
-                st.error("🚨 기본 이미지도 존재하지 않습니다. 파일을 확인해주세요.")
-                image_path = None  # 이미지 표시 안 함
-
-        # ✅ 이미지 가운데 정렬하여 표시 (st.image 사용)
-        if image_path:
-            st.image(image_path, width=200)
+        # ✅ 가운데 정렬을 위한 HTML & CSS 적용
+        st.markdown(
+            """
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                <img src="image/home_image.png" width="200" style="border-radius: 10px;">
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         # ✅ 네비게이션 메뉴 생성
         selected_option = option_menu(
