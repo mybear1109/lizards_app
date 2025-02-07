@@ -16,11 +16,13 @@ except ImportError as e:
     st.error(f"❌ 모듈 로드 오류: {e}")
     st.stop()
 
-# ✅ 이미지 파일 경로 확인
-base_dir = os.path.dirname(__file__)  # 현재 파일 경로
-image_path = os.path.join(base_dir, "image/001.jpg")
+# ✅ 이미지 파일 경로
+image_path = "image/home_image2.png"
 
-
+# ✅ 이미지 파일 존재 여부 확인
+if not os.path.isfile(image_path):
+    st.error(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
+    st.stop()  # 앱 실행 중단
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
 
