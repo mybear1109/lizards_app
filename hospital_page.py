@@ -9,8 +9,9 @@ NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
 
-# ✅ 기본 네이버 병원 검색 URL (하드코딩)
+# ✅ 올바른 네이버 병원 검색 URL (하드코딩)
 DEFAULT_NAVER_HOSPITAL_URL = "https://search.naver.com/search.naver?query=파충류+동물병원"
+
 
 # ✅ Google Maps API 설정 (지도 표시)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
