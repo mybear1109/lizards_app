@@ -12,7 +12,13 @@ NAVER_API_URL = "https://openapi.naver.com/v1/search/local.json"  # 오타 수�
 # ✅ Google Maps API 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
-# ✅ 지역 목록 추가 (검색어 제한용)
+# ✅ 허용된 검색 키워드 목록 (검색어 제한)
+VALID_ANIMAL_KEYWORDS = {
+    "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
+    "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원"
+}
+
+# ✅ 세분화된 지역 목록 (검색 제한)
 REGIONS = [
     "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
     "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
@@ -28,6 +34,15 @@ def get_naver_search_url(hospital_name):
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
+
+# ✅ 검색어 필터링 함수 (허용된 검색어만 실행)
+def filter_search_query(user_query):
+    """입력된 검색어가 `VALID_ANIMAL_KEYWORDS` 또는 `REGIONS` 목록에 포함되는지 확인"""
+    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS) or any(region in user_query for region in REGIONS):
+        return user_query
+    else:
+        st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 도마뱀, 뱀, 거북, 이구아나, 서울, 부산 등)")
+        return None
 
 # ✅ 네이버 API에서 병원 검색
 def search_hospitals(query="파충류 동물병원", display=5):
@@ -77,11 +92,16 @@ def display_hospitals():
     """ 병원 검색 및 결과 표시 함수 """
     user_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
 
-    hospitals = search_hospitals(user_query)
+    # ✅ 검색어 필터링
+    filtered_query = filter_search_query(user_query)
+    if not filtered_query:
+        return  # 검색어가 허용되지 않으면 검색 수행 안 함
+
+    hospitals = search_hospitals(filtered_query)
 
     if hospitals:
         st.title("🏥 병원 검색 결과")
-        st.markdown(f"🔎 **검색어:** `{user_query}`")
+        st.markdown(f"🔎 **검색어:** `{filtered_query}`")
 
         for hospital in hospitals:
             hospital_name = remove_html_tags(hospital["title"])
