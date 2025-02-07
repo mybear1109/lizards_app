@@ -18,7 +18,7 @@ VALID_ANIMAL_KEYWORDS = {
     "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원"
 }
 
-# ✅ 세분화된 지역 목록 (지역 관련 검색 제한)
+# ✅ 지역 목록 (지역 검색 제한)
 REGIONS = [
     "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
     "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
@@ -98,9 +98,11 @@ def display_hospitals():
 
     hospitals = search_hospitals(filtered_query)
 
+    if hospitals:
+        st.title("🏥 병원 검색 결과")
+        st.markdown(f"🔎 **검색어:** `{filtered_query}`")
 
-
-    for hospital in hospitals:
+        for hospital in hospitals:
             hospital_name = remove_html_tags(hospital["title"])
             hospital_address = hospital.get("address", "정보 없음")
             hospital_phone = hospital.get("telephone", "").strip()
@@ -162,7 +164,8 @@ def display_hospitals():
 
                 # ✅ 병원 간 구분선 추가
                 st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
-  
+    else:
+        st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
 
 # ✅ 실행
 if __name__ == "__main__":
