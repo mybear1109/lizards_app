@@ -1,20 +1,27 @@
+import os
 import streamlit as st
 
 # ✅ Streamlit 페이지 설정 (최상단 배치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ 외부 모듈 임포트
-from sidebar import render_sidebar
-from hospital_page import display_hospitals
-from youtube_page import display_youtube_videos
-from about import show_about
-from data_analysis import display_data_analysis
-from image_analysis import display_image_analysis
-
+try:
+    from sidebar import render_sidebar
+    from hospital_page import display_hospitals
+    from youtube_page import display_youtube_videos
+    from about import show_about
+    from data_analysis import display_data_analysis
+    from image_analysis import display_image_analysis
+except ImportError as e:
+    st.error(f"❌ 모듈 로드 오류: {e}")
+    st.stop()
 
 # ✅ 이미지 파일 경로 확인
 image_path = "image/home_image2.png"
 
+if not os.path.exists(image_path):
+    st.warning(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
+    st.stop()  # 더 이상 진행하지 않음
 
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
@@ -25,7 +32,7 @@ if selected_option == "홈":
     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
     with col1:
-        st.image(image_path, use_container_width=True)  # ✅ use_container_width로 대체
+        st.image(image_path, use_container_width=True)
 
     with col2:
         # ✅ 제목 및 스타일 적용
@@ -58,16 +65,31 @@ if selected_option == "홈":
 
 # ✅ 각 메뉴별 기능 실행
 elif selected_option == "설명":
-    show_about()
+    try:
+        show_about()
+    except Exception as e:
+        st.error(f"❌ 설명 페이지 로드 오류: {e}")
 
 elif selected_option == "도마뱀 분석":
-    display_image_analysis()
+    try:
+        display_image_analysis()
+    except Exception as e:
+        st.error(f"❌ 도마뱀 분석 기능 오류: {e}")
 
 elif selected_option == "병원 검색":
-    display_hospitals()
+    try:
+        display_hospitals()
+    except Exception as e:
+        st.error(f"❌ 병원 검색 기능 오류: {e}")
 
 elif selected_option == "유튜브 검색":
-    display_youtube_videos()
+    try:
+        display_youtube_videos()
+    except Exception as e:
+        st.error(f"❌ 유튜브 검색 기능 오류: {e}")
 
 elif selected_option == "데이터 분석":
-    display_data_analysis()
+    try:
+        display_data_analysis()
+    except Exception as e:
+        st.error(f"❌ 데이터 분석 기능 오류: {e}")
