@@ -25,11 +25,7 @@ if not os.path.isfile(image_path):
     st.warning(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
     image_path = os.path.join(base_dir, "default_image.jpg")  # 기본 이미지 설정
 
-    # 기본 이미지도 없으면 실행 중단
-    if not os.path.isfile(image_path):
-        st.error("🚨 기본 이미지도 존재하지 않습니다. 파일을 확인해주세요.")
-        st.stop()
-
+  
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
 
