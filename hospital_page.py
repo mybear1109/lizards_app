@@ -9,6 +9,9 @@ NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
 
+# ✅ 기본 네이버 병원 검색 URL (하드코딩)
+DEFAULT_NAVER_HOSPITAL_URL = "https://search.naver.com/search.naver?query=파충류+동물병원"
+
 # ✅ Google Maps API 설정 (지도 표시)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
@@ -54,7 +57,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
 
             # ✅ 병원 상세보기에서 전화번호 가져오기 (URL 확인 포함)
             for hospital in hospitals:
-                hospital["link"] = hospital.get("link", "")
+                hospital["link"] = hospital.get("link", DEFAULT_NAVER_HOSPITAL_URL)  # 기본 URL 제공
                 hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"])
 
             return hospitals
@@ -142,7 +145,7 @@ def display_hospitals():
                         unsafe_allow_html=True
                     )
 
-                # ✅ 네이버 링크 버튼 스타일 변경
+                # ✅ 네이버 링크 버튼 스타일 변경 (기본 URL 제공)
                 st.markdown(
                     f"""
                     <p style="font-size:16px;">
