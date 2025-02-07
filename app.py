@@ -1,8 +1,22 @@
+import re
 import streamlit as st
+import requests
+import urllib.parse
+import os
 
-# ✅ 외부 모듈 임포트 (오류 방지)
+# ✅ 앱 페이지 설정 (항상 최상단에 위치)
+st.set_page_config(page_title="파충류 검색 앱", layout="wide")
+
+# ✅ 사이드바 렌더링 함수
+def render_sidebar():
+    st.sidebar.title("메뉴")
+    return st.sidebar.radio(
+        "탐색",
+        options=["홈", "설명", "도마뱀 분석", "병원 검색", "유튜브 검색", "데이터 분석"]
+    )
+
+# ✅ 각 메뉴별 기능 (함수 임포트 또는 정의 확인 필요)
 try:
-    from sidebar import render_sidebar
     from hospital_page import display_hospitals
     from youtube_page import display_youtube_videos
     from about import show_about
@@ -11,37 +25,24 @@ try:
 except ImportError as e:
     st.error(f"❌ 모듈 로드 오류: {e}")
 
-# ✅ 앱 페이지 설정 (가장 먼저 실행)
-st.set_page_config(page_title="파충류 검색 앱", layout="wide")
-
-# ✅ 사이드바 렌더링
+# ✅ 선택된 메뉴 실행
 selected_option = render_sidebar()
 
-# ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
-    # ✅ 컬럼을 이용해 이미지와 텍스트 정렬
     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
     with col1:
-        st.image("image/001.jpg", use_column_width=True)  # ✅ 이미지 경로 확인 필요
+        st.image("image/001.jpg", use_column_width=True)
 
     with col2:
-        # ✅ 제목 및 스타일 적용
         st.markdown(
-            """
-            <h1 style="color:#4CAF50; font-size:42px; font-weight:bold;">🦎 파충류 탐험의 세계</h1>
-            """,
+            "<h1 style='color:#4CAF50; font-size:42px; font-weight:bold;'>🦎 파충류 탐험의 세계</h1>",
             unsafe_allow_html=True,
         )
-
         st.markdown(
-            """
-            <h3 style="color:#555; font-size:24px;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
-            """,
+            "<h3 style='color:#555; font-size:24px;'>🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>",
             unsafe_allow_html=True,
         )
-
-        # ✅ 기능 목록 (아이콘 및 스타일 적용)
         st.markdown(
             """
             <ul style="font-size:20px; color:#333;">
@@ -53,23 +54,32 @@ if selected_option == "홈":
             """,
             unsafe_allow_html=True,
         )
-
-# ✅ 각 메뉴별 기능 실행
 elif selected_option == "설명":
-    show_about()
+    try:
+        show_about()
+    except Exception as e:
+        st.error(f"❌ 설명 페이지 실행 오류: {e}")
 
 elif selected_option == "도마뱀 분석":
-    display_image_analysis()
+    try:
+        display_image_analysis()
+    except Exception as e:
+        st.error(f"❌ 도마뱀 분석 기능 실행 오류: {e}")
 
 elif selected_option == "병원 검색":
-    display_hospitals()
+    try:
+        display_hospitals()
+    except Exception as e:
+        st.error(f"❌ 병원 검색 실행 오류: {e}")
 
 elif selected_option == "유튜브 검색":
-    display_youtube_videos()
+    try:
+        display_youtube_videos()
+    except Exception as e:
+        st.error(f"❌ 유튜브 검색 기능 실행 오류: {e}")
 
 elif selected_option == "데이터 분석":
     try:
         display_data_analysis()
     except Exception as e:
         st.error(f"❌ 데이터 분석 기능 실행 오류: {e}")
-
