@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 def render_sidebar():
     with st.sidebar:
         # 사이드바 이미지 추가
-        st.image("image/home_image.png", width=300)
+        st.image("image/home_image.png", width=200)
 
         # ✅ 검색창 스타일 및 메뉴 생성
         selected_option = option_menu(
