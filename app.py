@@ -18,7 +18,7 @@ except ImportError as e:
 
 # ✅ 이미지 파일 경로 확인
 base_dir = os.path.dirname(__file__)  # 현재 파일 경로
-image_path = os.path.join(base_dir, "image/home_image2.png")
+image_path = os.path.join(base_dir, "image/001.jpg")
 
 
 # ✅ 사이드바 렌더링
