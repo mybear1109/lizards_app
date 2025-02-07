@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 import re
 
+from hospital_page import REGIONS, VALID_ANIMAL_KEYWORDS
+
 
 
 
