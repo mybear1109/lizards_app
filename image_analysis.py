@@ -2,9 +2,9 @@ import os
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects
+from tensorflow.keras.utils import get_custom_objects # type: ignore
 from species_info import get_species_description
 from data_manager import save_prediction
 from image_manager import save_image
@@ -91,7 +91,8 @@ def display_image_analysis():
             with col2:
                 # ✅ 이미지 분석 실행
                 species, confidence = predict_species(image, model, labels)
-
+                st.write("")
+                st.write("")
                 # ✅ 예측 결과 강조 표시 (설명 위에 고정)
                 st.markdown(
                     f"""
@@ -104,6 +105,7 @@ def display_image_analysis():
                         font-weight: bold;
                         color: #333;
                     ">
+
                         🦎 예측 결과: <span style="color:#d84315;">{species}</span>  
                         <br> ✅ 신뢰도: <span style="color:#d84315;">{confidence:.2f}%</span>
                     </div>
