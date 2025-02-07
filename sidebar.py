@@ -1,5 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+from hospital_page import display_hospitals
+from youtube_page import display_youtube_videos
 
 def render_sidebar():
     with st.sidebar:
