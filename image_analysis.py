@@ -149,6 +149,3 @@ def display_species_info(species_name):
             unsafe_allow_html=True,
         )
 
-# ✅ 실행
-if __name__ == "__main__":
-    display_image_analysis()
