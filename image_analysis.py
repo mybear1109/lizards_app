@@ -2,9 +2,9 @@ import os
 import numpy as np
 import streamlit as st
 from PIL import Image, ImageOps
-from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import DepthwiseConv2D
-from tensorflow.keras.utils import get_custom_objects # type: ignore
+from tensorflow.keras.utils import get_custom_objects
 from species_info import get_species_description
 from data_manager import save_prediction
 from image_manager import save_image
@@ -81,40 +81,43 @@ def display_image_analysis():
             image = Image.open(uploaded_file)
             if image.mode != "RGB":
                 image = image.convert("RGB")
-            st.image(image, caption="업로드된 이미지", width=300)
 
-            # ✅ 이미지 분석 실행
-            species, confidence = predict_species(image, model, labels)
-            st.success(f"**예측된 도마뱀 품종: {species}**")
-            st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
-            st.write("")
-            st.write("")
-            st.write("")
-            # ✅ 모프 선택 기능 추가
-            morph_options = [
-                'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)', 'Red(빨강)', 'Normal(기본)',
-                'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)', 'Cappuccino(카푸치노)', 'Stripe(스프라이트)', 'Dark(다크)',
-                'Spotless(점없음)', 'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)'
-            ]
-            morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택해주세요.", morph_options)
-            st.info(f"🔍 선택한 모프: **{morph}** 입니다.  소중한 정보 감사합니다.😊")
+            # ✅ 컬럼을 이용한 정렬 (왼쪽: 이미지 / 오른쪽: 예측 결과 및 설명)
+            col1, col2 = st.columns([1, 2])
 
-            # ✅ 분석 데이터 저장 (모프 추가)
-            save_prediction(uploaded_file.name, species, confidence, morph)
+            with col1:
+                st.image(image, caption="업로드된 이미지", width=300)
 
-            # ✅ 품종 설명 표시
-            display_species_info(species)
-            st.write("")
-            st.write("")
-            st.write("확인주세요.")
-            # ✅ 주의 사항 안내
-            st.error("""
-                🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
+            with col2:
+                # ✅ 이미지 분석 실행
+                species, confidence = predict_species(image, model, labels)
+                st.success(f"**예측된 도마뱀 품종: {species}**")
+                st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-                ⚠️ 이 결과는 참고용으로만 활용해 주시기 바랍니다.
+                # ✅ 품종 설명 표시
+                display_species_info(species)
 
-                📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
-            """)
+                # ✅ 모프 선택 기능 추가
+                morph_options = [
+                    'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)',
+                    'Red(빨강)', 'Normal(기본)', 'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)',
+                    'Cappuccino(카푸치노)', 'Stripe(스프라이트)', 'Dark(다크)', 'Spotless(점없음)',
+                    'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)'
+                ]
+                morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택해주세요.", morph_options)
+                st.info(f"🔍 선택한 모프: **{morph}** 입니다. 소중한 정보 감사합니다.😊")
+
+                # ✅ 분석 데이터 저장 (모프 추가)
+                save_prediction(uploaded_file.name, species, confidence, morph)
+
+                # ✅ 주의 사항 안내
+                st.error("""
+                    🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
+
+                    ⚠️ 이 결과는 참고용으로만 활용해 주시기 바랍니다.
+
+                    📝 실제 결과와 차이가 있을 수 있음을 양지해 주시기 바랍니다.
+                """)
 
         except Exception as e:
             st.error(f"❌ 이미지 처리 중 오류 발생: {e}")
@@ -122,16 +125,16 @@ def display_image_analysis():
 # ✅ 품종 설명 UI 표시 함수
 def display_species_info(species_name):
     """ 도마뱀 품종 설명을 출력하는 함수 """
-    species_info = get_species_description(species_name)  
+    species_info = get_species_description(species_name)
 
-    if not species_info:  
-        species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}  
+    if not species_info:
+        species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}
 
     # ✅ 컬럼을 이용해 이미지(왼쪽) + 텍스트(오른쪽) 배치
     col1, col2 = st.columns([1, 2])
 
     with col1:
-        st.image(species_info["이미지"], caption=f"{species_name} 대표 이미지", width=300)
+        st.image(species_info["이미지"], width=300)
 
     with col2:
         st.markdown(
@@ -152,4 +155,3 @@ def display_species_info(species_name):
             """,
             unsafe_allow_html=True,
         )
-
