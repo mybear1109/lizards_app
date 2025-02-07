@@ -9,12 +9,14 @@ NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
 
-# ✅ 올바른 네이버 병원 검색 URL (하드코딩)
-DEFAULT_NAVER_HOSPITAL_URL = "https://search.naver.com/search.naver?query=파충류+동물병원"
-
+# ✅ 네이버 검색 URL을 병원이름에 맞춰 자동 생성
+def get_naver_search_url(hospital_name):
+    """ 네이버 검색 URL 생성 (병원이름 기반) """
+    query = urllib.parse.quote(hospital_name)
+    return f"https://search.naver.com/search.naver?query={query}"
 
 # ✅ Google Maps API 설정 (지도 표시)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "YOUR_GOOGLE_MAPS_API_KEY")
 
 
 # ✅ HTML 태그 제거 함수
@@ -58,7 +60,8 @@ def search_hospitals(query="파충류 동물병원", display=5):
 
             # ✅ 병원 상세보기에서 전화번호 가져오기 (URL 확인 포함)
             for hospital in hospitals:
-                hospital["link"] = hospital.get("link", DEFAULT_NAVER_HOSPITAL_URL)  # 기본 URL 제공
+                hospital_name = remove_html_tags(hospital["title"])  # 병원 이름 가져오기
+                hospital["link"] = hospital.get("link", get_naver_search_url(hospital_name))  # 네이버 검색 URL 제공
                 hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"])
 
             return hospitals
@@ -146,7 +149,7 @@ def display_hospitals():
                         unsafe_allow_html=True
                     )
 
-                # ✅ 네이버 링크 버튼 스타일 변경 (기본 URL 제공)
+                # ✅ 네이버 링크 버튼 스타일 변경 (병원이름 기반 검색 적용)
                 st.markdown(
                     f"""
                     <p style="font-size:16px;">
@@ -154,7 +157,7 @@ def display_hospitals():
                         style="text-decoration:none; background-color:#F4A261;
                         color:white; padding:8px 12px; border-radius:5px;
                         font-weight:bold;">
-                        🔗 네이버 상세보기
+                        🔗 네이버에서 "{hospital_name}" 검색
                         </a>
                     </p>
                     """,
