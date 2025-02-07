@@ -18,7 +18,7 @@ except ImportError as e:
 
 # ✅ 이미지 파일 경로
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
-image_path = os.path.join(base_dir, "image", "home_image3.jpg")
+image_path = os.path.join(base_dir, "image", "home_image2.jpg")
 
 # ✅ 이미지 파일 존재 여부 확인 후 출력
 if not os.path.isfile(image_path):
