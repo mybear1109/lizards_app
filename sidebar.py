@@ -1,7 +1,5 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from hospital_page import display_hospitals
-from youtube_page import display_youtube_videos
 
 def render_sidebar():
     with st.sidebar:
@@ -35,10 +33,18 @@ def render_sidebar():
             },
         )
 
-        # ✅ 검색창 (선택된 메뉴에 따라 표시 & session_state 사용)
+        # ✅ 검색창 (선택된 메뉴에 따라 즉시 반영되도록 session_state 사용)
         if selected_option == "병원 검색":
-            st.session_state["hospital_query"] = st.text_input("🔍 병원 검색", st.session_state.get("hospital_query", "파충류 동물병원"))
+            st.session_state["hospital_query"] = st.text_input(
+                "🔍 병원 검색", 
+                st.session_state.get("hospital_query", "파충류 동물병원"), 
+                key="hospital_search_input"
+            )
         elif selected_option == "유튜브 검색":
-            st.session_state["youtube_query"] = st.text_input("📺 유튜브 검색", st.session_state.get("youtube_query", "파충류 사육 방법"))
+            st.session_state["youtube_query"] = st.text_input(
+                "📺 유튜브 검색", 
+                st.session_state.get("youtube_query", "파충류 사육 방법"), 
+                key="youtube_search_input"
+            )
 
     return selected_option
