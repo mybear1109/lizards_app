@@ -92,7 +92,26 @@ def display_image_analysis():
                 # ✅ 이미지 분석 실행
                 species, confidence = predict_species(image, model, labels)
 
-                # ✅ 예측 결과 설명 (오른쪽에만 표시)
+                # ✅ 예측 결과 강조 표시 (설명 위에 고정)
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color: #ffcc80; 
+                        padding: 10px; 
+                        border-radius: 10px;
+                        text-align: center;
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: #333;
+                    ">
+                        🦎 예측 결과: <span style="color:#d84315;">{species}</span>  
+                        <br> ✅ 신뢰도: <span style="color:#d84315;">{confidence:.2f}%</span>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+                # ✅ 예측 결과에 대한 설명 표시
                 species_info = get_species_description(species)
 
                 st.markdown(
@@ -117,24 +136,25 @@ def display_image_analysis():
             # ✅ 추가 정보 입력 (하단 배치)
             st.subheader("📋 추가 정보 입력")
 
-            # ✅ 모프 선택 기능
+            confidence = st.slider("예측 신뢰도", 0, 100, int(confidence))
+
+            # ✅ 사용자가 직접 정보 입력 가능
+            species = st.text_input("도마뱀 품종을 입력하세요", value=species)
+
             morph_options = [
                 'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)',
                 'Red(빨강)', 'Normal(기본)', 'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)',
                 'Cappuccino(카푸치노)', 'Stripe(스프라이트)', 'Dark(다크)', 'Spotless(점없음)',
-                'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)'
-            ]
+                'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)']
             morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
-
-            # ✅ 사용자가 직접 정보 입력 가능
-            species = st.text_input("도마뱀 품종을 입력하세요", value=species)
-            confidence = st.slider("예측 신뢰도", 0, 100, int(confidence))
-            size = st.text_input("크기를 입력하세요 (선택사항)")
-            price = st.text_input("가격을 입력하세요 (선택사항)")
+            size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
+                            '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)']
+            size = st.selectbox("🦎 도마뱀의 사이즈를 선택해주세요.", size_options)
+            st.info("소중한 정보 입력해주셔서 감사합니다.")
 
             # ✅ 결과 저장 버튼
             if st.button("결과 저장"):
-                save_prediction(uploaded_file.name, species, confidence, morph, size, price)
+                save_prediction(uploaded_file.name, species, confidence, morph, size)
                 st.success("✅ 분석 결과가 저장되었습니다.")
 
             # ✅ 주의 사항 안내 (맨 하단)
