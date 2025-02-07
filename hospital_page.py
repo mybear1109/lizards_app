@@ -16,7 +16,7 @@ def get_naver_search_url(hospital_name):
     return f"https://search.naver.com/search.naver?query={query}"
 
 # ✅ Google Maps API 설정 (지도 표시)
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "YOUR_GOOGLE_MAPS_API_KEY")
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
 
 # ✅ HTML 태그 제거 함수
