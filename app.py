@@ -19,10 +19,6 @@ except ImportError as e:
 # ✅ 이미지 파일 경로 확인
 image_path = "image/home_image2.png"
 
-if not os.path.exists(image_path):
-    st.warning(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
-    st.stop()  # 더 이상 진행하지 않음
-
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
 
