@@ -91,8 +91,7 @@ def display_image_analysis():
             with col2:
                 # ✅ 이미지 분석 실행
                 species, confidence = predict_species(image, model, labels)
-                st.write("")
-                st.write("")
+
                 # ✅ 예측 결과 강조 표시 (설명 위에 고정)
                 st.markdown(
                     f"""
@@ -105,7 +104,6 @@ def display_image_analysis():
                         font-weight: bold;
                         color: #333;
                     ">
-
                         🦎 예측 결과: <span style="color:#d84315;">{species}</span>  
                         <br> ✅ 신뢰도: <span style="color:#d84315;">{confidence:.2f}%</span>
                     </div>
@@ -156,7 +154,7 @@ def display_image_analysis():
 
             # ✅ 결과 저장 버튼
             if st.button("결과 저장"):
-                save_prediction(uploaded_file.name, species, confidence, morph, size)
+                save_prediction(uploaded_file.name, species, confidence, morph, size) # type: ignore
                 st.success("✅ 분석 결과가 저장되었습니다.")
 
             # ✅ 주의 사항 안내 (맨 하단)
