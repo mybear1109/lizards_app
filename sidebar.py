@@ -4,6 +4,7 @@ from streamlit_option_menu import option_menu
 def render_sidebar():
     with st.sidebar:
         # 사이드바 이미지 추가
+        st.image("image/home_image.png", width=200)
         # ✅ 가운데 정렬을 위한 HTML & CSS 적용
         st.markdown(
             """
@@ -13,7 +14,6 @@ def render_sidebar():
             """,
             unsafe_allow_html=True,
         )
-
         # ✅ 검색창 스타일 및 메뉴 생성
         selected_option = option_menu(
             menu_title="🔍 탐색 메뉴",
