@@ -61,20 +61,22 @@ def predict_species(image, model, labels):
         st.error(f"❌ 이미지 예측 중 오류 발생: {e}")
         return "알 수 없음", 0
 
-# ✅ 도마뱀 이미지 분석 기능
 def display_image_analysis():
     st.subheader("🦎 도마뱀 이미지 분석")
 
-    # ✅ 모델 및 레이블 불러오기
+    # ✅ 파일 업로드 (고유 키 사용)
+    uploaded_file = st.file_uploader(
+        "도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"], key="image_uploader_analysis"
+    )
+
+    # ✅ 모델 및 레이블 로드
     model = load_model_cached()
     labels = load_labels()
 
     if model is None or not labels:
-        st.error("⚠️ 분석을 실행할 수 없습니다. 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
+        st.error("⚠️ 모델 또는 레이블 파일이 올바르게 로드되지 않았습니다.")
         return
 
-    # ✅ 이미지 업로드 기능
-    uploaded_file = st.file_uploader("도마뱀 이미지를 업로드하세요", type=["jpg", "jpeg", "png"])
     if uploaded_file:
         try:
             image = Image.open(uploaded_file)
@@ -120,26 +122,44 @@ def display_image_analysis():
                         padding: 15px; 
                         border-radius: 10px;
                         box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-                        padding: 15px;
-                        ">
-                        <h3 style="color: #4CAF50;">🦎 {species}</h3>
-                        <p><b>📝 설명:</b> {species_info['설명']}</p>
-                        <p><b>📍 서식지:</b> {species_info['서식지']}</p>
-                        <p><b>🍽️ 먹이:</b> {species_info['먹이']}</p>
-                        <p><b>✨ 특징:</b> {species_info['특징']}</p>
+                        line-height: 1.6;  /* 줄 간격 조정 */
+                    ">
+                        </p>
+                        </p>
+                        <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🦎 {species}</h3>
+                        <p style="margin: 10px 0; font-size: 16px; color: #333;">
+                            <b>📝 설명:</b> {species_info['설명']}
+                        </p>
+                        <p style="margin: 10px 0; font-size: 16px; color: #333;">
+                            <b>📍 서식지:</b> {species_info['서식지']}
+                        </p>
+                        <p style="margin: 10px 0; font-size: 16px; color: #333;">
+                            <b>🍽️ 먹이:</b> {species_info['먹이']}
+                        </p>
+                        <p style="margin: 10px 0; font-size: 16px; color: #333;">
+                            <b>✨ 특징:</b> {species_info['특징']}
+                        </p>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
 
+            st.write("")
+            st.write("")
             # ✅ 추가 정보 입력 (하단 배치)
             st.subheader("📋 추가 정보 입력")
+            st.write("🔍 예측 신뢰도를 변경하여 추가 정보를 입력 할 수 있습니다.")
 
             confidence = st.slider("예측 신뢰도", 0, 100, int(confidence))
 
             # ✅ 사용자가 직접 정보 입력 가능
-            species = st.text_input("도마뱀 품종을 입력하세요", value=species)
-
+            species_options = [
+                                "0.비어디 드래곤", "1.팬서 카멜레온", "2.크레스티드 게코", "3.레오파드 게코", 
+                                "4.이구아나", "5.기타", "6.개구리", "7.도롱뇽", 
+                                "8.뱀", "9.거북이", "10.뉴트", "11.팩맨 개구리", 
+                                "12.두꺼비", "13.르차이아너스 게코", "14.게코", "15.차후아 게코", 
+                                "16.가고일 게코", "17.스킨크", "18.카멜레온"]
+            species = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", species_options)
             morph_options = [
                 'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)',
                 'Red(빨강)', 'Normal(기본)', 'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)',
@@ -149,12 +169,17 @@ def display_image_analysis():
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
                             '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)']
             size = st.selectbox("🦎 도마뱀의 사이즈를 선택해주세요.", size_options)
-            st.info("소중한 정보 입력해주셔서 감사합니다.")
+            st.write("")
 
+
+            st.info("소중한 정보 입력해주셔서 감사합니다.😊")
+            st.write("")      
             # ✅ 결과 저장 버튼
             if st.button("결과 저장"):
                 save_prediction(uploaded_file.name, species, confidence, morph, size) # type: ignore
                 st.success("✅ 분석 결과가 저장되었습니다.")
+            st.write("")
+            st.write("")
 
             # ✅ 주의 사항 안내 (맨 하단)
             st.error("""
