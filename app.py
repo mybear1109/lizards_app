@@ -20,11 +20,6 @@ except ImportError as e:
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "image", "home_image2.jpg")
 
-# ✅ 이미지 파일 존재 여부 확인 후 출력
-if not os.path.isfile(image_path):
-    st.warning(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
-    image_path = os.path.join(base_dir, "default_image.jpg")  # 기본 이미지 설정
-
   
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
