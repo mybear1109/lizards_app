@@ -8,8 +8,8 @@ import os
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ 네이버 API 설정 (병원 검색 및 연락처 조회)
-NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
-NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
+NAVER_CLIENT_ID = "XfPPDZhLop8Yf6wK6trc"
+NAVER_CLIENT_SECRET = "XxefLPKZtv"
 NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
 
 # ✅ 네이버 검색 URL을 병원이름에 맞춰 자동 생성
@@ -17,6 +17,8 @@ def get_naver_search_url(hospital_name):
     """ 네이버 검색 URL 생성 (병원이름 기반) """
     query = urllib.parse.quote(hospital_name)
     return f"https://search.naver.com/search.naver?query={query}"
+
+print("1.네이버 API 설정 완료")
 
 # ✅ Google Maps API 설정 (지도 표시)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
@@ -32,7 +34,7 @@ def get_hospital_contact_from_naver_detail(naver_url):
     
     if not naver_url or not re.match(r"https?://", naver_url):
         return None  # URL이 없거나 형식이 잘못된 경우
-
+    print("2.네이버 상세보기에서 병원 전화번호 가져오기 함수 생성 완료")
     try:
         response = requests.get(naver_url, timeout=5)
         if response.status_code == 200:
@@ -44,7 +46,7 @@ def get_hospital_contact_from_naver_detail(naver_url):
     except Exception as e:
         st.error(f"❌ 네이버 상세보기에서 전화번호 가져오기 실패: {e}")
         return None
-
+    print("3.네이버 상세보기에서 병원 전화번호 가져오기 함수 생성 완료")
 # ✅ 병원 검색 API + 네이버 상세보기에서 전화번호 가져오기
 def search_hospitals(query="파충류 동물병원", display=5):
     headers = {
@@ -57,7 +59,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
         response = requests.get(NAVER_SEARCH_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
-
+            print("4.병원 검색 API + 네이버 상세보기에서 전화번호 가져오기 함수 생성 완료")
             # ✅ 병원 상세보기에서 전화번호 가져오기 (URL 확인 포함)
             for hospital in hospitals:
                 hospital_name = remove_html_tags(hospital["title"])  # 병원 이름 가져오기
@@ -68,7 +70,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
         else:
             st.error(f"❌ 네이버 병원 검색 실패: {response.status_code}")
             return []
-    
+        print("5.병원 검색 API + 네이버 상세보기에서 전화번호 가져오기 함수 생성 완료")
     except Exception as e:
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
@@ -94,7 +96,7 @@ def display_hospital_map(address):
         )
     else:
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다.")
-
+    print("6.Google 지도 Embed 함수 생성 완료")
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
     user_query = st.text_input("🔎 병원 검색어를 입력하세요", "")
@@ -108,7 +110,7 @@ def display_hospitals():
     st.write(f"🔎 검색어: `{user_query}`")
 
     hospitals = search_hospitals(user_query)
-
+    print("7.병원 검색 결과 표시 함수 생성 완료")
     """ 병원 정보를 스타일링하여 표시하는 함수 """
     if hospitals:
         for hospital in hospitals:
