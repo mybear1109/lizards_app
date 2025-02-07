@@ -10,7 +10,14 @@ NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
 NAVER_API_URL = "https://openapi.naver.com/v1/search/local.json"  # 오타 수정
 
 # ✅ Google Maps API 설정
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "")
+
+# ✅ 지역 목록 추가 (검색어 제한용)
+REGIONS = [
+    "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
+    "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
+    "경상북도", "경상남도", "제주도"
+]
 
 # ✅ 네이버 검색 URL 자동 생성
 def get_naver_search_url(hospital_name):
