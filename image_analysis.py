@@ -9,8 +9,7 @@ from species_info import get_species_description
 from data_manager import save_prediction
 from image_manager import save_image
 
-# ✅ 앱 페이지 설정 (가장 먼저 실행)
-st.set_page_config(page_title="파충류 검색 앱", layout="wide")
+
 
 # ✅ DepthwiseConv2D 호환성 해결
 class DepthwiseConv2DCompat(DepthwiseConv2D):

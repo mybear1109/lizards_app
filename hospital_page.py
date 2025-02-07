@@ -4,6 +4,9 @@ import requests
 import urllib.parse
 import os
 
+# ✅ Streamlit 페이지 설정 (최상단에 위치)
+st.set_page_config(page_title="파충류 검색 앱", layout="wide")
+
 # ✅ 네이버 API 설정 (병원 검색 및 연락처 조회)
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7"
 NAVER_CLIENT_SECRET = "Rg1UhuYeCM"
@@ -18,12 +21,10 @@ def get_naver_search_url(hospital_name):
 # ✅ Google Maps API 설정 (지도 표시)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
-
 # ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
-
 
 # ✅ 네이버 상세보기에서 병원 전화번호 가져오기 (URL 검증 포함)
 def get_hospital_contact_from_naver_detail(naver_url):
@@ -43,7 +44,6 @@ def get_hospital_contact_from_naver_detail(naver_url):
     except Exception as e:
         st.error(f"❌ 네이버 상세보기에서 전화번호 가져오기 실패: {e}")
         return None
-
 
 # ✅ 병원 검색 API + 네이버 상세보기에서 전화번호 가져오기
 def search_hospitals(query="파충류 동물병원", display=5):
@@ -73,7 +73,6 @@ def search_hospitals(query="파충류 동물병원", display=5):
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
 
-
 # ✅ Google 지도 Embed 함수 (지도만 구글 API 사용)
 def display_hospital_map(address):
     """ 구글 지도에서 병원 위치를 표시하는 함수 """
@@ -96,14 +95,13 @@ def display_hospital_map(address):
     else:
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다.")
 
-
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
-    user_query = st.session_state.get("hospital_query", "").strip()
+    user_query = st.text_input("🔎 병원 검색어를 입력하세요", "")
 
-    if not user_query:
+    if not user_query.strip():
         st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
-        st.info("병원 검색어를 사이드바에 입력하세요.")
+        st.info("병원 검색어를 입력하세요.")
         return
 
     st.title("🏥 병원 검색 결과")
@@ -157,7 +155,7 @@ def display_hospitals():
                         style="text-decoration:none; background-color:#F4A261;
                         color:white; padding:8px 12px; border-radius:5px;
                         font-weight:bold;">
-                        🔗네이버 상세보기 
+                        🔗 네이버에서 "{hospital_name}" 검색
                         </a>
                     </p>
                     """,
@@ -170,7 +168,6 @@ def display_hospitals():
     else:
         st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
 
-
-# ✅ 실행
+# ✅ 실행 (Streamlit Cloud 오류 방지)
 if __name__ == "__main__":
     display_hospitals()
