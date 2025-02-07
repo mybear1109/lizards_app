@@ -20,6 +20,24 @@ search_terms = [
     "파충류", "서식지", "생태", "도마뱀", "악어", "파충류 관련", "파충류 정보",'파충류 관련 영상',
     '게코', '개코','도마뱀 모프','성체'
 ]
+# ✅ 검색어 필터링 함수 (지역 + 동물 키워드 반영)
+def filter_search_query(user_query):
+    filtered_query = "동물병원"
+
+    # ✅ 지역 검색 포함 여부 확인
+    for region in REGIONS:
+        if region in user_query:
+            filtered_query = f"{region} {filtered_query}"
+            break
+
+    # ✅ 동물 관련 키워드 포함 여부 확인
+    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS):
+        filtered_query = f"파충류 {filtered_query}"
+    else:
+        st.subheader("⚠️ 파충류 관련 병원만 검색할 수 있습니다.")
+        return None
+
+    return filtered_query
 
 # ✅ 검색어 필터링 함수
 def search_text(text, terms=search_terms):
