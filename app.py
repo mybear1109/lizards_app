@@ -17,7 +17,9 @@ except ImportError as e:
     st.stop()
 
 # ✅ 이미지 파일 경로 확인
-image_path = "image/home_image2.png"
+base_dir = os.path.dirname(__file__)  # 현재 파일 경로
+image_path = os.path.join(base_dir, "image/home_image2.png")
+
 
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
