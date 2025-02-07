@@ -15,12 +15,15 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-
 # ✅ 허용된 검색 키워드 목록 (파충류 관련)
 VALID_ANIMAL_KEYWORDS = {
     "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
-    "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원", "비어디 드래곤", 
-    "표범 카멜레온", "크레스티드 게코", "레오파드 게코", "이구아나", "기타", "개구리", 
-    "도롱뇽", "뱀", "거북이", "뉴트", "팩맨 개구리", "두꺼비", "리치아누스 게코", 
-    "도마뱀붙이", "차후아 게코", "가고일 게코", "스킨크", "카멜레온", "서식지", "생태",
-    "게코", "개코", "도마뱀 모프", "성체"
+    "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원"
 }
+
+# ✅ 세분화된 지역 목록 (지역 관련 검색 제한)
+REGIONS = [
+    "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
+    "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
+    "경상북도", "경상남도", "제주도"
+]
 
 # ✅ 네이버 검색 URL 자동 생성
 def get_naver_search_url(hospital_name):
@@ -34,11 +37,11 @@ def remove_html_tags(text):
 
 # ✅ 검색어 필터링 함수 (허용된 검색어만 실행)
 def filter_search_query(user_query):
-    """입력된 검색어가 허용된 키워드 목록에 포함되는지 확인"""
-    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS):
+    """입력된 검색어가 허용된 키워드 또는 지역 목록에 포함되는지 확인"""
+    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS) or any(region in user_query for region in REGIONS):
         return user_query
     else:
-        st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 도마뱀, 뱀, 거북, 이구아나 등)")
+        st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 도마뱀, 뱀, 거북, 이구아나, 서울, 부산 등)")
         return None
 
 # ✅ 네이버 API에서 병원 검색
