@@ -15,28 +15,13 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-
 # ✅ 허용된 검색 키워드 목록 (파충류 관련)
 VALID_ANIMAL_KEYWORDS = {
     "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
-    "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원","비어디 드래곤", "표범 카멜레온", 
-    "크레스티드 게코", "레오파드 게코", "이구아나", "기타", "개구리", "도롱뇽", 
-    "뱀", "거북이", "뉴트", "팩맨 개구리", "두꺼비", "리치아누스 게코", 
-    "도마뱀붙이", "차후아 게코", "가고일 게코", "스킨크", "카멜레온",
-    "파충류", "서식지", "생태", "도마뱀", "악어",  '게코', '개코','도마뱀 모프','성체'
+    "특이동물", "특수동물", "희귀동물", "이색동물", "파충류 동물병원", "비어디 드래곤", 
+    "표범 카멜레온", "크레스티드 게코", "레오파드 게코", "이구아나", "기타", "개구리", 
+    "도롱뇽", "뱀", "거북이", "뉴트", "팩맨 개구리", "두꺼비", "리치아누스 게코", 
+    "도마뱀붙이", "차후아 게코", "가고일 게코", "스킨크", "카멜레온", "서식지", "생태",
+    "게코", "개코", "도마뱀 모프", "성체"
 }
 
-# ✅ 세분화된 지역 목록 (광역시/도 → 시/구/동까지 포함)
-REGIONS = [
-    "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
-    "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도",
-    "경상북도", "경상남도", "제주도",
-    # ✅ 서울 주요 구
-    "강남구", "서초구", "송파구", "강동구", "강서구", "양천구", "영등포구", 
-    "마포구", "종로구", "용산구", "성동구", "광진구", "성북구", "강북구", 
-    "도봉구", "노원구", "중랑구", "동대문구", "서대문구", "중구", "은평구", 
-    "구로구", "금천구", "동작구",
-    # ✅ 경기 주요 도시
-    "성남", "수원", "용인", "고양", "부천", "안양", "안산", "평택", "시흥",
-    "파주", "의정부", "김포", "광주", "광명", "군포", "이천", "오산", "하남",
-    "양주", "구리", "남양주", "여주", "동두천", "포천", "연천",
-]
 # ✅ 네이버 검색 URL 자동 생성
 def get_naver_search_url(hospital_name):
     query = urllib.parse.quote(hospital_name)
@@ -100,9 +85,11 @@ def display_hospital_map(address):
         st.warning("⚠️ Google Maps API Key가 설정되지 않았습니다. 지도 기능을 사용할 수 없습니다.")
 
 # ✅ 병원 검색 결과 표시
-def display_hospitals(query="파충류 동물병원"):
+def display_hospitals():
+    user_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
+
     # ✅ 검색어 필터링
-    filtered_query = filter_search_query(query)
+    filtered_query = filter_search_query(user_query)
     if not filtered_query:
         return  # 검색어가 허용되지 않으면 검색 수행 안 함
 
@@ -179,25 +166,5 @@ def display_hospitals(query="파충류 동물병원"):
 
 # ✅ 실행
 if __name__ == "__main__":
-    # ✅ 사이드바에 검색 입력 추가
     st.sidebar.header("🏥 병원 검색")
-    user_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
-
-
-# ✅ 유튜브 검색 결과 표시 함수
-def display_youtube_videos():
-    query = st.session_state.get("youtube_query", "").strip()
-
-    # ✅ 검색어가 비어있을 경우 안내 메시지
-    if not query:
-        st.subheader("⚠️ 파충류 관련 영상만 검색할 수 있습니다.")
-        st.info("유튜브 검색어를 사이드바에서 입력하세요.")
-        return
-
-    # ✅ 검색어 제한 (허용된 키워드만 검색 가능)
-    matched_terms = search_text(query)
-    if not matched_terms:
-        st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 뱀, 서식지, 생태 등)")
-    else:
-        display_hospitals("파충류 동물병원")  # 기본 검색어 사용
-        return
+    display_hospitals()
