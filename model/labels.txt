@@ -1,19 +1,19 @@
-0 Beardy Dragon
-1 Panther Chamaeleon
-2 Crestedgeko
-3 Leopardgeko
-4 Iguana
-5 Other
-6 Frog
-7 Salamander
-8 Snake
-9 Turtle
-10.Newt
-11.Pacman
-12.Toad
-13.Leachianus Gecko
-14.Gecko
-15.Chahoua Gecko
-16.Gargoyle Gecko
-17.Skink
-18.Chamaeleon
+0.비어디 드래곤
+1.팬서 카멜레온
+2.크레스티드 게코
+3.레오파드 게코
+4.이구아나
+5.기타
+6.개구리
+7.도롱뇽
+8.뱀
+9.거북이
+10.뉴트
+11.팩맨 개구리
+12.두꺼비
+13.르차이아너스 게코
+14.게코
+15.차후아 게코
+16.가고일 게코
+17.스킨크
+18.카멜레온

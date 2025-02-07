@@ -8,6 +8,7 @@ from tensorflow.keras.utils import get_custom_objects # type: ignore
 import h5py
 from species_info import get_species_description
 from data_manager import save_prediction
+from image_manager import save_image
 
 # ✅ DepthwiseConv2D 호환성 해결
 class DepthwiseConv2DCompat(DepthwiseConv2D):

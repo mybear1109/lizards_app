@@ -12,21 +12,24 @@ NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local.json"
 # ✅ Google Maps API 설정 (지도 표시)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
+
 # ✅ HTML 태그 제거 함수
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
-# ✅ 네이버 상세보기에서 병원 전화번호 가져오기 (오류 수정)
+
+# ✅ 네이버 상세보기에서 병원 전화번호 가져오기 (URL 검증 포함)
 def get_hospital_contact_from_naver_detail(naver_url):
-    """ 네이버 상세보기 페이지에서 병원 전화번호를 가져오는 함수 """
+    """ 네이버 상세보기 페이지에서 전화번호를 가져오는 함수 (URL 오류 방지 포함) """
+    
+    if not naver_url or not re.match(r"https?://", naver_url):
+        return "정보 없음"  # URL이 없거나 형식이 잘못된 경우
+
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-        }
-        response = requests.get(naver_url, headers=headers, timeout=5)
+        response = requests.get(naver_url, timeout=5)
         if response.status_code == 200:
-            # ✅ 전화번호를 HTML에서 추출 (네이버 플레이스 JSON 데이터에서 가져오기)
+            # ✅ 페이지 내에서 전화번호 찾기 (JSON 데이터에서 검색)
             phone_match = re.search(r'\"phone\":\"(.*?)\"', response.text)
             if phone_match:
                 return phone_match.group(1)  # ✅ 전화번호 추출
@@ -35,9 +38,9 @@ def get_hospital_contact_from_naver_detail(naver_url):
         st.error(f"❌ 네이버 상세보기에서 전화번호 가져오기 실패: {e}")
         return "정보 없음"
 
+
 # ✅ 병원 검색 API + 네이버 상세보기에서 전화번호 가져오기
 def search_hospitals(query="파충류 동물병원", display=5):
-    """ 네이버 검색 API를 사용하여 병원 정보를 가져오고, 상세보기에서 전화번호를 추출하는 함수 """
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
         "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
@@ -48,9 +51,10 @@ def search_hospitals(query="파충류 동물병원", display=5):
         response = requests.get(NAVER_SEARCH_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
-            
-            # ✅ 네이버 상세보기에서 병원 전화번호 가져오기
+
+            # ✅ 병원 상세보기에서 전화번호 가져오기 (URL 확인 포함)
             for hospital in hospitals:
+                hospital["link"] = hospital.get("link", "")
                 hospital["telephone"] = get_hospital_contact_from_naver_detail(hospital["link"])
 
             return hospitals
@@ -61,7 +65,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
     except Exception as e:
         st.error(f"❌ 네트워크 오류 발생: {e}")
         return []
-    
+
 
 # ✅ Google 지도 Embed 함수 (지도만 구글 API 사용)
 def display_hospital_map(address):
@@ -85,9 +89,9 @@ def display_hospital_map(address):
     else:
         st.error("⚠️ Google Maps API Key가 설정되지 않았습니다.")
 
+
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
-    """ 병원 검색 결과를 화면에 표시하는 함수 """
     user_query = st.session_state.get("hospital_query", "").strip()
 
     if not user_query:
@@ -157,3 +161,8 @@ def display_hospitals():
                 
     else:
         st.warning("검색 결과가 없습니다. 다른 검색어를 시도해 보세요.")
+
+
+# ✅ 실행
+if __name__ == "__main__":
+    display_hospitals()
