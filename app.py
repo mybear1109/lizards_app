@@ -16,12 +16,14 @@ except ImportError as e:
     st.error(f"❌ 모듈 로드 오류: {e}")
     st.stop()
 
-# ✅ 이미지 파일 경로
+# ✅ 이미지 파일 경로 설정
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "image", "home_image2.jpg")
 
+# ✅ 이미지 파일 존재 여부 확인
+if not os.path.exists(image_path):
+    st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-  
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
 
@@ -31,10 +33,10 @@ if selected_option == "홈":
     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
     with col1:
-        try:
-            st.image(image_path, width=300)  # ✅ 존재하는 경우만 출력
-        except Exception as e:
-            st.error(f"❌ 이미지 표시 오류: {e}")
+        if os.path.exists(image_path):
+            st.image(image_path, caption="홈 화면 이미지", use_column_width=True)  # ✅ 자동 크기 조정
+        else:
+            st.error("🚨 이미지 파일을 찾을 수 없습니다.")
 
     with col2:
         # ✅ 제목 및 스타일 적용
