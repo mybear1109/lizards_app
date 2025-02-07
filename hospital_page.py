@@ -24,7 +24,7 @@ def get_hospital_contact_from_naver_detail(naver_url):
     """ 네이버 상세보기 페이지에서 전화번호를 가져오는 함수 (URL 오류 방지 포함) """
     
     if not naver_url or not re.match(r"https?://", naver_url):
-        return "정보 없음"  # URL이 없거나 형식이 잘못된 경우
+        return None  # URL이 없거나 형식이 잘못된 경우
 
     try:
         response = requests.get(naver_url, timeout=5)
@@ -33,10 +33,10 @@ def get_hospital_contact_from_naver_detail(naver_url):
             phone_match = re.search(r'\"phone\":\"(.*?)\"', response.text)
             if phone_match:
                 return phone_match.group(1)  # ✅ 전화번호 추출
-        return "정보 없음"
+        return None  # 정보가 없을 경우 None 반환
     except Exception as e:
         st.error(f"❌ 네이버 상세보기에서 전화번호 가져오기 실패: {e}")
-        return "정보 없음"
+        return None
 
 
 # ✅ 병원 검색 API + 네이버 상세보기에서 전화번호 가져오기
@@ -131,15 +131,16 @@ def display_hospitals():
                 )
                 display_hospital_map(hospital['address'])  # ✅ 구글 지도 표시
 
-                # ✅ 연락처 정보 (전화번호 포함)
-                st.markdown(
-                    f"""
-                    <p style="font-size:16px; color:#E76F51;">
-                        📞 <b>전화번호:</b> {hospital.get('telephone', '정보 없음')}
-                    </p>
-                    """,
-                    unsafe_allow_html=True
-                )
+                # ✅ 연락처 정보 (전화번호가 있을 때만 표시)
+                if hospital.get('telephone'):
+                    st.markdown(
+                        f"""
+                        <p style="font-size:16px; color:#E76F51;">
+                            📞 <b>전화번호:</b> {hospital['telephone']}
+                        </p>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
                 # ✅ 네이버 링크 버튼 스타일 변경
                 st.markdown(
