@@ -129,8 +129,13 @@ def display_species_info(species_name):
     if not species_info:  
         species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}  
 
-    # ✅ 대표 이미지 표시
-    st.image(species_info["이미지"], caption=f"{species_name} 대표 이미지", width=300)
+    with col1:
+    # ✅ 컬럼을 이용해 이미지와 텍스트 정렬 (왼쪽: 이미지, 오른쪽: 설명)
+     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
+
+    with col2:
+        # ✅ UI 스타일 적용
+        st.image(species_info["이미지"], caption=f"{species_name} 대표 이미지", width=300)
 
 
     st.markdown(
