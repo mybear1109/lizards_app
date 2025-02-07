@@ -3,12 +3,11 @@ from streamlit_option_menu import option_menu
 
 def render_sidebar():
     with st.sidebar:
-        # 사이드바 이미지 추가
-        st.image("image/home_image.png", width=200)
         # ✅ 가운데 정렬을 위한 HTML & CSS 적용
         st.markdown(
             """
             <div style="display: flex; justify-content: center;">
+                <img src="image/home_image.png" width="200">
             </div>
             """,
             unsafe_allow_html=True,
