@@ -183,8 +183,21 @@ if __name__ == "__main__":
     st.sidebar.header("🏥 병원 검색")
     user_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
 
-    # ✅ 검색어 필터링 후 결과 표시
-    if user_query.strip():
-        display_hospitals(user_query)
+
+# ✅ 유튜브 검색 결과 표시 함수
+def display_youtube_videos():
+    query = st.session_state.get("youtube_query", "").strip()
+
+    # ✅ 검색어가 비어있을 경우 안내 메시지
+    if not query:
+        st.subheader("⚠️ 파충류 관련 영상만 검색할 수 있습니다.")
+        st.info("유튜브 검색어를 사이드바에서 입력하세요.")
+        return
+
+    # ✅ 검색어 제한 (허용된 키워드만 검색 가능)
+    matched_terms = search_text(query)
+    if not matched_terms:
+        st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 뱀, 서식지, 생태 등)")
     else:
         display_hospitals("파충류 동물병원")  # 기본 검색어 사용
+        return
