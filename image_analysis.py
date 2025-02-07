@@ -130,13 +130,6 @@ def display_species_info(species_name):
     if not species_info:
         species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}
 
-    # ✅ 컬럼을 이용해 이미지(왼쪽) + 텍스트(오른쪽) 배치
-    col1, col2 = st.columns([1, 2])
-
-    with col1:
-        st.image(species_info["이미지"], width=300)
-
-    with col2:
         st.markdown(
             f"""
             <div style="
