@@ -20,13 +20,19 @@ except ImportError as e:
 base_dir = os.path.dirname(__file__)  # 현재 파일 경로
 image_path = os.path.join(base_dir, "image/home_image2.png")
 
-
 # ✅ 이미지 파일 존재 여부 확인
 if not os.path.isfile(image_path):
-    st.error(f"⚠️ 이미지 파일이 존재하지 않습니다: {image_path}")
-    st.stop()  # 앱 실행 중단
+    st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 기본 이미지를 표시합니다.")
+    image_path = os.path.join(base_dir, "default_image.jpg")  # 기본 이미지 설정
+
+    # 기본 이미지도 없으면 실행 중단
+    if not os.path.isfile(image_path):
+        st.error("🚨 기본 이미지도 존재하지 않습니다. 파일을 확인해주세요.")
+        st.stop()
+
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
+
 
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
