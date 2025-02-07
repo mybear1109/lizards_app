@@ -155,7 +155,7 @@ def display_hospitals():
                         style="text-decoration:none; background-color:#F4A261;
                         color:white; padding:8px 12px; border-radius:5px;
                         font-weight:bold;">
-                        🔗 네이버에서 "{hospital_name}" 검색
+                        🔗 네이버 상세검색
                         </a>
                     </p>
                     """,
