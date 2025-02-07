@@ -5,10 +5,12 @@ from PIL import Image, ImageOps
 from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import get_custom_objects # type: ignore
-import h5py
 from species_info import get_species_description
 from data_manager import save_prediction
 from image_manager import save_image
+
+# ✅ 앱 페이지 설정 (가장 먼저 실행)
+st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ DepthwiseConv2D 호환성 해결
 class DepthwiseConv2DCompat(DepthwiseConv2D):
@@ -86,29 +88,21 @@ def display_image_analysis():
             st.success(f"**예측된 도마뱀 품종: {species}**")
             st.write(f"✅ 신뢰도: **{confidence:.2f}%**")
 
-            st.write("")
-            st.write("")
-            st.write("")
-            st.write("")
-
             # ✅ 모프 선택 기능 추가
             morph_options = [
-                'White', 'Albino', 'Green', 'Undefined', 'Berry', 'Red', 'Normal',
-                'Hypo', 'Lily', 'Frapuccino', 'Cappuccino', 'Stripe', 'Dark',
-                'Spotless', 'Black', 'Dalmatian', 'Cream', 'Hat', 'Axanthic', 'Yellow'
+                'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)', 'Red(빨강)', 'Normal(기본)',
+                'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)', 'Cappuccino(카푸치노)', 'Stripe(스프라이트)', 'Dark(다크)',
+                'Spotless(점없음)', 'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)'
             ]
             morph = st.selectbox("🦎 업로드한 도마뱀의 모프를 선택해주세요.", morph_options)
             st.info(f"🔍 선택한 모프: **{morph}** 입니다.  소중한 정보 감사합니다.😊")
 
             # ✅ 분석 데이터 저장 (모프 추가)
             save_prediction(uploaded_file.name, species, confidence, morph)
-            st.write("")
-            st.write("")
-            st.write("")
+
             # ✅ 품종 설명 표시
             display_species_info(species)
 
-            st.write("")
             # ✅ 주의 사항 안내
             st.error("""
                 🔍 예측 결과는 입력된 이미지의 특성에 따라 변동될 수 있습니다.
@@ -129,29 +123,32 @@ def display_species_info(species_name):
     if not species_info:  
         species_info = {"설명": "정보 없음", "서식지": "정보 없음", "먹이": "정보 없음", "특징": "정보 없음"}  
 
-    with col1:
-    # ✅ 컬럼을 이용해 이미지와 텍스트 정렬 (왼쪽: 이미지, 오른쪽: 설명)
-     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
+    # ✅ 컬럼을 이용해 이미지(왼쪽) + 텍스트(오른쪽) 배치
+    col1, col2 = st.columns([1, 2])
 
-    with col2:
-        # ✅ UI 스타일 적용
+    with col1:
         st.image(species_info["이미지"], caption=f"{species_name} 대표 이미지", width=300)
 
+    with col2:
+        st.markdown(
+            f"""
+            <div style="
+                background-color: #f8f9fa; 
+                padding: 15px; 
+                border-radius: 10px;
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+                padding: 15px;
+                ">
+                <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
+                <p><b>📝 설명:</b> {species_info['설명']}</p>
+                <p><b>📍 서식지:</b> {species_info['서식지']}</p>
+                <p><b>🍽️ 먹이:</b> {species_info['먹이']}</p>
+                <p><b>✨ 특징:</b> {species_info['특징']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    st.markdown(
-        f"""
-        <div style="
-            background-color: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-            ">
-            <h3 style="color: #4CAF50;">🦎 {species_name}</h3>
-            <p><b>📝 설명:</b> {species_info['설명']}</p>
-            <p><b>📍 서식지:</b> {species_info['서식지']}</p>
-            <p><b>🍽️ 먹이:</b> {species_info['먹이']}</p>
-            <p><b>✨ 특징:</b> {species_info['특징']}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+# ✅ 실행
+if __name__ == "__main__":
+    display_image_analysis()
