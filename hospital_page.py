@@ -4,8 +4,7 @@ import requests
 import urllib.parse
 import os
 
-# ✅ Streamlit 페이지 설정
-st.set_page_config(page_title="파충류 병원 검색 앱", layout="wide")
+
 
 # ✅ 네이버 API 설정
 NAVER_CLIENT_ID = "OoSMwYAOM2tdBLryoPR7" 
