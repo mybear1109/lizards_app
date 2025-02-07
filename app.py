@@ -20,6 +20,7 @@ except ImportError as e:
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "image", "home_image2.jpg")
 
+
   
 # ✅ 사이드바 렌더링
 selected_option = render_sidebar()
@@ -31,7 +32,7 @@ if selected_option == "홈":
 
     with col1:
         try:
-            st.image(image_path, use_container_width=True)  # ✅ 존재하는 경우만 출력
+            st.image(image_path, width=300)  # ✅ 존재하는 경우만 출력
         except Exception as e:
             st.error(f"❌ 이미지 표시 오류: {e}")
 
