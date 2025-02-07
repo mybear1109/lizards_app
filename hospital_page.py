@@ -19,9 +19,6 @@ def get_naver_search_url(hospital_name):
     query = urllib.parse.quote(hospital_name)
     return f"https://search.naver.com/search.naver?query={query}"
 
-
-
-
 # ✅ HTML 태그 제거
 def remove_html_tags(text):
     clean = re.compile('<.*?>')
