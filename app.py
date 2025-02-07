@@ -1,13 +1,17 @@
 import streamlit as st
-from sidebar import render_sidebar
-from hospital_page import display_hospitals
-from youtube_page import display_youtube_videos
-from about import show_about # type: ignore
-from data_analysis import display_data_analysis
-from image_analysis import display_image_analysis
 
+# ✅ 외부 모듈 임포트 (오류 방지)
+try:
+    from sidebar import render_sidebar
+    from hospital_page import display_hospitals
+    from youtube_page import display_youtube_videos
+    from about import show_about
+    from data_analysis import display_data_analysis
+    from image_analysis import display_image_analysis
+except ImportError as e:
+    st.error(f"❌ 모듈 로드 오류: {e}")
 
-# ✅ Streamlit 페이지 설정
+# ✅ Streamlit 페이지 설정 (최상단 배치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ 사이드바 렌더링
@@ -19,7 +23,7 @@ if selected_option == "홈":
     col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
     with col1:
-        st.image("image/001.jpg", use_column_width=True)  # 이미지 추가 (경로는 필요에 맞게 변경)
+        st.image("image/001.jpg", use_column_width=True)  # ✅ 이미지 경로 확인 필요
 
     with col2:
         # ✅ 제목 및 스타일 적용
@@ -41,7 +45,7 @@ if selected_option == "홈":
         st.markdown(
             """
             <ul style="font-size:20px; color:#333;">
-                <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서 </b> (뽑내는 글 맞음 )</li>           
+                <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서</b> (기본 기능 안내)</li>           
                 <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
                 <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
                 <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
@@ -49,14 +53,23 @@ if selected_option == "홈":
             """,
             unsafe_allow_html=True,
         )
+
+# ✅ 각 메뉴별 기능 실행
 elif selected_option == "설명":
     show_about()
+
 elif selected_option == "도마뱀 분석":
     display_image_analysis()
 
 elif selected_option == "병원 검색":
     display_hospitals()
+
 elif selected_option == "유튜브 검색":
     display_youtube_videos()
+
 elif selected_option == "데이터 분석":
-    display_data_analysis()     # type: ignore    
+    try:
+        display_data_analysis()
+    except Exception as e:
+        st.error(f"❌ 데이터 분석 기능 실행 오류: {e}")
+
