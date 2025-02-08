@@ -16,9 +16,8 @@ def show_about():
             
     """)
     st.image("images/you.png", use_column_width=True)
-
-
-
+    st.write("" * 2)
+    st.write("" * 2)
     st.header("1️⃣ 주요 기능 한눈에 보기")
     st.markdown("""
     - **📸 이미지 분석 (AI 분류)**  
@@ -39,7 +38,8 @@ def show_about():
                  
       허용된 키워드를 사용해 불필요한 콘텐츠를 최소화  
     """)
-
+    st.write("" * 2)
+    st.write("" * 2)
     st.header("2️⃣ 앱 사용 방법 (상세 설명)")
     
     st.subheader("📌 2.1 Streamlit 앱 실행하기")
@@ -47,37 +47,47 @@ def show_about():
 
     st.subheader("📌 2.2 메인 화면 살펴보기")
     st.markdown("앱 메인 화면에서는 프로젝트 개요 및 이용 가이드를 간단히 확인할 수 있습니다.")
-
+    st.image("images/hompage.png1", use_column_width=True)
+    st.write("" * 2)
     st.subheader("📌 2.3 이미지 분석 (AI 분류) 기능")
     st.markdown("""
     1. 메뉴에서 **이미지 분석**을 선택합니다.
-                
-    2. 분석할 **도마뱀 이미지를 업로드**합니다. (`.jpg, .jpeg, .png` 지원)
-                
-    3. AI가 **예측된 종과 확률(%)**을 분석하여 표시합니다.
-                
-    4. 분석 결과를 **그래프로 시각화**할 수도 있습니다.
     """)
+    st.markdown("""
+    2. 분석할 **도마뱀 이미지를 업로드**합니다. (`.jpg, .jpeg, .png` 지원)
+    """)
+    st.image("images/hompage.png2", use_column_width=True)               
+    st.markdown("""
+    3. AI가 **예측된 종과 확률(%)**을 분석하여 표시합니다.
+    """)
+    st.image("images/hompage.png3", use_column_width=True)       
+    st.write("" * 2)
 
     st.subheader("📌 2.4 병원 검색 기능")
     st.markdown("""
     1. **병원 검색** 메뉴에서 키워드를 입력합니다. (예: "파충류 병원", "이구아나")
-                
-    2. 관련 병원의 목록이 나타납니다.
-                
-    3. 지도를 통해 위치를 확인할 수도 있습니다.
-                
     """)
-
+    st.markdown("""
+    2. 관련 병원의 목록이 나타납니다.
+    """)
+    st.image("images/hompage.png5", use_column_width=True)       
+    st.markdown("""
+    3. 지도를 통해 위치를 확인할 수도 있습니다.
+    """)
+    st.image("images/hompage.png6", use_column_width=True)   
+    st.write("" * 2)
     st.subheader("📌 2.5 유튜브 검색 기능")
     st.markdown("""
     1. **유튜브 검색** 메뉴에서 키워드를 입력합니다. (예: "파충류 탐험")
-                
+    """)
+    st.image("images/you.png", use_column_width=True)
+    st.markdown("""
     2. 관련된 유튜브 영상 목록이 나타납니다.
-                
     3. 제목을 클릭하면 유튜브에서 해당 영상을 바로 확인할 수 있습니다.
     """)
-
+    st.image("images/hompage.png6", use_column_width=True) 
+    st.write("" * 2)
+    st.write("" * 2)  
     st.header("3️⃣ 데이터 및 모델")
     st.markdown("""
     - `Teachable Machine`을 사용해 18가지 파충류/양서류 학습  
@@ -87,19 +97,26 @@ def show_about():
     - **Epoch=100, Batch=128** 설정으로 다양한 이미지 상황 대응  
     """)
 
-    st.header("4️⃣ 기대 효과 & 활용")
+    st.header("4️⃣ 차별화 포인트 & 질의응답 준비")
     st.markdown("""
-    - **🔹 직관적 UI:**  
-      간단한 이미지 업로드 및 검색 기능 제공  
+
+     - **🔹1. 왜 여러 번 학습을 진행했는가? **  
+    파충류/양서류는 종 간 유사성이 높아 정확도 확보가 쉽지 않습니다.
+    반복 학습 + 데이터 증강을 통해 과적합을 피하고, 다양한 특징을 학습시켰습니다.
+    실제 촬영 환경(각도, 조명 등)을 고려한 테스트로 일반화 능력을 극대화했습니다.
                 
-    - **🔹 정보 통합 제공:**  
-      AI 예측 + 병원 검색 + 유튜브 검색이 한 곳에서 가능  
                 
-    - **🔹 교육 및 연구 활용:**  
-      생물학 연구, 동물원 전시, 보호 활동 등에서 응용 가능  
+     - **🔹2. 기술적 차별점
+    Teachable Machine을 활용해 빠른 개발과 높은 성능을 함께 달성
+    병원 검색 + 유튜브 검색을 통합해, 종 분류 후 즉시 정보 탐색이 가능
+    단순 분류 도구를 넘어, 정보 허브로 자리 잡을 수 있는 플랫폼
                 
-    - **🔹 추가 확장 가능:**  
-      더 많은 종(class) 추가, 실시간 영상 분석 기능 업그레이드 가능  
+
+     - **🔹3. 추가 발전 가능성
+    커뮤니티 기능(Q&A, 데이터셋 공유)으로 사용자 간 활발한 정보 교류
+    보호 단체 협업: 멸종위기종 정보를 추가해 환경 보호에 기여
+    오픈소스 프로젝트로 확장해 글로벌 개발자들과 협업
+
     """)
 
     st.warning("⚠️ 본 AI 모델은 참고용입니다. 정확한 진단이나 치료는 전문가와 상담하세요!")
