@@ -21,13 +21,6 @@ except ImportError as e:
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "images", "home_image3.jpg")
 
-# ✅ 버튼 클릭 시 즉시 페이지 이동 함수
-def navigate_to(page_name):
-    """ 세션 상태를 업데이트하여 화면 이동 """
-    if "selected_page" not in st.session_state or st.session_state["selected_page"] != page_name:
-        st.session_state["selected_page"] = page_name
-        st.experimental_rerun()  # ✅ 강제 새로고침
-
 # ✅ 세션 상태 초기화
 if "selected_page" not in st.session_state:
     st.session_state["selected_page"] = "홈"
@@ -35,11 +28,15 @@ if "selected_page" not in st.session_state:
 # ✅ 사이드바 렌더링 (네비게이션 메뉴 추가)
 selected_option = render_sidebar()
 
-# ✅ 사이드바에서 선택한 메뉴가 변경되면 페이지 전환
+# ✅ 버튼 클릭 시 페이지 이동 (세션 상태 변경)
+def navigate_to(page_name):
+    st.session_state["selected_page"] = page_name
+
+# ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option != st.session_state["selected_page"]:
     st.session_state["selected_page"] = selected_option
 
-# ✅ 선택된 메뉴에 따라 페이지 전환
+# ✅ 선택된 메뉴에 따라 화면 렌더링
 if st.session_state["selected_page"] == "홈":
     # ✅ 제목 및 기능 설명 출력
     st.markdown(
@@ -58,7 +55,7 @@ if st.session_state["selected_page"] == "홈":
 
     # ✅ 이미지 파일이 존재하는 경우에만 표시
     if os.path.exists(image_path):
-        st.image(image_path, use_container_width=True)  # ✅ 최신 버전 적용
+        st.image(image_path, caption="홈 화면 이미지", use_container_width=True)
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
@@ -86,7 +83,7 @@ if st.session_state["selected_page"] == "홈":
             navigate_to("분석 데이터")
 
 # ✅ 각 메뉴별 기능 실행 (세션 상태를 기준으로 연동)
-elif st.session_state["selected_page"] == "앱 사용 방법":
+if st.session_state["selected_page"] == "앱 사용 방법":
     try:
         show_about()
     except Exception as e:
