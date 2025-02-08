@@ -25,13 +25,9 @@ selected_option = render_sidebar()
 
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
-    # ✅ 이미지 파일이 존재하는 경우에만 표시
-    if os.path.exists(image_path):
-        st.image(image_path, caption="홈 화면 이미지", use_column_width=True)  # ✅ 자동 크기 조정
-    else:
-        st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-    # ✅ 제목 및 기능 설명 출력
+
+        # ✅ 제목 및 기능 설명 출력
     st.markdown(
         """
         <h1 style="color:#4CAF50; font-size:42px; font-weight:bold; text-align:center;">🦎 파충류 탐험의 세계</h1>
@@ -45,6 +41,13 @@ if selected_option == "홈":
         """,
         unsafe_allow_html=True,
     )
+
+    # ✅ 이미지 파일이 존재하는 경우에만 표시
+    if os.path.exists(image_path):
+        st.image(image_path, caption="홈 화면 이미지", use_column_width=True)  # ✅ 자동 크기 조정
+    else:
+        st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
+
 
     # ✅ 기능 목록 (아이콘 및 스타일 적용)
     st.markdown(
