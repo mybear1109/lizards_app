@@ -21,17 +21,17 @@ except ImportError as e:
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "images", "home_image3.jpg")
 
-# ✅ 버튼 클릭 시 즉시 페이지 이동 함수
-def navigate_to(page_name):
-    """ 세션 상태를 업데이트하여 페이지 이동 """
-    st.session_state["selected_page"] = page_name
-
-# ✅ 세션 상태 초기화
+# ✅ 세션 상태 초기화 (첫 실행 시)
 if "selected_page" not in st.session_state:
     st.session_state["selected_page"] = "홈"
 
 # ✅ 사이드바 렌더링 (네비게이션 메뉴 추가)
 selected_option = render_sidebar()
+
+# ✅ 버튼 클릭 시 즉시 페이지 이동 함수 (rerun 제거)
+def navigate_to(page_name):
+    """ 세션 상태만 변경하여 페이지 이동 """
+    st.session_state["selected_page"] = page_name  # 상태만 변경
 
 # ✅ 사이드바에서 선택한 메뉴와 동기화
 if selected_option != st.session_state["selected_page"]:
