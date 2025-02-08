@@ -18,9 +18,9 @@
 
 ---
 
-### [🦎 HOME PAGE](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
+### [🖥️ HOME PAGE](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
 
-### [📝 MofMof Wiki](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
+### [📱 MofMof Wiki](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
 
 
 ---
@@ -34,27 +34,27 @@
 <br>
 
 
-### 1. **실용성과 편의성**
+### 1. **⚒️ 실용성과 편의성**
     - 이미지 분류 + 병원 검색 + 유튜브 영상 검색을 **한 플랫폼**에서 해결
     - 긴급한 상황에도 **신속하게** 주변 병원 찾기 가능
     - 최근 사육 기록 앱(렙다이어리 등)과 **차별화**된 종합 서비스
 
-### 2. **교육 및 연구 혁신**
+### 2. **📚 교육 및 연구 혁신**
     - 학교·박물관 등에서 **AI 기반 파충류·양서류 분류 체험**
     - 유튜브 영상과 결합해 **흥미로운 교육 자료**로 활용
     - **생물학 연구** 분야에서도 **선구자적 역할** 기대
 
-### 3. **모프 정보 수집 및 교배 예측**
+### 3. **🗂️ 모프 정보 수집 및 교배 예측**
     - 레오파드 게코, 볼파이톤처럼 **색·무늬 변이(모프)**가 다양한 종에 적용
     - **데이터 축적**을 통해 2세대 형질 예측 가능
     - **전문 브리더 및 연구자**에게 귀중한 정보 제공
 
-### 4. **지속적인 발전 및 확장성**
+### 4. **🗄️ 지속적인 발전 및 확장성**
     - 18종에서 더 확장해 다른 동물군(포유류, 조류 등)에도 적용 가능
     - 실시간 스트리밍 분석, 사용자 커뮤니티 기능 등 구현 여지
     - **환경 보호**와 **멸종위기종** 식별에도 기여 가능
 
-### 5. **파충류 관련 산업 진흥**
+### 5. **🧮 파충류 관련 산업 진흥**
     - 파충류 O2O 플랫폼과 연계해 애완용품 시장 활성화
     - **AI 기술을 활용한 건강 관리 서비스** 확장 (예: 탈피 과정
 ---
@@ -222,6 +222,8 @@ project_root/
 <br>   
 ## 유튜브 검색 기능
 
+https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white
+
 ### 1. **영상 학습**
 <br>   
 
@@ -281,8 +283,15 @@ project_root/
 
 
 
+---
+## 📚 자료 출처 
+
+https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white
 
 
+https://www.kaggle.com/datasets/vencerlanz09/reptiles-and-amphibians-image-dataset
+https://www.kaggle.com/datasets/ishandutta/amphibians-data-set
+https://www.kaggle.com/datasets/cyj5480140/breeders-20241101-20241201
 
 
 
