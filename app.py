@@ -47,41 +47,6 @@ if selected_option == "홈":
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-# ✅ 세션 상태를 확인하여 해당 페이지로 이동
-if "selected_page" in st.session_state:
-    selected_option = st.session_state["selected_page"]
-
-# ✅ 각 메뉴별 기능 실행
-if selected_option == "설명":
-    try:
-        show_about()
-    except Exception as e:
-        st.error(f"❌ 설명 페이지 로드 오류: {e}")
-
-elif selected_option == "도마뱀 분석":
-    try:
-        display_image_analysis()
-    except Exception as e:
-        st.error(f"❌ 도마뱀 분석 기능 오류: {e}")
-
-elif selected_option == "병원 검색":
-    try:
-        display_hospitals()
-    except Exception as e:
-        st.error(f"❌ 병원 검색 기능 오류: {e}")
-
-elif selected_option == "유튜브 검색":
-    try:
-        display_youtube_videos()
-    except Exception as e:
-        st.error(f"❌ 유튜브 검색 기능 오류: {e}")
-
-elif selected_option == "분석 데이터":
-    try:
-        display_data_analysis()
-    except Exception as e:
-        st.error(f"❌ 데이터 분석 기능 오류: {e}")
-
     # ✅ 버튼을 눌렀을 때 해당 기능을 실행하도록 설정
     col1, col2, col3 = st.columns(3)
 
@@ -121,3 +86,38 @@ elif selected_option == "분석 데이터":
                 display_data_analysis()
             except Exception as e:
                 st.error(f"❌ 데이터 분석 기능 오류: {e}")
+
+# ✅ 세션 상태를 확인하여 해당 페이지로 이동
+if "selected_page" in st.session_state:
+    selected_option = st.session_state["selected_page"]
+
+# ✅ 각 메뉴별 기능 실행
+if selected_option == "설명":
+    try:
+        show_about()
+    except Exception as e:
+        st.error(f"❌ 설명 페이지 로드 오류: {e}")
+
+elif selected_option == "도마뱀 분석":
+    try:
+        display_image_analysis()
+    except Exception as e:
+        st.error(f"❌ 도마뱀 분석 기능 오류: {e}")
+
+elif selected_option == "병원 검색":
+    try:
+        display_hospitals()
+    except Exception as e:
+        st.error(f"❌ 병원 검색 기능 오류: {e}")
+
+elif selected_option == "유튜브 검색":
+    try:
+        display_youtube_videos()
+    except Exception as e:
+        st.error(f"❌ 유튜브 검색 기능 오류: {e}")
+
+elif selected_option == "분석 데이터":
+    try:
+        display_data_analysis()
+    except Exception as e:
+        st.error(f"❌ 데이터 분석 기능 오류: {e}")
