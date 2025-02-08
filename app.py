@@ -30,15 +30,15 @@ selected_option = render_sidebar()
 # ✅ 선택된 메뉴에 따라 페이지 전환
 if selected_option == "홈":
     # ✅ 컬럼을 이용해 이미지와 텍스트 정렬
-    col1, col2 = st.columns([1, 2])  # 이미지(1) : 텍스트(2) 비율 설정
 
-    with col1:
-        if os.path.exists(image_path):
-            st.image(image_path, caption="홈 화면 이미지", use_column_width=True)  # ✅ 자동 크기 조정
-        else:
-            st.error("🚨 이미지 파일을 찾을 수 없습니다.")
 
-    with col2:
+
+    if os.path.exists(image_path):
+        st.image(image_path, caption="홈 화면 이미지", use_column_width=True)  # ✅ 자동 크기 조정
+    else:
+        st.error("🚨 이미지 파일을 찾을 수 없습니다.")
+
+
         # ✅ 제목 및 스타일 적용
         st.markdown(
             """
