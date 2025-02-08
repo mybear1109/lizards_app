@@ -17,9 +17,6 @@ def save_image(image_file):
         else:
             image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file}"
 
-        # 저장할 디렉토리가 없으면 생성
-        os.makedirs(IMAGE_FOLDER, exist_ok=True)
-
         # 이미지 파일 저장 경로
         image_path = os.path.join(IMAGE_FOLDER, image_name)
 
