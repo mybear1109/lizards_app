@@ -1,4 +1,4 @@
-# 🦎  "파충류 AI 탐정" : Teachable Machine을 활용한 파충류 분류 AI  🏆 
+# 🦎  "파충류 AI 도감" : Teachable Machine을 활용한 파충류 분류 AI  🏆 
 
 <br>
 
