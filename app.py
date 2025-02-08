@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+from streamlit_option_menu import option_menu  # 사이드바 네비게이션용
 
 # ✅ Streamlit 페이지 설정 (최상단 배치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
@@ -46,50 +47,62 @@ if selected_option == "홈":
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-# ✅ "홈"이 아닐 경우, 기능 목록 동적 출력
-else:
-    # ✅ 기능 목록을 딕셔너리로 관리
-    feature_list = {
-        "설명": [("📖 간단한 사용 설명서 (기본 기능 안내)", "#5F04B4")],
-        "도마뱀 분석": [("🦎 도마뱀 이미지 분석 (품종 예측 기능)", "#FF9800")],
-        "병원 검색": [("🏥 파충류 전문 병원 검색 (지역별 검색 지원)", "#03A9F4")],
-        "유튜브 검색": [("🎥 파충류 관련 유튜브 영상 검색 (최신 정보 제공)", "#E91E63")],
-        "분석 데이터": [("📊 데이터 분석 기능", "#795548")],
-    }
+    # ✅ 버튼을 눌렀을 때 해당 페이지로 이동하도록 설정
+    col1, col2, col3 = st.columns(3)
 
-    # ✅ 선택된 메뉴에 따라 기능 목록 동적 출력
-    st.markdown("<ul style='font-size:20px; color:#333; padding-left:20px;'>", unsafe_allow_html=True)
-    for feature, color in feature_list.get(selected_option, []):
-        st.markdown(f"<li style='color:{color};'><b>{feature}</b></li>", unsafe_allow_html=True)
-    st.markdown("</ul>", unsafe_allow_html=True)
+    with col1:
+        if st.button("📖 간단한 사용 설명서"):
+            st.session_state["selected_page"] = "설명"
 
-    # ✅ 각 메뉴별 기능 실행
-    if selected_option == "설명":
-        try:
-            show_about()
-        except Exception as e:
-            st.error(f"❌ 설명 페이지 로드 오류: {e}")
+    with col2:
+        if st.button("🦎 도마뱀 분석"):
+            st.session_state["selected_page"] = "도마뱀 분석"
 
-    elif selected_option == "도마뱀 분석":
-        try:
-            display_image_analysis()
-        except Exception as e:
-            st.error(f"❌ 도마뱀 분석 기능 오류: {e}")
+    with col3:
+        if st.button("🏥 병원 검색"):
+            st.session_state["selected_page"] = "병원 검색"
 
-    elif selected_option == "병원 검색":
-        try:
-            display_hospitals()
-        except Exception as e:
-            st.error(f"❌ 병원 검색 기능 오류: {e}")
+    col4, col5 = st.columns([1, 1])
+    
+    with col4:
+        if st.button("🎥 유튜브 검색"):
+            st.session_state["selected_page"] = "유튜브 검색"
 
-    elif selected_option == "유튜브 검색":
-        try:
-            display_youtube_videos()
-        except Exception as e:
-            st.error(f"❌ 유튜브 검색 기능 오류: {e}")
+    with col5:
+        if st.button("📊 데이터 분석"):
+            st.session_state["selected_page"] = "분석 데이터"
 
-    elif selected_option == "분석 데이터":
-        try:
-            display_data_analysis()
-        except Exception as e:
-            st.error(f"❌ 데이터 분석 기능 오류: {e}")
+# ✅ 세션 상태를 확인하여 해당 페이지로 이동
+if "selected_page" in st.session_state:
+    selected_option = st.session_state["selected_page"]
+
+# ✅ 각 메뉴별 기능 실행
+if selected_option == "설명":
+    try:
+        show_about()
+    except Exception as e:
+        st.error(f"❌ 설명 페이지 로드 오류: {e}")
+
+elif selected_option == "도마뱀 분석":
+    try:
+        display_image_analysis()
+    except Exception as e:
+        st.error(f"❌ 도마뱀 분석 기능 오류: {e}")
+
+elif selected_option == "병원 검색":
+    try:
+        display_hospitals()
+    except Exception as e:
+        st.error(f"❌ 병원 검색 기능 오류: {e}")
+
+elif selected_option == "유튜브 검색":
+    try:
+        display_youtube_videos()
+    except Exception as e:
+        st.error(f"❌ 유튜브 검색 기능 오류: {e}")
+
+elif selected_option == "분석 데이터":
+    try:
+        display_data_analysis()
+    except Exception as e:
+        st.error(f"❌ 데이터 분석 기능 오류: {e}")
