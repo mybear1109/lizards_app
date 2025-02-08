@@ -47,35 +47,6 @@ if selected_option == "홈":
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-    # ✅ 버튼을 눌렀을 때 해당 페이지로 이동하도록 설정
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        if st.button("📖 간단한 사용 설명서"):
-            st.session_state["selected_page"] = "설명"
-
-    with col2:
-        if st.button("🦎 도마뱀 분석"):
-            st.session_state["selected_page"] = "도마뱀 분석"
-
-    with col3:
-        if st.button("🏥 병원 검색"):
-            st.session_state["selected_page"] = "병원 검색"
-
-    col4, col5 = st.columns([1, 1])
-    
-    with col4:
-        if st.button("🎥 유튜브 검색"):
-            st.session_state["selected_page"] = "유튜브 검색"
-
-    with col5:
-        if st.button("📊 데이터 분석"):
-            st.session_state["selected_page"] = "분석 데이터"
-
-# ✅ 세션 상태를 확인하여 해당 페이지로 이동
-if "selected_page" in st.session_state:
-    selected_option = st.session_state["selected_page"]
-
 # ✅ 각 메뉴별 기능 실행
 if selected_option == "설명":
     try:
@@ -106,3 +77,32 @@ elif selected_option == "분석 데이터":
         display_data_analysis()
     except Exception as e:
         st.error(f"❌ 데이터 분석 기능 오류: {e}")
+
+    # ✅ 버튼을 눌렀을 때 해당 페이지로 이동하도록 설정
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("📖 간단한 사용 설명서"):
+            st.session_state["selected_page"] = "설명"
+
+    with col2:
+        if st.button("🦎 도마뱀 분석"):
+            st.session_state["selected_page"] = "도마뱀 분석"
+
+    with col3:
+        if st.button("🏥 병원 검색"):
+            st.session_state["selected_page"] = "병원 검색"
+
+    col4, col5 = st.columns([1, 1])
+    
+    with col4:
+        if st.button("🎥 유튜브 검색"):
+            st.session_state["selected_page"] = "유튜브 검색"
+
+    with col5:
+        if st.button("📊 데이터 분석"):
+            st.session_state["selected_page"] = "분석 데이터"
+
+# ✅ 세션 상태를 확인하여 해당 페이지로 이동
+if "selected_page" in st.session_state:
+    selected_option = st.session_state["selected_page"]
