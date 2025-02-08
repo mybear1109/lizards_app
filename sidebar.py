@@ -3,15 +3,19 @@ from streamlit_option_menu import option_menu
 
 def render_sidebar():
     with st.sidebar:
-        # ✅ 가운데 정렬을 위한 HTML & CSS 적용
-        st.markdown(
-            """
-            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
-                <img src="image/home_image.png" width="200" style="border-radius: 10px;">
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        # ✅ 이미지 경로 설정
+        image_path = "image/home_image.png"
+
+        # ✅ 이미지 존재 여부 확인
+        if not os.path.exists(image_path):
+            st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다: `{image_path}`")
+            image_path = None  # 이미지가 없을 경우 None으로 설정
+
+        # ✅ 가운데 정렬된 이미지 표시 (파일이 있을 경우)
+        if image_path:
+            st.image(image_path, width=200)
+
+            
         # ✅ 네비게이션 메뉴 생성
         selected_option = option_menu(
             menu_title="🔍 탐색 메뉴",
