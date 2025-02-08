@@ -3,9 +3,15 @@ from streamlit_option_menu import option_menu
 
 def render_sidebar():
     with st.sidebar:
-        # ✅ 이미지 표시 (수정된 부분)
-        st.image("image/home_image.png", width=200, caption="홈 이미지")
-
+        # ✅ 가운데 정렬을 위한 HTML & CSS 적용
+        st.markdown(
+            """
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                <img src="image/home_image.png" width="200" style="border-radius: 10px;">
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         # ✅ 네비게이션 메뉴 생성
         selected_option = option_menu(
             menu_title="🔍 탐색 메뉴",
