@@ -48,24 +48,19 @@ if selected_option == "홈":
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-    feature_list = {
-        "홈": [
-            ("📖 간단한 사용 설명서", "#5F04B4"),
-            ("🦎 도마뱀 이미지 분석 (품종 예측 기능)", "#FF9800"),
-            ("🏥 파충류 전문 병원 검색 (지역별 검색 지원)", "#03A9F4"),
-            ("🎥 파충류 관련 유튜브 영상 검색 (최신 정보 제공)", "#E91E63"),
-        ],
-        "도마뱀 분석": [("🦎 도마뱀 이미지 분석 (품종 예측 기능)", "#FF9800")],
-        "병원 검색": [("🏥 파충류 전문 병원 검색 (지역별 검색 지원)", "#03A9F4")],
-        "유튜브 검색": [("🎥 파충류 관련 유튜브 영상 검색 (최신 정보 제공)", "#E91E63")],
-        "분석 데이터": [("📊 데이터 분석 기능", "#795548")],
-    }
 
-    # ✅ 기능 목록을 HTML 리스트로 표시 (선택된 옵션만 강조)
-    st.markdown("<ul style='font-size:20px; color:#333; padding-left:20px;'>", unsafe_allow_html=True)
-    for feature, color in feature_list.get(selected_option, []):
-        st.markdown(f"<li style='color:{color};'><b>{feature}</b></li>", unsafe_allow_html=True)
-    st.markdown("</ul>", unsafe_allow_html=True)
+    # ✅ 기능 목록 (아이콘 및 스타일 적용)
+    st.markdown(
+        """
+        <ul style="font-size:20px; color:#333; padding-left:20px;">
+            <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서</b> (기본 기능 안내)</li>           
+            <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
+            <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
+            <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
+        </ul>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # ✅ 각 메뉴별 기능 실행
 elif selected_option == "설명":
