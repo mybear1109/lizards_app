@@ -11,19 +11,10 @@
 
 
 
-![you](https://github.com/user-attachments/assets/c7092f83-4064-4cc6-b4ea-79df032e6296)
+<img src="https://github.com/user-attachments/assets/c7092f83-4064-4cc6-b4ea-79df032e6296" width="60%" height="auto">
 <br>
 
 
-
-
-
-
-<br>
-
-![발표 메인](https://github.com/user-attachments/assets/b409d493-8183-409e-9f01-a0653d709a74)
-<br>
-<br>
 
 ---
 
@@ -37,6 +28,11 @@
 ## 💡 기획 의도
 
 <br>
+
+![발표 메인](https://github.com/user-attachments/assets/b409d493-8183-409e-9f01-a0653d709a74)
+<br>
+<br>
+
 
 ### 1. **실용성과 편의성**
     - 이미지 분류 + 병원 검색 + 유튜브 영상 검색을 **한 플랫폼**에서 해결
