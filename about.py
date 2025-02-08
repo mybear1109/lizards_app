@@ -47,7 +47,7 @@ def show_about():
 
     st.subheader("📌 2.2 메인 화면 살펴보기")
     st.markdown("앱 메인 화면에서는 프로젝트 개요 및 이용 가이드를 간단히 확인할 수 있습니다.")
-    st.image("images/hompage.png1", use_column_width=True)
+    st.image("images/hompage1.png", use_column_width=True)
     st.write("" * 2)
     st.subheader("📌 2.3 이미지 분석 (AI 분류) 기능")
     st.markdown("""
@@ -56,11 +56,15 @@ def show_about():
     st.markdown("""
     2. 분석할 **도마뱀 이미지를 업로드**합니다. (`.jpg, .jpeg, .png` 지원)
     """)
-    st.image("images/hompage.png2", use_column_width=True)               
+    st.image("images/hompage2.png", use_column_width=True)               
     st.markdown("""
     3. AI가 **예측된 종과 확률(%)**을 분석하여 표시합니다.
     """)
-    st.image("images/hompage.png3", use_column_width=True)       
+    st.image("images/hompage3.png", use_column_width=True)
+    st.markdown("""
+    4. 추가로 정보를 입력할수 있습니다. 
+    """)
+    st.image("images/hompage4.png", use_column_width=True)              
     st.write("" * 2)
 
     st.subheader("📌 2.4 병원 검색 기능")
@@ -70,22 +74,21 @@ def show_about():
     st.markdown("""
     2. 관련 병원의 목록이 나타납니다.
     """)
-    st.image("images/hompage.png5", use_column_width=True)       
+    st.image("images/hompage5.png", use_column_width=True)       
     st.markdown("""
     3. 지도를 통해 위치를 확인할 수도 있습니다.
     """)
-    st.image("images/hompage.png6", use_column_width=True)   
+    st.image("images/hompage6.png", use_column_width=True)   
     st.write("" * 2)
     st.subheader("📌 2.5 유튜브 검색 기능")
     st.markdown("""
     1. **유튜브 검색** 메뉴에서 키워드를 입력합니다. (예: "파충류 탐험")
     """)
-    st.image("images/you.png", use_column_width=True)
     st.markdown("""
     2. 관련된 유튜브 영상 목록이 나타납니다.
     3. 제목을 클릭하면 유튜브에서 해당 영상을 바로 확인할 수 있습니다.
     """)
-    st.image("images/hompage.png6", use_column_width=True) 
+    st.image("images/hompage7.png", use_column_width=True) 
     st.write("" * 2)
     st.write("" * 2)  
     st.header("3️⃣ 데이터 및 모델")
