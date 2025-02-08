@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-# ✅ Streamlit 페이지 설정
+# ✅ Streamlit 페이지 설정 (최상단 배치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
 # ✅ 외부 모듈 임포트
@@ -30,21 +30,19 @@ if selected_option == "홈":
     st.markdown(
         """
         <h1 style="color:#4CAF50; font-size:42px; font-weight:bold; text-align:center;">🦎 파충류 탐험의 세계</h1>
-        <h3 style="color:#555; font-size:24px; text-align:center;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
         """,
         unsafe_allow_html=True,
     )
 
-    # ✅ 이미지 파일이 존재하는 경우에만 표시 (HTML+CSS로 가운데 정렬)
+    st.markdown(
+        """
+        <h3 style="color:#555; font-size:24px; text-align:center;">🐍 파충류를 사랑하는 사람들을 위한 다양한 기능을 제공합니다.</h3>
+        """,
+        unsafe_allow_html=True,
+    )
+    # ✅ 이미지 파일이 존재하는 경우에만 표시
     if os.path.exists(image_path):
-        st.markdown(
-            f"""
-            <div style="text-align: center;">
-                <img src="{image_path}" width="800" style="border-radius: 10px;">
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.image(image_path, caption="홈 화면 이미지", width=800)  # ✅ 자동 크기 조정
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
