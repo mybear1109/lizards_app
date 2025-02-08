@@ -18,8 +18,8 @@ except ImportError as e:
     st.stop()
 
 # ✅ 이미지 파일 경로 설정
-base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
-image_path = os.path.join(base_dir, "images", "home_image3.jpg")
+
+image_path = "images/home_image3.jpg"
 
 # ✅ 버튼 클릭 시 즉시 페이지 이동 함수
 def navigate_to(page_name):
