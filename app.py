@@ -40,29 +40,30 @@ if selected_option == "홈":
         """,
         unsafe_allow_html=True,
     )
-# ✅ 이미지 파일이 존재하는 경우에만 표시 (Streamlit 기본)
-if os.path.exists(image_path):
-    # 이미지 가운데 정렬을 위한 CSS 스타일 적용
-    st.markdown(
-        """
-        <style>
-        .centered-image {
-            display: flex;
-            justify-content: center;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    # ✅ 이미지 파일이 존재하는 경우에만 표시 (Streamlit 기본)
+    if os.path.exists(image_path):
+        # 이미지 가운데 정렬을 위한 CSS 스타일 적용
+        st.markdown(
+            """
+            <style>
+            .centered-image {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    # 이미지 출력
-    st.markdown(
-        f'<div class="centered-image"><img src="{image_path}" width="800"></div>',
-        unsafe_allow_html=True,
-    )
-else:
-    st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
- # ✅ 기능 목록 (아이콘 및 스타일 적용)
+        # 이미지 출력
+        st.markdown(
+            f'<div class="centered-image"><img src="{image_path}" width="800"></div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
+
+    # ✅ 기능 목록 (아이콘 및 스타일 적용)
     st.markdown(
         """
         <ul style="font-size:20px; color:#333; padding-left:20px;">
