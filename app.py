@@ -58,7 +58,7 @@ if st.session_state["selected_page"] == "홈":
 
     # ✅ 이미지 파일이 존재하는 경우에만 표시
     if os.path.exists(image_path):
-        st.image(image_path, caption="홈 화면 이미지", use_container_width=True)  # ✅ 최신 버전 적용
+        st.image(image_path, use_container_width=True)  # ✅ 최신 버전 적용
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
