@@ -48,7 +48,7 @@ if selected_option == "홈":
         st.markdown(
             """
             <style>
-            [data-testid="stImage"] {
+            [data-testid="stImage_path)"] {
                 display: flex;
                 justify-content: center;
             }
