@@ -18,6 +18,9 @@
 
 ---
 
+
+
+
 ### [🖥️ HOME PAGE](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
 
 ### [📱 MofMof Wiki](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
@@ -251,31 +254,30 @@ https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&log
 
 <br>
 <br>
-<br>
 
 ---
 ## 👀 차별화 포인트 & 질의응답 준비
 <br>
-<br>
+
 
 ### 1. **왜 여러 번 학습을 진행했는가?**
-
+<br>
 
 - 파충류/양서류는 **종 간 유사성**이 높아 정확도 확보가 쉽지 않습니다.
 - **반복 학습 + 데이터 증강**을 통해 **과적합**을 피하고, **다양한 특징**을 학습시켰습니다.
 - 실제 촬영 환경(각도, 조명 등)을 고려한 테스트로 **일반화 능력**을 극대화했습니다.
-
+<br>
   
 ### 2. **기술적 차별점**
-
+<br>
 
 - **Teachable Machine**을 활용해 **빠른 개발**과 **높은 성능**을 함께 달성
 - **병원 검색** + **유튜브 검색**을 통합해, 종 분류 후 **즉시 정보 탐색**이 가능
 - 단순 분류 도구를 넘어, **정보 허브**로 자리 잡을 수 있는 플랫폼
-
+<br>
 
 ### 3. **추가 발전 가능성**
-
+<br>
 
 - **커뮤니티 기능**(Q&A, 데이터셋 공유)으로 사용자 간 활발한 정보 교류
 - **보호 단체 협업**: 멸종위기종 정보를 추가해 환경 보호에 기여
@@ -286,12 +288,14 @@ https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&log
 ---
 ## 📚 자료 출처 
 
-https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white
+
+<img src="https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white" />   
 
 
-https://www.kaggle.com/datasets/vencerlanz09/reptiles-and-amphibians-image-dataset
-https://www.kaggle.com/datasets/ishandutta/amphibians-data-set
-https://www.kaggle.com/datasets/cyj5480140/breeders-20241101-20241201
+- [amphibians-data-set](https://www.kaggle.com/datasets/ishandutta/amphibians-data-set)
+- [Reptiles and Amphibians Image Dataset](https://www.kaggle.com/datasets/vencerlanz09/reptiles-and-amphibians-image-dataset)
+- [Breeders_20241101-20241201](https://www.kaggle.com/datasets/cyj5480140/breeders-20241101-20241201)
+
 
 
 
