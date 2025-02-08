@@ -21,19 +21,21 @@ except ImportError as e:
 base_dir = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 절대 경로
 image_path = os.path.join(base_dir, "images", "home_image3.jpg")
 
-# ✅ 세션 상태 초기화 (첫 실행 시)
+# ✅ 버튼 클릭 시 즉시 페이지 이동 함수
+def navigate_to(page_name):
+    """ 세션 상태를 업데이트하여 화면 이동 """
+    if "selected_page" not in st.session_state or st.session_state["selected_page"] != page_name:
+        st.session_state["selected_page"] = page_name
+        st.experimental_rerun()  # ✅ 강제 새로고침
+
+# ✅ 세션 상태 초기화
 if "selected_page" not in st.session_state:
     st.session_state["selected_page"] = "홈"
 
 # ✅ 사이드바 렌더링 (네비게이션 메뉴 추가)
 selected_option = render_sidebar()
 
-# ✅ 버튼 클릭 시 즉시 페이지 이동 함수 (rerun 제거)
-def navigate_to(page_name):
-    """ 세션 상태만 변경하여 페이지 이동 """
-    st.session_state["selected_page"] = page_name  # 상태만 변경
-
-# ✅ 사이드바에서 선택한 메뉴와 동기화
+# ✅ 사이드바에서 선택한 메뉴가 변경되면 페이지 전환
 if selected_option != st.session_state["selected_page"]:
     st.session_state["selected_page"] = selected_option
 
@@ -84,7 +86,7 @@ if st.session_state["selected_page"] == "홈":
             navigate_to("분석 데이터")
 
 # ✅ 각 메뉴별 기능 실행 (세션 상태를 기준으로 연동)
-if st.session_state["selected_page"] == "앱 사용 방법":
+elif st.session_state["selected_page"] == "앱 사용 방법":
     try:
         show_about()
     except Exception as e:
