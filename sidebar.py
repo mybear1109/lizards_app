@@ -15,6 +15,19 @@ def render_sidebar():
         # ✅ 가운데 정렬된 이미지 표시 (파일이 있을 경우)
         if image_path:
             st.image(image_path, width=200)
+            st.markdown(
+            """
+            <style>
+            [data-testid="stImage"] {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+            )
+
+
 
             
         # ✅ 네비게이션 메뉴 생성
