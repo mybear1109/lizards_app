@@ -5,7 +5,7 @@ from streamlit_option_menu import option_menu
 def render_sidebar():
     with st.sidebar:
         # ✅ 이미지 경로 설정
-        image_path = "image/home_image2.png"
+        image_path = "image/home_image.png"
 
         # ✅ 이미지 존재 여부 확인
         if not os.path.exists(image_path):
