@@ -42,7 +42,7 @@ if selected_option == "홈":
     )
     # ✅ 이미지 파일이 존재하는 경우에만 표시
     if os.path.exists(image_path):
-        st.image(image_path, caption="홈 화면 이미지", width=500)  # ✅ 자동 크기 조정
+        st.image(image_path, caption="홈 화면 이미지",  use_column_width=True)  # ✅ 자동 크기 조정
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
