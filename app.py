@@ -47,37 +47,21 @@ if selected_option == "홈":
     else:
         st.warning(f"⚠️ 이미지 파일을 찾을 수 없습니다. 경로를 확인하세요: {image_path}")
 
-    # ✅ 버튼을 눌렀을 때 해당 페이지로 이동하도록 설정
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        if st.button("📖 간단한 사용 설명서"):
-            st.session_state["selected_page"] = "설명"
-
-    with col2:
-        if st.button("🦎 도마뱀 분석"):
-            st.session_state["selected_page"] = "도마뱀 분석"
-
-    with col3:
-        if st.button("🏥 병원 검색"):
-            st.session_state["selected_page"] = "병원 검색"
-
-    col4, col5 = st.columns([1, 1])
-    
-    with col4:
-        if st.button("🎥 유튜브 검색"):
-            st.session_state["selected_page"] = "유튜브 검색"
-
-    with col5:
-        if st.button("📊 데이터 분석"):
-            st.session_state["selected_page"] = "분석 데이터"
-
-# ✅ 세션 상태를 확인하여 해당 페이지로 이동
-if "selected_page" in st.session_state:
-    selected_option = st.session_state["selected_page"]
+     # ✅ 기능 목록 (아이콘 및 스타일 적용)
+    st.markdown(
+        """
+        <ul style="font-size:20px; color:#333; padding-left:20px;">
+            <li>📖 <b style="color:#5F04B4;">간단한 사용 설명서</b> (기본 기능 안내)</li>           
+            <li>🦎 <b style="color:#FF9800;">도마뱀 이미지 분석</b> (품종 예측 기능)</li>
+            <li>🏥 <b style="color:#03A9F4;">파충류 전문 병원 검색</b> (지역별 검색 지원)</li>
+            <li>🎥 <b style="color:#E91E63;">파충류 관련 유튜브 영상 검색</b> (최신 정보 제공)</li>
+        </ul>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # ✅ 각 메뉴별 기능 실행
-if selected_option == "설명":
+elif selected_option == "설명":
     try:
         show_about()
     except Exception as e:
@@ -101,7 +85,7 @@ elif selected_option == "유튜브 검색":
     except Exception as e:
         st.error(f"❌ 유튜브 검색 기능 오류: {e}")
 
-elif selected_option == "분석 데이터":
+elif selected_option == "데이터 분석":
     try:
         display_data_analysis()
     except Exception as e:
