@@ -2,7 +2,9 @@ import streamlit as st
 
 def show_about():
     """앱 소개 페이지"""
-    st.title("🦎 파충류 탐험의 세계")
+    st.title("🦎 파충류 AI 탐정 ")
+    st.subheader("Teachable Machine을 활용한 파충류 분류 AI 🏆")
+    st.write("" * 2)
     st.markdown("""
         AI 모델을 이용해 총 **18종의 파충류 및 양서류**를 자동으로 분류하고,
                 
@@ -13,6 +15,9 @@ def show_about():
         https://github.com/mybear1109/lizards_app/blob/main/README.md                 
             
     """)
+    st.image("images/you.png", use_column_width=True)
+
+
 
     st.header("1️⃣ 주요 기능 한눈에 보기")
     st.markdown("""
