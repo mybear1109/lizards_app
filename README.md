@@ -23,7 +23,6 @@
 
 ### [🖥️ HOME PAGE](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
 
-### [📱 MofMof Wiki](https://lizardsapp-gbr4mdxzrsw7ngzbkhk4pc.streamlit.app/)
 
 
 ---
