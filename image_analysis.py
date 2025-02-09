@@ -86,7 +86,7 @@ def display_image_analysis():
             col1, col2 = st.columns([1, 2])
 
             with col1:
-                st.image(image, caption="업로드된 이미지", width=300)
+                st.image(image, caption="업로드된 이미지", width=500)
 
             with col2:
                 # ✅ 이미지 분석 실행
