@@ -60,11 +60,11 @@ if selected_option == "홈":
     )
 
 # ✅ 각 메뉴별 기능 실행
-elif selected_option == "설명":
+elif selected_option == "앱 사용 방법":
     try:
         show_about()
     except Exception as e:
-        st.error(f"❌ 설명 페이지 로드 오류: {e}")
+        st.error(f"❌ 앱 사용 방법 페이지 로드 오류: {e}")
 
 elif selected_option == "도마뱀 분석":
     try:
