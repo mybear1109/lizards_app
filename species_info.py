@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 
 # ✅ 도마뱀 종에 대한 정보를 반환하는 함수
@@ -142,3 +143,5 @@ def display_species_info(species_name):
     st.write(f"**서식지:** {species_info['서식지']}")
     st.write(f"**먹이:** {species_info['먹이']}")
     st.write(f"**특징:** {species_info['특징']}")
+
+
