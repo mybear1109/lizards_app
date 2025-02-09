@@ -90,8 +90,4 @@ elif selected_option == "유튜브 검색":
     except Exception as e:
         st.error(f"❌ 유튜브 검색 기능 오류: {e}")
 
-elif selected_option == "데이터 분석":
-    try:
-        display_data_analysis()
-    except Exception as e:
-        st.error(f"❌ 데이터 분석 기능 오류: {e}")
+
