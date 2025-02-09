@@ -13,7 +13,7 @@ def show_about():
                 
       **🔬 고성능 AI 분류**
                 
-      Teachable Machine으로 학습된 AI 모델이 18종의 파충류와 양서류를 정확하게 식별
+      Teachable Machine으로 학습된 AI 모델이 15종의 파충류와 양서류를 정확하게 식별
 
       **⚡ 신속한 개발 & 우수한 성능**
                 
