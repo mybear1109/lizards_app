@@ -113,7 +113,7 @@ def display_image_analysis():
 
                 # ✅ 예측 결과에 대한 설명 표시
                 species_info = get_species_description(species)
-                
+
                 # 특징 문자열을 줄바꿈으로 분리하여 HTML 형식으로 변환
                 features_html = "<br>".join(species_info["특징"].split("\n"))       
 
@@ -139,7 +139,7 @@ def display_image_analysis():
                             <b>🍽️ 먹이:</b> {species_info["먹이"]}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>✨ 특징:</b> {species_info["특징"]}
+                            <b>✨ 특징:</b><br>{features_html}
                         </p>
                     </div>
                     """,
