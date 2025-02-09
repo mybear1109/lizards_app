@@ -177,18 +177,26 @@ project_root/
 ## 1. **이미지 업로드 → 종 분류**
 
  - AI 모델이 업로드된 이미지를 분석하여, 가장 유사한 종과 예측 확률(%)을 표시
+ - 학교·박물관 등에서 **AI 기반 파충류·양서류 분류 체험** 대리 경험 가능 
 
-![이미지 분석2](https://github.com/user-attachments/assets/c8b985fa-8688-4838-b0b4-cd9eb4cd1489)
+
+   
+![이미지 분석2](https://github.com/user-attachments/assets/83b23642-9bf8-44d4-894c-047cf67cd069)
 <br>
 
 ## 2. **모프(morph) 정보 수집**
 
 
-- 사용자가 **모프** 정보를 추가 입력하면 데이터베이스에 축적
+- 사용자가 레오파드 게코(Leopardgeko)와 크레스티드 게코(Crestedgeko) 각각
+![이미지 분석3](https://github.com/user-attachments/assets/592d37a9-0508-43eb-8689-af8ded6622c0)
+![이미지 분석4](https://github.com/user-attachments/assets/a6047ef7-7bfe-479c-a5d4-f6b6099ae163)
+<br>
+  
+- **모프** 정보를 추가 입력하면 데이터베이스에 축적
 - 교배 시 **2세대 특성**을 어느 정도 예측할 수 있는 기반 마련
   
     
-![이미지 분석3](https://github.com/user-attachments/assets/44f24050-e7df-44b7-82c9-9b8354ab5cc7)
+![이미지 분석5](https://github.com/user-attachments/assets/44f24050-e7df-44b7-82c9-9b8354ab5cc7)
  
 ## 3. **주의 문구**
 - 결과는 참고용이며, 실제 종 확인이 필요한 경우 전문가 진단 권장
