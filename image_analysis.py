@@ -166,11 +166,10 @@ def display_image_analysis():
                 'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)']
             morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
-                            '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)']
+                            '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)',
+                            '유체(Hatchling)/대형(Large)', '유체(Hatchling)/중형(Medium)','유체(Hatchling)/소형(Small)']
             size = st.selectbox("🦎 도마뱀의 사이즈를 선택해주세요.", size_options)
             st.write("")
-
-
             st.info("소중한 정보 입력해주셔서 감사합니다.😊")
             st.write("")      
             # ✅ 결과 저장 버튼
