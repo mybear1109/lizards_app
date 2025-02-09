@@ -156,19 +156,27 @@ def display_image_analysis():
                                 "0.비어디 드래곤", "1.팬서 카멜레온", "2.크레스티드 게코", "3.레오파드 게코", 
                                 "4.이구아나", "5.기타", "6.개구리", "7.도롱뇽", 
                                 "8.뱀", "9.거북이", "10.뉴트", "11.팩맨 개구리", 
-                                "12.두꺼비", "13.르차이아너스 게코", "14.게코", "15.차후아 게코", 
-                                "16.가고일 게코", "17.스킨크", "18.카멜레온"]
-            species = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", species_options)
-            morph_options = [
-                'White(화이트)', 'Albino(알비노)', 'Green(초록)', 'Undefined(미정)', 'Berry(핑크점박이)',
-                'Red(빨강)', 'Normal(기본)', 'Hypo(하이포)', 'Lily(릴리)', 'Frapuccino(푸라푸치노)',
-                'Cappuccino(카푸치노)', 'Stripe(스프라이트)', 'Dark(다크)', 'Spotless(점없음)',
-                'Black(검정)', 'Dalmatian(점박이)', 'Cream(크림)', 'Hat(햇)', 'Axanthic(액산틱)', 'Yellow(노란)']
-            morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
+                                "12.두꺼비", "13.르차이아너스 게코", "14.차후아 게코", 
+                                "15.가고일 게코", "16.스킨크", "17.카멜레온"]
+            species = st.selectbox("🦎 파충류의 종류를 선택해주세요.", species_options)
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
                             '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)',
                             '유체(Hatchling)/대형(Large)', '유체(Hatchling)/중형(Medium)','유체(Hatchling)/소형(Small)']
-            size = st.selectbox("🦎 도마뱀의 사이즈를 선택해주세요.", size_options)
+            size = st.selectbox("🦎 파충류의 사이즈를 선택해주세요.", size_options)
+            # 크레스티드 게코나 레오파드 게코를 선택한 경우에만 모프 선택 옵션 표시
+            if species in ["2.크레스티드 게코", "3.레오파드 게코"]:
+                morph_options = [
+                    'Normal(일반)', 'Albino(알비노)', 'Leucistic(루시스틱)', 'Melanistic(멜라니스틱)',
+                    'Hypomelanistic(하이포멜라니스틱)', 'Axanthic(액산틱)', 'Anerythristic(아네리스리스틱)',
+                    'Piebald(파이볼드)', 'Tiger(타이거)', 'Stripe(스트라이프)', 'Banded(밴디드)', 'Spotted(스팟티드)',
+                    'Dalmatian(달마시안)', 'Blizzard(블리자드)', 'Patternless(무늬없음)', 'Translucent(반투명)',
+                    'Paradox(패러독스)', 'Chimera(키메라)', 'Enigma(에니그마)', 'Designer(디자이너)', 'Wild Type(야생형)',
+                    'Undefined(미정)'
+                ]
+                morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
+            else:
+                st.write("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.")
+
             st.write("")
             st.info("소중한 정보 입력해주셔서 감사합니다.😊")
             st.write("")      
