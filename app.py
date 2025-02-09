@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 
+
 # ✅ Streamlit 페이지 설정 (최상단 배치)
 st.set_page_config(page_title="파충류 검색 앱", layout="wide")
 
@@ -51,6 +52,8 @@ if selected_option == "홈":
 
 
     # ✅ 기능 목록 (아이콘 및 스타일 적용)
+
+    st.info("🔍 왼쪽상단의 > 를 눌러 원하는 메뉴를 선택하세요.")
     st.markdown(
         """
         <ul style="font-size:20px; color:#333; padding-left:20px;">
