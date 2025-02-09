@@ -114,8 +114,18 @@ def display_image_analysis():
                 # ✅ 예측 결과에 대한 설명 표시
                 species_info = get_species_description(species)
 
+
+                # 설명, 서식지, 먹이를 온점으로 분리하여 HTML 형식으로 변환
+                def split_by_period(text):
+                    sentences = text.split('.')
+                    return '<br>'.join([sentence.strip() + '.' for sentence in sentences if sentence.strip()])
+
+                explanation_html = split_by_period(species_info["설명"])
+                habitat_html = split_by_period(species_info["서식지"])
+                food_html = split_by_period(species_info["먹이"])
+
                 # 특징 문자열을 줄바꿈으로 분리하여 HTML 형식으로 변환
-                features_html = "<br>".join(species_info["특징"].split("\n"))       
+                features_html = "<br>".join(species_info["특징"].split("\n"))
 
                 st.markdown(
                     f"""
@@ -126,17 +136,15 @@ def display_image_analysis():
                         box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
                         line-height: 1.6;  /* 줄 간격 조정 */
                     ">
-                        </p>
-                        </p>
                         <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🦎 {species}</h3>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>📝 설명:</b> {species_info["설명"]}
+                            <b>📝 설명:</b><br>{explanation_html}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>📍 서식지:</b> {species_info["서식지"]}
+                            <b>📍 서식지:</b><br>{habitat_html}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>🍽️ 먹이:</b> {species_info["먹이"]}
+                            <b>🍽️ 먹이:</b><br>{food_html}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
                             <b>✨ 특징:</b><br>{features_html}
@@ -145,6 +153,7 @@ def display_image_analysis():
                     """,
                     unsafe_allow_html=True,
                 )
+
 
             st.write("")
             st.write("")
