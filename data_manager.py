@@ -49,11 +49,16 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
     try:
         ensure_directory_exists(os.path.dirname(DATA_PATH))
 
-        # 이미지 파일명 생성
+        # ✅ `image_file`이 None 또는 문자열이면 처리 중단
+        if image_file is None or isinstance(image_file, str):
+            st.error("❌ 유효한 이미지 파일이 아닙니다. 이미지를 업로드해주세요.")
+            return
+
+        # ✅ 이미지 파일명 생성
         image_name = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{image_file.name}"
         image_path = os.path.join(IMAGE_FOLDER, image_name)
 
-        # 새로운 데이터 생성
+        # ✅ 새로운 데이터 생성
         new_data = pd.DataFrame([{
             "Date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "Image": image_name,
@@ -64,12 +69,12 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
             "Price": price
         }])
 
-        # 기존 데이터 로드 및 컬럼 정리
+        # ✅ 기존 데이터 로드 및 컬럼 정리
         if os.path.exists(DATA_PATH):
             try:
                 existing_data = pd.read_csv(DATA_PATH, encoding="utf-8-sig", on_bad_lines="skip")
 
-                # 기존 컬럼이 없으면 자동 생성
+                # ✅ 기존 컬럼이 없으면 자동 생성
                 for col in EXPECTED_COLUMNS:
                     if col not in existing_data.columns:
                         existing_data[col] = ""
@@ -84,12 +89,13 @@ def save_prediction(image_file, species, confidence, morph="", size="", price=""
         else:
             updated_data = new_data  # 기존 데이터가 없을 경우 새 파일 생성
 
-        # CSV 저장
+        # ✅ CSV 저장
         updated_data.to_csv(DATA_PATH, index=False, encoding="utf-8-sig")
         st.success("✅ 데이터 저장 완료!")
 
     except Exception as e:
         st.error(f"❌ 데이터 저장 중 오류 발생: {e}")
+
 
 # ✅ 기존 데이터 로드 함수
 def load_existing_data():
