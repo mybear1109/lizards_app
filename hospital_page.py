@@ -12,6 +12,9 @@ NAVER_API_URL = "https://openapi.naver.com/v1/search/local.json"  # 오타 수�
 # ✅ Google Maps API 설정
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "AIzaSyAb7sspwz8bq-OvQCt-pP9yvRVHA0zkxqw")
 
+# ✅ 병원 키워드 필터링 (병원만 검색되도록 설정)
+VALID_HOSPITAL_KEYWORDS = {"병원", "클리닉", "의원", "한의원", "동물병원", "수의과"}
+
 # ✅ 허용된 검색 키워드 목록 (검색어 제한)
 VALID_ANIMAL_KEYWORDS = {
     "파충류", "도마뱀", "뱀", "거북", "악어", "양서류", "이구아나", "카멜레온",
@@ -102,11 +105,11 @@ def display_hospital_map(address):
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
     """ 병원 검색 및 결과 표시 함수 """
-    query = st.session_state.get("hospital_query","").strip()
+    user_query = st.session_state.get("hospital_query","").strip()
 
 
     # ✅ 검색어 필터링
-    filtered_query = filter_search_query(query)
+    filtered_query = filter_search_query(user_query)
     if not filtered_query:
         return  # 검색어가 허용되지 않으면 검색 수행 안 함
 
