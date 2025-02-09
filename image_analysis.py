@@ -175,7 +175,7 @@ def display_image_analysis():
                 ]
                 morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
             else:
-                st.write("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.")
+                st.info("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.")
 
             st.write("")
             st.info("소중한 정보 입력해주셔서 감사합니다.😊")
