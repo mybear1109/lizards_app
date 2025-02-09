@@ -44,7 +44,8 @@ def show_about():
     github_url = "https://github.com/mybear1109/lizards_app/blob/main/README.md"
     if st.button("GitHub에서 자세히 보기 🚀"):  # 버튼 텍스트에 이모지 추가
         webbrowser.open_new_tab(github_url)  # 새 탭에서 URL 열기
-
+    # Streamlit 앱에 버튼 추가
+    show_github_link() # type: ignore
 
 
     st.markdown("""
