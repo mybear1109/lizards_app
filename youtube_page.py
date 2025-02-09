@@ -120,7 +120,7 @@ def display_youtube_videos():
 
             # ✅ 유튜브 영상 미리보기 썸네일 추가
             video_file = f"https://www.youtube.com/watch?v={video_id}"
-            st.video(video_file, width=400)
+            st.video(video_file, width=600)
 
             st.image(f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg", width=400)
 
