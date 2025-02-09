@@ -121,7 +121,6 @@ def display_image_analysis():
                         padding: 15px; 
                         border-radius: 10px;
                         box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-                        text-align: center;
                         line-height: 1.6;  /* 줄 간격 조정 */
                     ">
                         </p>
