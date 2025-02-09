@@ -171,12 +171,12 @@ def display_image_analysis():
                                 "10 이구아나(Iguana)","11 카멜레온(Chameleon)","12 크레스티드 게코(Crestedgeko)",
                                 "13 크로커다일(Crocodile)","14 팩맨(PacMan)"]
             species = st.selectbox("🐢 파충류의 종류를 선택해주세요.🐍", species_options)
-            st.write("")
+            st.write(""*2)
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
                             '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)',
                             '유체(Hatchling)/대형(Large)', '유체(Hatchling)/중형(Medium)','유체(Hatchling)/소형(Small)']
             size = st.selectbox("🐊 파충류의 사이즈를 선택해주세요.🦖", size_options)
-            st.write("")
+            st.write(""*2)
             # 크레스티드 게코나 레오파드 게코를 선택한 경우에만 모프 선택 옵션 표시
             if species in ["6 레오파드 게코(Leopardgeko)", "12 크레스티드 게코(Crestedgeko)"]:
                 morph_options = [
