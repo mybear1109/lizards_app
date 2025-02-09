@@ -48,10 +48,10 @@ def remove_html_tags(text):
     return re.sub(clean, '', text)
 
 # ✅ 검색어 필터링 함수 (허용된 검색어만 실행)
-def filter_search_query(user_query):
+def filter_search_query(query):
     """입력된 검색어가 `VALID_ANIMAL_KEYWORDS` 또는 `REGIONS` 목록에 포함되는지 확인"""
-    if any(keyword in user_query for keyword in VALID_ANIMAL_KEYWORDS) or any(region in user_query for region in REGIONS):
-        return user_query
+    if any(keyword in query for keyword in VALID_ANIMAL_KEYWORDS) or any(region in query for region in REGIONS):
+        return query
     else:
         st.warning("⚠️ 허용된 검색어만 입력 가능합니다! (예: 파충류, 도마뱀, 뱀, 거북, 이구아나, 서울, 부산 등)")
         return None
