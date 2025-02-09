@@ -90,18 +90,18 @@ def display_hospital_map(address):
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
     """ 병원 검색 및 결과 표시 함수 """
-    user_query = st.sidebar.text_input("🔎 검색어 입력", "파충류 동물병원")
+    user_query = st.sidebar.text_input("🔍 병원 검색", "파충류 동물병원")
 
     # ✅ 검색어 필터링
-    filtered_query = filter_search_query(user_query)
-    if not filtered_query:
+    "hospital_query"= filter_search_query(user_query)
+    if not "hospital_query":
         return  # 검색어가 허용되지 않으면 검색 수행 안 함
 
-    hospitals = search_hospitals(filtered_query)
+    hospitals = search_hospitals("hospital_query")
 
     if hospitals:
         st.title("🏥 병원 검색 결과")
-        st.markdown(f"🔎 **검색어:** `{filtered_query}`")
+        st.markdown(f"🔎 **검색어:** `{"hospital_query"}`")
 
         for hospital in hospitals:
             hospital_name = remove_html_tags(hospital["title"])
