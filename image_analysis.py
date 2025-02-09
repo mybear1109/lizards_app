@@ -135,7 +135,7 @@ def display_image_analysis():
                         border-radius: 10px;
                         box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
                         line-height: 1.6;  /* 줄 간격 조정 */
-                        font-size: 14px;  /* 폰트 크기 줄임 */
+    
                     ">
                         <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🦎 {species}</h3>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
