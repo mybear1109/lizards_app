@@ -230,10 +230,9 @@ project_root/
 <br>   
 <br> 
 <br>   
-## 유튜브 검색 기능
+## 유튜브 검색 기능 <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" />   
 
-https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white
-
+<br>   
 ### 1. **영상 학습**
 <br>   
 
@@ -242,7 +241,8 @@ https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&log
     
    <br>
    
-  ![영상 학습](https://github.com/user-attachments/assets/cc0b707f-b0a6-4d50-9bc1-23001f837ab6)
+
+ ![영상 학습](https://github.com/user-attachments/assets/1c05ed88-f5ce-40d3-8802-bf4f079c3d4c)
 
 
 
