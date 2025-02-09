@@ -165,7 +165,7 @@ def display_image_analysis():
             size = st.selectbox("🐊 파충류의 사이즈를 선택해주세요.🦖", size_options)
             st.write("")
             # 크레스티드 게코나 레오파드 게코를 선택한 경우에만 모프 선택 옵션 표시
-            if species in ["2.크레스티드 게코", "3.레오파드 게코"]:
+            if species in ["12.크레스티드 게코", "6.레오파드 게코"]:
                 morph_options = [
                     'Normal(일반)', 'Albino(알비노)', 'Leucistic(루시스틱)', 'Melanistic(멜라니스틱)',
                     'Hypomelanistic(하이포멜라니스틱)', 'Axanthic(액산틱)', 'Anerythristic(아네리스리스틱)',
