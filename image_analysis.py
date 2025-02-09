@@ -127,16 +127,16 @@ def display_image_analysis():
                         </p>
                         <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🦎 {species}</h3>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>📝 설명:</b> {species_info['설명']}
+                            <b>📝 설명:</b> {species_info["설명"]}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>📍 서식지:</b> {species_info['서식지']}
+                            <b>📍 서식지:</b> {species_info["서식지"]}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>🍽️ 먹이:</b> {species_info['먹이']}
+                            <b>🍽️ 먹이:</b> {species_info["먹이"]}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>✨ 특징:</b> {species_info['특징']}
+                            <b>✨ 특징:</b> {species_info["특징"]}
                         </p>
                     </div>
                     """,
