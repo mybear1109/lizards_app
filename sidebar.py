@@ -50,10 +50,3 @@ def render_sidebar():
             },
         )
 
-        # ✅ 검색창 (선택된 메뉴에 따라 표시)
-        if selected_option == "병원 검색":
-            st.session_state["hospital_query"] = st.text_input("🔍 병원 검색", st.session_state.get("hospital_query", "파충류 동물병원"))
-        elif selected_option == "유튜브 검색":
-            st.session_state["youtube_query"] = st.text_input("📺 유튜브 검색", st.session_state.get("youtube_query", "파충류 사육 방법"))
-
-    return selected_option
