@@ -30,8 +30,8 @@ def save_image(image_file):
         image = Image.open(image_file)
 
         # 파일 형식 확인 (지원되는 이미지 형식인지)
-        if image.format not in ['JPEG', 'PNG']:
-            st.error("❌ 지원되지 않는 이미지 형식입니다. JPG 또는 PNG 파일을 업로드해주세요.")
+        if image.format not in ['JPEG', 'PNG','JPG', 'BMP','webp']:
+            st.error("❌ 지원되지 않는 이미지 형식입니다. (JPEG, PNG, BMP, WEBP 형식만 가능)")
             return None, None
 
         image.save(image_path)
