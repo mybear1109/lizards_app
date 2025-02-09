@@ -119,7 +119,7 @@ def display_youtube_videos():
             )
 
             # ✅ 유튜브 영상 미리보기 썸네일 추가
-            st.image(f"https://img.youtube.com/vi/{link}/hqdefault.jpg", width=400)
+            st.image(f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg", width=400)
 
             # ✅ 버튼 형식으로 유튜브 링크 추가
             st.markdown(
@@ -138,7 +138,6 @@ def display_youtube_videos():
 
             # ✅ 구분선 추가
             st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
-
 
 
 
