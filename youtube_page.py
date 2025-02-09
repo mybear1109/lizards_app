@@ -118,10 +118,16 @@ def display_youtube_videos():
                 unsafe_allow_html=True,
             )
 
-            # ✅ 유튜브 영상 미리보기 썸네일 추가
-
-
-            st.image(f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg", width=400)
+            # ✅ 유튜브 동영상 임베드 (자동 실행 방지)
+            video_embed = f"""
+                <iframe width="100%" height="315" 
+                    src="https://www.youtube.com/embed/{video_id}" 
+                    frameborder="0" allow="accelerometer; autoplay; 
+                    encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            """
+            st.markdown(video_embed, unsafe_allow_html=True)
 
             # ✅ 버튼 형식으로 유튜브 링크 추가
             st.markdown(
