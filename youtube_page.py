@@ -141,7 +141,7 @@ def display_youtube_videos():
 
 
             # ✅ 유튜브 영상 임베드
+            st.video(link)
 
-            st.divider()
     else:
         st.warning("검색 결과가 없습니다. 다른 검색어를 입력해 보세요.")
