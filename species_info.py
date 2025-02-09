@@ -91,7 +91,7 @@ def get_species_info(species_name):
     "특징": "1. 큰 입과 둥근 몸체\n2. 땅속에 숨는 습성\n3. 야행성 생활\n4. 게으르고 움직임이 적음\n5. 강한 영역성과 단독 생활\n6. 위장 능력 (나뭇잎처럼 보임)\n7. 다양한 체색 변이 (인공 번식으로 인한)\n8. 수컷의 특징적인 울음소리\n9. 암수 간 크기 차이 (암컷이 더 큼)\n10. 물과 흙 환경 모두에서 사육 가능",
     "이미지": "images/pacman_frog.jpg"}
     }
-    
+
     # ✅ 존재하지 않는 종의 경우 기본 정보 반환
     return species_data.get(species_name, {
         "설명": "해당 종에 대한 설명이 없습니다.",
@@ -104,16 +104,21 @@ def get_species_info(species_name):
 
 # ✅ 종 설명을 가져오는 함수
 def get_species_description(species_name):
-    """ 종에 대한 설명을 가져오는 함수 """
-    return get_species_info(species_name)  # ✅ 무한 재귀 방지 완료!
+    """종에 대한 설명을 가져오는 함수"""
+    return get_species_info(species_name)
 
 
-# ✅ 대표 이미지를 포함한 종 설명 UI 표시 함수
+# ✅ 종 정보를 UI에 표시하는 함수 (이미지 포함)
 def display_species_info(species_name):
-    """ 종 정보를 UI에 표시하는 함수 (이미지 포함) """
+    """ 종 정보를 UI에 표시하는 함수 """
     species_info = get_species_info(species_name)
+    
+    # ✅ 이미지 파일 존재 확인
+    image_path = species_info["이미지"]
+    if not os.path.exists(image_path):
+        image_path = "images/default.jpg"  # 기본 이미지로 변경
 
-    # ✅ UI 디자인 개선 (이미지 + 설명)
+    # ✅ UI 디자인 개선
     st.markdown(
         f"""
         <div style="
@@ -128,3 +133,12 @@ def display_species_info(species_name):
         """,
         unsafe_allow_html=True,
     )
+
+    # ✅ 이미지 출력
+    st.image(image_path, caption=species_name, use_container_width=True)
+
+    # ✅ 상세 정보 출력
+    st.write(f"**설명:** {species_info['설명']}")
+    st.write(f"**서식지:** {species_info['서식지']}")
+    st.write(f"**먹이:** {species_info['먹이']}")
+    st.write(f"**특징:** {species_info['특징']}")
