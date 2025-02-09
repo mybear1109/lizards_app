@@ -83,7 +83,7 @@ def display_image_analysis():
                 image = image.convert("RGB")
 
             # ✅ 컬럼을 이용한 정렬 (왼쪽: 이미지 / 오른쪽: 예측 결과 및 설명)
-            col1, col2 = st.columns([4, 6])
+            col1, col2 = st.columns([5, 5])
 
             with col1:
                 # 이미지 너비를 500으로 설정
