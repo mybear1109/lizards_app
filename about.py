@@ -41,7 +41,7 @@ def show_about():
     st.write("" * 2)
     
     # GitHub README 링크를 버튼으로 표시
-    st.markdown("[GitHub에서 자세히 보기](https://github.com/mybear1109/lizards_app)")
+    st.markdown("[GitHub에서 자세히 보기](https://github.com/mybear1109/lizards_app/blob/main/README.md)")
 
 
 
