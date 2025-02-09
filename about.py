@@ -41,9 +41,7 @@ def show_about():
     st.write("" * 2)
     
     # GitHub README 링크를 버튼으로 표시
-    github_url = "https://github.com/mybear1109/lizards_app/blob/main/README.md"
-    if st.button("GitHub에서 자세히 보기 🚀"):  # 버튼 텍스트에 이모지 추가
-        webbrowser.open_new_tab(github_url)  # 새 탭에서 URL 열기
+    st.markdown("[GitHub에서 자세히 보기](https://github.com/mybear1109/lizards_app)")
 
 
 
