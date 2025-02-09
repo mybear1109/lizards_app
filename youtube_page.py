@@ -89,7 +89,7 @@ def display_youtube_videos():
         return
 
     st.title("📺 유튜브 검색 결과")
-    videos = search_youtube_videos(query)
+    videos = search_youtube_videos(query, max_results=5)
 
     if videos:
         for video in videos:
