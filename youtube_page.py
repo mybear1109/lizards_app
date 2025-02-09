@@ -98,8 +98,47 @@ def display_youtube_videos():
             description = video["snippet"].get("description", "설명 없음")
             link = f"https://www.youtube.com/watch?v={video_id}"
 
-            st.markdown(f"### [{title}]({link})")
-            st.write(description)
+            # ✅ 유튜브 제목을 더 스타일링하여 강조
+            st.markdown(
+                f"""
+                <h3 style="color:#E91E63; font-family: 'Arial Black', sans-serif; margin-bottom: 10px;">
+                    🎥 {title}
+                </h3>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # ✅ 설명 스타일 추가 (부드러운 색상 적용)
+            st.markdown(
+                f"""
+                <p style="font-size:16px; color:#555; margin-bottom: 10px;">
+                    {description}
+                </p>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # ✅ 유튜브 영상 미리보기 썸네일 추가
+            st.image(f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg", width=400)
+
+            # ✅ 버튼 형식으로 유튜브 링크 추가
+            st.markdown(
+                f"""
+                <p style="margin-top: 10px;">
+                    <a href="{link}" target="_blank" 
+                    style="text-decoration:none; background-color:#E91E63; 
+                    color:white; padding:10px 15px; border-radius:5px; 
+                    font-weight:bold;">
+                    ▶️ 유튜브에서 보기
+                    </a>
+                </p>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # ✅ 구분선 추가
+            st.markdown("<hr style='border:1px solid #DADADA; margin:20px 0;'>", unsafe_allow_html=True)
+
 
             # ✅ 유튜브 영상 임베드
             st.video(link)
