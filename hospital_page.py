@@ -72,7 +72,7 @@ def search_hospitals(query="파충류 동물병원", display=5):
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
             # 🏥 동물병원 관련 키워드 포함된 결과만 필터링
-            valid_hospital_keywords = ["동물병원", "파충류병원", "애완동물 병원"]
+            valid_hospital_keywords = ["파충류", "도마뱀", "이구아나", "거북", "뱀", "동물병원", "클리닉"]
             filtered_items = [
                 item for item in hospitals
                 if any(keyword in item.get("title", "") or keyword in item.get("description", "")
