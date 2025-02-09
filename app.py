@@ -11,7 +11,6 @@ try:
     from hospital_page import display_hospitals
     from youtube_page import display_youtube_videos
     from about import show_about
-    from data_analysis import display_data_analysis
     from image_analysis import display_image_analysis
     
 except ImportError as e:
