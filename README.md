@@ -93,7 +93,7 @@ project_root/
 ├── lisards.ipynb
 ├── README.md
 ├── requirements.txt
-├── about.py
+├── about.py              # 앱에 대한 설명
 ├── app.py                # Streamlit 메인 애플리케이션
 ├── data_analysis.py      # 데이터 시각화
 ├── data_manager.py       # 데이터및 이미지 저장
