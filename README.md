@@ -95,10 +95,10 @@ project_root/
 ├── requirements.txt
 ├── about.py
 ├── app.py                # Streamlit 메인 애플리케이션
-├── data_manager.py       # 데이터저장및 업로드
+├── data_analysis.py      # 데이터 시각화
+├── data_manager.py       # 데이터및 이미지 저장
 ├── hospital_page.py      # 병원 검색 기능
 ├── image_analysis.py     # 이미지 분석(AI 모델) 기능
-├── plot.py               # 데이터 시각화
 ├── sidebar.py            # 사이드바 UI
 ├── species_info.py       # 종별 상세 설명
 ├── youtube_page.py       # 유튜브 검색 기능
