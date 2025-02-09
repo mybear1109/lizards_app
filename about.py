@@ -100,8 +100,12 @@ def show_about():
     st.image("images/hompage3.png", use_column_width=True)
     st.markdown("""
     4. 추가로 정보를 입력할수 있습니다. 
+                
+       레오파드 게코(Leopardgeko)와 크레스티드 게코(Crestedgeko)의 경우
+       각각 모프를 추가할수 있습니다.        
     """)
-    st.image("images/hompage4.png", use_column_width=True)              
+    st.image("images/hompage4-1.png", use_column_width=True)    
+    st.image("images/hompage4-2.png",  use_column_width=True)             
     st.write("" * 2)
 
     st.subheader("📌 2.4 병원 검색 기능")
