@@ -90,11 +90,11 @@ def display_hospital_map(address):
 # ✅ 병원 검색 결과 표시
 def display_hospitals():
     """ 병원 검색 및 결과 표시 함수 """
-    query = st.session_state.get("hospital_query", "").strip()
+    query = st.session_state.get("hospital_query","").strip()
 
 
     # ✅ 검색어 필터링
-    filtered_query = filter_search_query(query, '파충류동물병원')
+    filtered_query = filter_search_query(query)
     if not filtered_query:
         return  # 검색어가 허용되지 않으면 검색 수행 안 함
 
