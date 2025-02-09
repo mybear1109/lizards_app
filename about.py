@@ -52,9 +52,10 @@ def show_about():
       """)  
     st.subheader("파충류 AI 탐정: '누구냐 너?' 18종, AI가 밝히는 파충류들의 정체와 비밀 💻")
     st.write("" * 2)
+    st.write("" * 2)
     st.image("images/you.png", width=400)
     st.write("" * 2)
-    st.write("" * 2)
+
     st.markdown("""
         -----------------
       """)  
