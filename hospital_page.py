@@ -71,7 +71,15 @@ def search_hospitals(query="파충류 동물병원", display=5):
         response = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
             hospitals = response.json().get("items", [])
-            return hospitals
+            # 🏥 동물병원 관련 키워드 포함된 결과만 필터링
+            valid_hospital_keywords = ["동물병원", "파충류병원", "애완동물 병원"]
+            filtered_items = [
+                item for item in hospitals
+                if any(keyword in item.get("title", "") or keyword in item.get("description", "")
+                       for keyword in valid_hospital_keywords)
+            ]
+
+            return filtered_items
         else:
             st.error(f"❌ 네이버 병원 검색 실패: {response.status_code}")
             return []
