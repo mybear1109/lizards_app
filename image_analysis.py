@@ -158,11 +158,11 @@ def display_image_analysis():
                                 "8.뱀", "9.거북이", "10.뉴트", "11.팩맨 개구리", 
                                 "12.두꺼비", "13.르차이아너스 게코", "14.차후아 게코", 
                                 "15.가고일 게코", "16.스킨크", "17.카멜레온"]
-            species = st.selectbox("🦎 파충류의 종류를 선택해주세요.", species_options)
+            species = st.selectbox("🐢 파충류의 종류를 선택해주세요.🐍", species_options)
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
                             '아성체(Juvenile)/대형(Large)', '아성체(Juvenile)/중형(Medium)', '아성체(Juvenile)/소형(Small)',
                             '유체(Hatchling)/대형(Large)', '유체(Hatchling)/중형(Medium)','유체(Hatchling)/소형(Small)']
-            size = st.selectbox("🦎 파충류의 사이즈를 선택해주세요.", size_options)
+            size = st.selectbox("🐊 파충류의 사이즈를 선택해주세요.🦖", size_options)
             # 크레스티드 게코나 레오파드 게코를 선택한 경우에만 모프 선택 옵션 표시
             if species in ["2.크레스티드 게코", "3.레오파드 게코"]:
                 morph_options = [
@@ -175,7 +175,7 @@ def display_image_analysis():
                 ]
                 morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
             else:
-                st.info("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.")
+                st.info("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.🦎")
 
             st.write("")
             st.info("소중한 정보 입력해주셔서 감사합니다.😊")
