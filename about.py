@@ -55,7 +55,6 @@ def show_about():
     st.write("" * 2)
     st.image("images/you.png", width=400)
     st.write("" * 2)
-
     st.markdown("""
         -----------------
       """)  
