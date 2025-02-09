@@ -181,15 +181,25 @@ def display_image_analysis():
             st.write(""*2)
             # 크레스티드 게코나 레오파드 게코를 선택한 경우에만 모프 선택 옵션 표시
             if species in ["6 레오파드 게코(Leopardgeko)", "12 크레스티드 게코(Crestedgeko)"]:
-                morph_options = [
-                    'Normal(일반)', 'Albino(알비노)', 'Leucistic(루시스틱)', 'Melanistic(멜라니스틱)',
-                    'Hypomelanistic(하이포멜라니스틱)', 'Axanthic(액산틱)', 'Anerythristic(아네리스리스틱)',
-                    'Piebald(파이볼드)', 'Tiger(타이거)', 'Stripe(스트라이프)', 'Banded(밴디드)', 'Spotted(스팟티드)',
-                    'Dalmatian(달마시안)', 'Blizzard(블리자드)', 'Patternless(무늬없음)', 'Translucent(반투명)',
-                    'Paradox(패러독스)', 'Chimera(키메라)', 'Enigma(에니그마)', 'Designer(디자이너)', 'Wild Type(야생형)',
-                    'Undefined(미정)'
-                ]
-                morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
+                    if species == "6 레오파드 게코(Leopardgeko)":
+                        morph_options = [
+                            'Normal(일반)', 'Albino(알비노)', 'Leucistic(루시스틱)', 'Melanistic(멜라니스틱)',
+                            'Hypomelanistic(하이포멜라니스틱)', 'Tangerine(탠저린)', 'Carrot Tail(캐럿테일)', 'Blizzard(블리자드)',
+                            'Eclipse(이클립스)', 'Jungle(정글)', 'Striped(스트라이프)', 'Banded(밴디드)', 'Patternless(무늬없음)',
+                            'Mack Snow(맥 스노우)', 'Super Snow(슈퍼 스노우)', 'Giant(자이언트)', 'Black Night(블랙 나이트)',
+                            'Rainwater(레인워터)', 'Typhoon(타이푼)', 'Gem Snow(젬 스노우)', 'Wild Type(야생형)',
+                            'Undefined(미정)'
+                        ]
+                    else:  # 크레스티드 게코의 경우
+                        morph_options = [
+                            'Normal(일반)', 'Patternless(무늬없음)', 'Bicolor(바이컬러)', 'Tiger(타이거)',
+                            'Dalmatian(달마시안)', 'Flame(플레임)', 'Creamsicle(크림시클)', 'Harlequin(할리퀸)',
+                            'Pinstripe(핀스트라이프)', 'Halloween(할로윈)', 'Quad-Stripe(쿼드-스트라이프)', 'Lilly White(릴리 화이트)',
+                            'Brindle(브린들)', 'Extreme Harlequin(익스트림 할리퀸)', 'Axanthic(액산틱)', 'Phantom(팬텀)',
+                            'Tangerine(탠저린)', 'Tri-color(트라이컬러)', 'White Wall/Whiteout(화이트 월/화이트아웃)', 'Drippy(드리피)',
+                            'Lavender(라벤더)', 'Charcoal(차콜)', 'Cold Fusion(콜드 퓨전)', 'Wild Type(야생형)',
+                            'Undefined(미정)']
+                    morph = st.selectbox("🦎 도마뱀의 모프를 선택해주세요.", morph_options)
             else:
                 st.info("모프 선택은 크레스티드 게코와 레오파드 게코에만 적용됩니다.🦎")
 
