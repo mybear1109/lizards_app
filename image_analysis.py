@@ -86,6 +86,7 @@ def display_image_analysis():
             col1, col2 = st.columns([1, 2])
 
             with col1:
+                # 이미지 너비를 500으로 설정
                 st.image(image, caption="업로드된 이미지", width=500)
 
             with col2:
@@ -113,7 +114,6 @@ def display_image_analysis():
 
                 # ✅ 예측 결과에 대한 설명 표시
                 species_info = get_species_description(species)
-
 
                 # 설명, 서식지, 먹이를 온점으로 분리하여 HTML 형식으로 변환
                 def split_by_period(text):
@@ -153,6 +153,7 @@ def display_image_analysis():
                     """,
                     unsafe_allow_html=True,
                 )
+
 
 
             st.write("")
