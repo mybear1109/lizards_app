@@ -136,7 +136,7 @@ def display_image_analysis():
                             <b>🍽️ 먹이:</b> {species_info["먹이"]}
                         </p>
                         <p style="margin: 10px 0; font-size: 16px; color: #333;">
-                            <b>✨ 특징:</b> {species_info["특징"]}
+                            <b>✨ 특징:</b> {species_info["특징"].replace("\n", "")}
                         </p>
                     </div>
                     """,
