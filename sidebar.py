@@ -57,3 +57,4 @@ def render_sidebar():
             st.session_state["youtube_query"] = st.text_input("📺 유튜브 검색", st.session_state.get("youtube_query", "파충류 사육 방법"))
 
     return selected_option
+
