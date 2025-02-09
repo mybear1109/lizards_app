@@ -94,7 +94,7 @@ def display_hospitals():
 
 
     # ✅ 검색어 필터링
-    filtered_query = filter_search_query(query, terms=VALID_ANIMAL_KEYWORDS)
+    filtered_query = filter_search_query(query, '파충류동물병원')
     if not filtered_query:
         return  # 검색어가 허용되지 않으면 검색 수행 안 함
 
