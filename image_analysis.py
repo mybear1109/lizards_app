@@ -152,12 +152,11 @@ def display_image_analysis():
             confidence = st.slider("예측 신뢰도", 0, 100, int(confidence))
 
             # ✅ 사용자가 직접 정보 입력 가능
-            species_options = [
-                                "0.비어디 드래곤", "1.팬서 카멜레온", "2.크레스티드 게코", "3.레오파드 게코", 
-                                "4.이구아나", "5.기타", "6.개구리", "7.도롱뇽", 
-                                "8.뱀", "9.거북이", "10.뉴트", "11.팩맨 개구리", 
-                                "12.두꺼비", "13.르차이아너스 게코", "14.차후아 게코", 
-                                "15.가고일 게코", "16.스킨크", "17.카멜레온"]
+            species_options = ["0 개구리(Frog)","1 거북이(Turtle)","2 기타(Other)", "3 뉴트(newt)",
+                                "4 도롱뇽(Salamander)","5 두꺼비(Toad)","6 레오파드 게코(Leopardgeko)",
+                                "7 뱀(Snake)","8 비어디 드래곤(Beardy)","9 앨리게이터(Alligator)",
+                                "10 이구아나(Iguana)","11 카멜레온(Chameleon)","12 크레스티드 게코(Crestedgeko)",
+                                "13 크로커다일(Crocodile)","14 팩맨(PacMan)"]
             species = st.selectbox("🐢 파충류의 종류를 선택해주세요.🐍", species_options)
             st.write("")
             size_options = ['성체(Adult)/대형(Large)', '성체(Adult)/중형(Medium)', '성체(Adult)/소형(Small)',
