@@ -57,7 +57,7 @@ def filter_search_query(query):
         return None
 
 # ✅ 네이버 API에서 병원 검색
-def search_hospitals(query="파충류 동물병원", display=5):
+def search_hospitals(query="동물병원", display=5):
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
         "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
